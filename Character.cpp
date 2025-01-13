@@ -41,6 +41,12 @@ int Character::getgold()
 {
 	return gold;
 }
+
+int Character::getexperience()
+{
+	return experience;
+}
+
 void Character::takeDamage(int damage)
 {
 	health -= damage;
