@@ -83,7 +83,7 @@ void GameManager::Battle(Character* player)
 
     // 전투 시작 전에 아이템 자동 사용
     player->AutoUseItems();
-
+    
     std::cout << "야생 " << monster->Name << "가 나타났다!\n";
     std::cout << "몬스터 이름: " << monster->Name << "\n";
     std::cout << "몬스터 레벨: " << monster->Level << "\n";
@@ -176,23 +176,6 @@ void GameManager::BossBattle(Character* player) {
 }
 
 
-// 랜덤 몬스터 생성 (구체적인 클래스 생성)
-std::unique_ptr<Monster> GameManager::GenerateMonster(int level) {
-    int randomMonster = rand() % 4;
-
-    switch (randomMonster) {
-    case 0:
-        return std::make_unique<Slime>(level);  // Slime 생성
-    case 1:
-        return std::make_unique<Goblin>(level);  // Goblin 생성
-    case 2:
-        return std::make_unique<Troll>(level);  // Troll 생성
-    case 3:
-        return std::make_unique<Orc>(level);  // Orc 생성
-    default:
-        return std::make_unique<Monster>(level);  // 기본 몬스터
-    }
-}
 
 
 

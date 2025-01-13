@@ -19,9 +19,6 @@ public:
     // 게임 흐름 제어 함수
     void StartGame(Character* player, Shop* shop);
 
-    // 구체적인 몬스터 생성 (std::unique_ptr<Monster> 반환)
-    static std::unique_ptr<Monster> GenerateMonster(int level);
-
     // 보스 몬스터 생성 (std::unique_ptr<BossMonster> 반환)
     static std::unique_ptr<BossMonster> GenerateBossMonster(int level);
 

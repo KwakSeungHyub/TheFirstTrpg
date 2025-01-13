@@ -3,7 +3,7 @@
 
 class AttackBoost : public Item {
 public:
-    AttackBoost();  // 기본 생성자 선언
+    AttackBoost();  //  기본 생성자 선언
     std::string GetName() const override;
     void Use(Character* character) override;
 };
