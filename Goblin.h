@@ -1,13 +1,9 @@
-// BossMonster.h
 #pragma once
 #include "Monster.h"
-#include "Item.h"
-#include <memory>
-#include <vector>
 
-class BossMonster : public Monster {
+class Goblin : public Monster {
 public:
-    BossMonster(int level);
+    Goblin(int level);
 
     // 전리품 테이블 초기화
     void InitializeLootTable() override;
