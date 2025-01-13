@@ -33,6 +33,7 @@ public:
 	int gethealth();
 	int getattackpower();
 	int getgold();
+	int getexperience();
 	void attack(Monster& targetMonster);
 	void takeDamage(int damage);
 	void displayStatus();
