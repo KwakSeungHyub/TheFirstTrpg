@@ -2,9 +2,12 @@
 #include "Character.h"
 #include <iostream>
 
-AttackBoost::AttackBoost()
-    : Item("공격력 포션", 50) {  // 부모 클래스에 한글 이름 전달
+
+AttackBoost::AttackBoost(const std::string& name, int price, int amount)
+    : Item(name, price, amount) {
+    // 추가 초기화가 필요하다면 여기에 작성
 }
+
 
 std::string AttackBoost::GetName() const {
     return Name;  // 부모 클래스에서 초기화된 Name을 반환

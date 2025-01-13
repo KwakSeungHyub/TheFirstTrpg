@@ -90,24 +90,7 @@ void Character::ShowInventory() const {
     }
 }
 
-/// 아이템 추가 (스마트 포인터 사용)
-void Character::AddItem(std::unique_ptr<Item> item) {
-    std::string itemName = item->GetName();
 
-    // 영어 이름을 한글 이름으로 변경
-    if (itemName == "Health Potion") {
-        itemName = "체력 포션";
-    }
-    else if (itemName == "Attack Boost") {
-        itemName = "공격력 포션";
-    }
-    else if (itemName == "Revive Potion") {
-        itemName = "부활 포션";
-    }
-
-    Inventory[itemName]++;  // 한글 이름을 키로 아이템 개수 증가
-    std::cout << "새로운 아이템을 획득했습니다: " << itemName << "!\n";
-}
 
 // 상점에서 아이템 판매 (판매 기능)
 void Character::SellItemAtShop(Shop* shop) {
@@ -124,31 +107,45 @@ void Character::SellItemAtShop(Shop* shop) {
     }
 }
 
-// 자동 아이템 사용
 void Character::AutoUseItems() {
-    if (Health <= MaxHealth / 2 && Inventory["체력 포션"] > 0) {
+    // 체력 포션 사용
+    auto healthPotion = Inventory.find("체력 포션");
+    if (Health <= MaxHealth / 2 && healthPotion != Inventory.end() && healthPotion->second->GetAmount() > 0) {
         std::cout << "자동으로 체력 포션을 사용합니다!\n";
-        std::shared_ptr<HealthPotion> potion = std::make_shared<HealthPotion>();
-        potion->Use(this);
-        Inventory["Health Potion"]--;
+        healthPotion->second->Use(this);  // Use 호출 (포인터 dereference)
+        healthPotion->second->DecreaseAmount(1);  // 수량 감소
+        if (healthPotion->second->GetAmount() == 0) {
+            Inventory.erase(healthPotion);  // 수량이 0이면 인벤토리에서 제거
+        }
     }
-    if (Health <= 0 && Inventory["부활 포션"] > 0) {
+
+    // 부활 포션 사용
+    auto revivePotion = Inventory.find("부활 포션");
+    if (Health <= 0 && revivePotion != Inventory.end() && revivePotion->second->GetAmount() > 0) {
         std::cout << "자동으로 부활 포션을 사용합니다!\n";
-        std::shared_ptr<RevivePotion> potion = std::make_shared<RevivePotion>();
-        potion->Use(this);
-        Inventory["부활 포션"]--;
-        Health = MaxHealth;
+        revivePotion->second->Use(this);  // Use 호출 (포인터 dereference)
+        revivePotion->second->DecreaseAmount(1);  // 수량 감소
+        if (revivePotion->second->GetAmount() == 0) {
+            Inventory.erase(revivePotion);  // 수량이 0이면 인벤토리에서 제거
+        }
+        Health = MaxHealth;  // 부활 후 체력 복구
     }
-    if (Inventory["공격력 포션"] > 0) {
+
+    // 공격력 포션 사용
+    auto attackBoostPotion = Inventory.find("공격력 포션");
+    if (attackBoostPotion != Inventory.end() && attackBoostPotion->second->GetAmount() > 0) {
         std::cout << "자동으로 공격력 포션을 사용합니다!\n";
-        AttackBoost potion;
-        potion.Use(this);
-        Inventory["Attack Boost"]--;
-        AttackBoostAmount = 10;  // 포션으로 증가한 공격력
-        Attack += AttackBoostAmount;  // 공격력 증가
+        attackBoostPotion->second->Use(this);  // Use 호출 (포인터 dereference)
+        attackBoostPotion->second->DecreaseAmount(1);  // 수량 감소
+        if (attackBoostPotion->second->GetAmount() == 0) {
+            Inventory.erase(attackBoostPotion);  // 수량이 0이면 인벤토리에서 제거
+        }
+        AttackBoostAmount = 10;
+        Attack += AttackBoostAmount;
     }
-   
 }
+
+
 // 공격력 포션 효과 초기화 함수
 void Character::ResetAttackBoost() {
     Attack -= AttackBoostAmount;  // 포션으로 증가한 공격력만큼 빼기

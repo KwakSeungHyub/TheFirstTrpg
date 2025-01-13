@@ -1,6 +1,9 @@
 #include "GameManager.h"
 #include <iostream>
 #include <cstdlib>  // rand() 함수 사용
+#include "HealthPotion.h"
+#include "AttackBoost.h"
+#include "RevivePotion.h"
 std::unique_ptr<Monster> GameManager::GenerateRandomMonster(int level)
 {
     int randomMonster = rand() % 4;  // 0부터 3까지 랜덤 숫자 생성
@@ -186,17 +189,18 @@ void GameManager::VisitShop(Character* player, Shop* shop)
         std::cout << "1. 아이템 구매\n";
         std::cout << "2. 아이템 판매\n";
         std::cout << "3. 아이템 목록 확인\n";
-        std::cout << "4. 상점 종료\n";
+        std::cout << "4. 상점 종료 (숫자를 입력해주세요): ";
 
         int choice;
         std::cin >> choice;
 
         // 여기서 변수를 초기화하도록 변경
-        int index;
+        int index = 0;
         std::vector<std::string> itemNames;  // 'itemNames' 변수 초기화
 
         switch (choice) {
         case 1:  // 아이템 구매
+            std::cout << "\n아이템 목록입니다. 현재 보유 골드(" << player->Gold << ")\n";
             std::cout << "1. 체력 포션 (20 골드)\n";
             std::cout << "2. 공격력 포션 (50 골드)\n";
             std::cout << "3. 부활 포션 (100 골드)\n";
@@ -205,22 +209,36 @@ void GameManager::VisitShop(Character* player, Shop* shop)
             std::cin >> buyChoice;
 
             switch (buyChoice) {
-            case 1:
-                if (player->Gold >= 20)
-                {
-                    player->Inventory["체력 포션"]++;
+            case 1:  // 체력 포션
+                if (player->Gold >= 20) {
+                    auto it = player->Inventory.find("체력 포션");
+                    if (it != player->Inventory.end()) {
+                        // 이미 아이템이 있으면 수량 증가
+                        it->second->IncreaseAmount(1);  // 수량 증가
+                    }
+                    else {
+                        // 아이템이 없다면 새로 추가 (수량 1로 시작)
+                        player->AddItem(std::make_unique<HealthPotion>("체력 포션", 20, 1));
+                    }
                     player->Gold -= 20;  // 20 골드 차감
                     std::cout << "체력 포션을 구매했습니다.\n";
                 }
-                else
-                {
+                else {
                     std::cout << "골드가 부족합니다.\n";
                 }
                 break;
-            case 2:
-                if (player->Gold >= 50)
-                {
-                    player->Inventory["공격력 포션"]++;
+
+            case 2:  // 공격력 포션
+                if (player->Gold >= 50) {
+                    auto it = player->Inventory.find("공격력 포션");
+                    if (it != player->Inventory.end()) {
+                        // 이미 아이템이 있으면 수량 증가
+                        it->second->IncreaseAmount(1);  // 수량 증가
+                    }
+                    else {
+                        // 아이템이 없다면 새로 추가 (수량 1로 시작)
+                        player->AddItem(std::make_unique<AttackBoost>("공격력 포션", 50, 1));
+                    }
                     player->Gold -= 50;  // 50 골드 차감
                     std::cout << "공격력 포션을 구매했습니다.\n";
                 }
@@ -228,10 +246,18 @@ void GameManager::VisitShop(Character* player, Shop* shop)
                     std::cout << "골드가 부족합니다.\n";
                 }
                 break;
-            case 3:
-                if (player->Gold >= 100)
-                {
-                    player->Inventory["부활 포션"]++;  // 부활 포션 추가
+
+            case 3:  // 부활 포션
+                if (player->Gold >= 100) {
+                    auto it = player->Inventory.find("부활 포션");
+                    if (it != player->Inventory.end()) {
+                        // 이미 아이템이 있으면 수량 증가
+                        it->second->IncreaseAmount(1);  // 수량 증가
+                    }
+                    else {
+                        // 아이템이 없다면 새로 추가 (수량 1로 시작)
+                        player->AddItem(std::make_unique<RevivePotion>("부활 포션", 100, 1));
+                    }
                     player->Gold -= 100;  // 100 골드 차감
                     std::cout << "부활 포션을 구매했습니다.\n";
                 }
@@ -239,26 +265,22 @@ void GameManager::VisitShop(Character* player, Shop* shop)
                     std::cout << "골드가 부족합니다.\n";
                 }
                 break;
-            case 4:
-                std::cout << "상점으로 돌아갑니다.\n";
-                break;
-            default:
-                std::cout << "잘못된 선택입니다. 다시 시도해 주세요.\n";
             }
             break;
+
         case 2:  // 아이템 판매
             std::cout << "판매할 아이템을 선택하세요.\n";
-            std::cout << "현재 보유한 아이템 목록:\n";
-
+            std::cout << "현재 보유한 아이템 목록\n";
+            std::cout << "숫자를 입력해주세요: ";
             index = 1;  // 'index' 초기화
 
             // 플레이어의 인벤토리에서 판매할 아이템을 나열
             for (const auto& item : player->Inventory) {
-                if (item.second > 0) {  // 아이템이 1개 이상 있을 경우에만 표시
-                    std::cout << index << ". " << item.first << ": " << item.second << "개\n";  // 아이템 목록 출력
-                    itemNames.push_back(item.first);  // 아이템 이름을 itemNames 배열에 추가
-                    index++;  // 인덱스 증가
-                }
+                std::cout << index << ". " << item.first << ": "
+                    << item.second->GetAmount() << "개 가격 : ("
+                    << item.second->GetPrice() << "골드)\n";  // 아이템 목록 출력
+                itemNames.push_back(item.first);  // 아이템 이름을 itemNames 배열에 추가
+                index++;  // 인덱스 증가
             }
 
             if (itemNames.empty()) {
@@ -267,7 +289,6 @@ void GameManager::VisitShop(Character* player, Shop* shop)
             }
 
             std::cout << "0. 뒤로가기\n";
-
             int sellChoice;
             std::cin >> sellChoice;
 
@@ -285,10 +306,12 @@ void GameManager::VisitShop(Character* player, Shop* shop)
             // 유효한 sellChoice일 경우, 아이템 판매
             if (sellChoice > 0 && sellChoice <= itemNames.size()) {
                 std::string itemName = itemNames[sellChoice - 1];  // 선택된 아이템 이름
-                int itemCount = player->Inventory[itemName];
 
-                if (itemCount > 0) {
-                    shop->SellItem(itemName, player);  // 아이템 판매
+                // 인벤토리에 아이템이 있는지 확인
+                auto it = player->Inventory.find(itemName);
+                if (it != player->Inventory.end() && it->second) {
+                    // 아이템이 존재하고 nullptr이 아닐 경우 판매
+                    shop->SellItem(itemName, player);
                 }
                 else {
                     std::cout << "판매할 " << itemName << "이(가) 없습니다.\n";
@@ -298,8 +321,12 @@ void GameManager::VisitShop(Character* player, Shop* shop)
 
         case 3:  // 아이템 목록 확인
             std::cout << "현재 보유한 아이템 목록:\n";
+            index = 1;
             for (const auto& item : player->Inventory) {
-                std::cout << item.first << ": " << item.second << "개\n";
+                std::cout << index << ". " << item.first << ": "
+                    << item.second->GetAmount() << "개 가격 : ("
+                    << item.second->GetPrice() << "골드)\n";  // 아이템 목록 출력
+                index++;
             }
             break;
 

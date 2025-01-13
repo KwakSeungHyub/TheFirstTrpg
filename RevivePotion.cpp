@@ -2,9 +2,8 @@
 #include "Character.h"
 #include <iostream>
 
-RevivePotion::RevivePotion()
-    : Item("부활 포션", 70) {  // 부모 클래스에 한글 이름 전달
-}
+RevivePotion::RevivePotion(const std::string& name, int price, int amount)
+    : Item(name, price, amount) {}
 
 std::string RevivePotion::GetName() const {
     return Name;  // 한글로 반환

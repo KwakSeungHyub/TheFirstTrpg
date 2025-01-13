@@ -7,7 +7,7 @@
 // 예시 아이템: 마왕의 검
 class DemonLordSword : public Item {
 public:
-    DemonLordSword() : Item("마왕의 검", 100) {}
+    DemonLordSword() : Item("마왕의 검", 100,1) {}
 
     std::string GetName() const override {
         return Name;

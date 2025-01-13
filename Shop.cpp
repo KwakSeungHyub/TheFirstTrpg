@@ -5,7 +5,8 @@
 #include <iostream>
 #include <memory>
 
-Shop::Shop() {
+Shop::Shop() 
+{
     AvailableItems.emplace_back(std::make_unique<HealthPotion>());
     AvailableItems.emplace_back(std::make_unique<AttackBoost>());
     AvailableItems.emplace_back(std::make_unique<RevivePotion>());
@@ -17,7 +18,8 @@ Shop::Shop() {
 }
 
 // 아이템 목록 표시
-void Shop::DisplayItems() const {
+void Shop::DisplayItems() const 
+{
     std::cout << "판매 중인 아이템:\n";
     for (size_t i = 0; i < AvailableItems.size(); ++i) {
         std::cout << i + 1 << ". " << AvailableItems[i]->GetName() << " - "
@@ -26,7 +28,8 @@ void Shop::DisplayItems() const {
 }
 
 // 아이템 세부 설명
-void Shop::DisplayItemDetails(int index) const {
+void Shop::DisplayItemDetails(int index) const 
+{
     if (index < 0 || index >= AvailableItems.size()) {
         std::cout << "잘못된 아이템 선택입니다.\n";
         return;
@@ -37,7 +40,8 @@ void Shop::DisplayItemDetails(int index) const {
 }
 
 // 아이템 구매 (스마트 포인터 적용)
-void Shop::BuyItem(int index, Character* player) {
+void Shop::BuyItem(int index, Character* player) 
+{
     if (index < 0 || index >= AvailableItems.size()) {
         std::cout << "잘못된 아이템 선택입니다.\n";
         return;
@@ -55,44 +59,28 @@ void Shop::BuyItem(int index, Character* player) {
     }
 }
 
-void Shop::SellItem(const std::string& itemName, Character* player) {
+void Shop::SellItem(const std::string& itemName, Character* player) 
+{
     // 1. 인벤토리에서 아이템을 찾습니다.
-    if (player->Inventory.find(itemName) != player->Inventory.end() && player->Inventory[itemName] > 0) {
+    auto it = player->Inventory.find(itemName);
+    if (it != player->Inventory.end() && it->second != 0) {
         // 아이템이 인벤토리에 있을 때, 아이템을 팔기
-        std::unique_ptr<Item> item = nullptr;
+        std::unique_ptr<Item>& item = it->second;  // 인벤토리에서 아이템 가져오기
 
-        // 인벤토리에서 아이템 찾기
-        for (auto& inventoryItem : player->Inventory) {
-            if (inventoryItem.first == itemName && inventoryItem.second > 0) {
-                // 아이템 클래스가 HealthPotion, AttackBoost 등일 경우 그에 맞는 객체를 생성
-                if (itemName == "체력 포션") {
-                    item = std::make_unique<HealthPotion>();
-                }
-                else if (itemName == "공격력 포션") {
-                    item = std::make_unique<AttackBoost>();
-                }
-                else if (itemName == "부활 포션") {
-                    item = std::make_unique<RevivePotion>();
-                }
-                break;
-            }
-        }
+        // 가격을 아이템 객체에서 가져옴
+        int sellPrice = item->GetPrice();  // GetPrice()는 각 아이템 클래스에서 정의되어 있어야 함
 
-        if (item) {
-             // 전리품 아이템일 경우, 가격을 따로 계산
-            int sellPrice = item->Price;  // 아이템의 가격은 아이템 객체에서 가져옴
+        // 골드 증가
+        player->Gold += sellPrice;
+        player->Inventory.erase(it);  // 해당 아이템을 인벤토리에서 삭제
 
-            player->Gold += sellPrice;
-            player->Inventory[itemName]--;  // 아이템 개수 감소
-            std::cout << itemName << "을(를) " << sellPrice << " 골드에 판매했습니다.\n";
-        }
-        else {
-            std::cout << "아이템을 찾을 수 없습니다.\n";
-        }
+        std::cout << itemName << "을(를) " << sellPrice << " 골드에 판매했습니다. 현재 보유 골드 :" <<player -> Gold <<"골드 \n";
     }
     else {
         std::cout << "이 아이템은 가지고 있지 않습니다.\n";
     }
 }
+
+
 
 

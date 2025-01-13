@@ -2,8 +2,8 @@
 #include "Character.h"
 #include <iostream>
 
-HealthPotion::HealthPotion()
-    : Item("체력 포션", 20) {
+HealthPotion::HealthPotion(const std::string& name, int price, int amount)
+    : Item(name, price, amount) {
 }
 
 std::string HealthPotion::GetName() const {
