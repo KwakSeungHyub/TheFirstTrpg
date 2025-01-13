@@ -3,7 +3,7 @@
 
 class AttackBoost : public Item {
 public:
-    AttackBoost();  //  奄沙 持失切 識情
+    AttackBoost();  // 持失切
     std::string GetName() const override;
     void Use(Character* character) override;
 };
