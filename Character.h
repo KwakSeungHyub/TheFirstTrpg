@@ -1,7 +1,7 @@
 #pragma once
 #include "Equipment.h"
 #include "Shop.h"
-#include <unordered_map>  // unordered_map Çì´õ Ãß°¡
+#include <unordered_map>  // unordered_map í—¤ë” ì¶”ê°€
 #include <string>
 
 class Character {
@@ -11,60 +11,61 @@ public:
     int Health;
     int MaxHealth;
     int Attack;
-    int AttackBoostAmount = 0;  // Æ÷¼ÇÀ¸·Î Áõ°¡ÇÑ °ø°İ·Â ÃßÀû
+    int AttackBoostAmount = 0;  // í¬ì…˜ìœ¼ë¡œ ì¦ê°€í•œ ê³µê²©ë ¥ ì¶”ì 
     int Experience;
-    int Defense = 0; // ¹æ¾î·Â(Àåºñ·Î¸¸ ¿Ã¶ó°¨)
+    int MaxExperience;
+    int Defense = 0; // ë°©ì–´ë ¥(ì¥ë¹„ë¡œë§Œ ì˜¬ë¼ê°)
     int Gold;
 
 
-    // ½º¸¶Æ® Æ÷ÀÎÅÍ¸¦ »ç¿ëÇÏ´Â ÀÎº¥Åä¸®: ¾ÆÀÌÅÛ°ú ÇØ´ç ¼ö·®À» ÀúÀå
+    // ìŠ¤ë§ˆíŠ¸ í¬ì¸í„°ë¥¼ ì‚¬ìš©í•˜ëŠ” ì¸ë²¤í† ë¦¬: ì•„ì´í…œê³¼ í•´ë‹¹ ìˆ˜ëŸ‰ì„ ì €ì¥
     std::unordered_map<std::string, std::unique_ptr<Item>> Inventory;
 
-    Equipment* EquippedWeapon = nullptr;  // ÀåÂøµÈ ¹«±â
-    Equipment* EquippedArmor = nullptr;   // ÀåÂøµÈ ¹æ¾î±¸
+    Equipment* EquippedWeapon = nullptr;  // ì¥ì°©ëœ ë¬´ê¸°
+    Equipment* EquippedArmor = nullptr;   // ì¥ì°©ëœ ë°©ì–´êµ¬
 
-    // »ı¼ºÀÚ
+    // ìƒì„±ì
     Character(const std::string& name);
 
-    // ·¹º§¾÷ ¸Ş¼Òµå
+    // ë ˆë²¨ì—… ë©”ì†Œë“œ
     void LevelUp();
 
-    // °æÇèÄ¡ È¹µæ ¸Ş¼Òµå
+    // ê²½í—˜ì¹˜ íšë“ ë©”ì†Œë“œ
     void GainExperience(int exp);
 
-    // µ¥¹ÌÁö ¹Ş±â ¸Ş¼Òµå
+    // ë°ë¯¸ì§€ ë°›ê¸° ë©”ì†Œë“œ
     void TakeDamage(int damage);
 
-    // Ä³¸¯ÅÍ »óÅÂ Ãâ·Â
+    // ìºë¦­í„° ìƒíƒœ ì¶œë ¥
     void DisplayStatus() const;
 
-    // »óÁ¡ ¹æ¹® ¸Ş¼Òµå
+    // ìƒì  ë°©ë¬¸ ë©”ì†Œë“œ
     void VisitShop(Shop* shop);
 
-    // ÀÎº¥Åä¸® Ç¥½Ã
+    // ì¸ë²¤í† ë¦¬ í‘œì‹œ
     void ShowInventory() const;
 
-    // ¾ÆÀÌÅÛ Ãß°¡ ¸Ş¼Òµå
+    // ì•„ì´í…œ ì¶”ê°€ ë©”ì†Œë“œ
     void AddItem(std::unique_ptr<Item> item);
 
-    // »óÁ¡¿¡¼­ ¾ÆÀÌÅÛ ÆÇ¸Å ¸Ş¼Òµå
+    // ìƒì ì—ì„œ ì•„ì´í…œ íŒë§¤ ë©”ì†Œë“œ
     void SellItemAtShop(Shop* shop);
 
-    // ÀüÅõ Áß ÀÚµ¿ ¾ÆÀÌÅÛ »ç¿ë ¸Ş¼Òµå
+    // ì „íˆ¬ ì¤‘ ìë™ ì•„ì´í…œ ì‚¬ìš© ë©”ì†Œë“œ
     void AutoUseItems();
 
-    // °ø°İ·Â ÃÊ±âÈ­ ¸Ş¼Òµå (¹öÇÁ Á¦°Å ½Ã)
+    // ê³µê²©ë ¥ ì´ˆê¸°í™” ë©”ì†Œë“œ (ë²„í”„ ì œê±° ì‹œ)
     void ResetAttackBoost();
 
-    // Àåºñ ¾ÆÀÌÅÛ ÀÚµ¿ ÀåÂø ¸Ş¼Òµå
+    // ì¥ë¹„ ì•„ì´í…œ ìë™ ì¥ì°© ë©”ì†Œë“œ
     void AutoEquipItems();
 
-    // ¹«±â ÀåÂø ¸Ş¼Òµå
+    // ë¬´ê¸° ì¥ì°© ë©”ì†Œë“œ
     void EquipWeapon(Equipment* newWeapon);
 
-    // ¹æ¾î±¸ ÀåÂø ¸Ş¼Òµå
+    // ë°©ì–´êµ¬ ì¥ì°© ë©”ì†Œë“œ
     void EquipArmor(Equipment* newArmor);
-   
-    
+
+
 
 };

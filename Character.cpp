@@ -6,13 +6,14 @@
 #include "AttackBoost.h"
 
 Character::Character(const std::string& name)
-    : Name(name),Level(1),Health(100),MaxHealth(100),Attack(10),Experience(0),Gold(100),AttackBoostAmount(0),Defense(0) {}
+    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0) ,MaxExperience(100){}
 
 // 레벨업 기능
 void Character::LevelUp() 
 {
     Level++;
     MaxHealth += 20;
+    MaxExperience += 30;
     Attack += 5;
     Health = MaxHealth;
     std::cout << "레벨 업! 현재 레벨: " << Level << "!\n";

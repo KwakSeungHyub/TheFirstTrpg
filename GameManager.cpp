@@ -6,6 +6,8 @@
 #include "RevivePotion.h"
 #include "Equipment.h"
 #include <map>
+
+
 std::unique_ptr<Monster> GameManager::GenerateRandomMonster(int level)
 {
     int randomMonster = rand() % 4;  // 0부터 3까지 랜덤 숫자 생성
@@ -92,6 +94,11 @@ std::unique_ptr<BossMonster> GameManager::GenerateBossMonster(int level)
 
 void GameManager::Battle(Character* player)
 {
+    std::random_device rd; //시드값 생성 조금 느리다
+    std::mt19937 mt(rd()); //mt19937은 난수엔진타입 
+    std::uniform_int_distribution<int> dist(5, 10);//5~10까지 범위지정
+    int rand_gold = dist(mt);
+
     // 랜덤 몬스터 생성
     std::unique_ptr<Monster> monster = GenerateRandomMonster(player->Level);
 
@@ -131,6 +138,7 @@ void GameManager::Battle(Character* player)
             {
                     std::cout << monster->Name << "을 처치했습니다!\n";
                     player->GainExperience(100);  // 경험치 획득
+                    player->Gold += rand_gold; //골드 획득
                     // 전리품 드롭
                     std::unique_ptr<Item> loot = monster->DropItem();
                     if(loot != nullptr) 
