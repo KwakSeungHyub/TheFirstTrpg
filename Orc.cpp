@@ -1,22 +1,34 @@
 #include "Orc.h"
 #include "Item.h"
+#include "Equipment.h"
 #include <iostream>
 #include <random>
 
-// 오크의 발톱 아이템 클래스 정의 (OrcClaw 클래스)
-class OrcClaw : public Item {
+class OrcAxe : public Item 
+{
 public:
-    OrcClaw() : Item("오크의 발톱", 25) {}
+    OrcAxe() : Item("오크의 도끼", 25) {}
 
-    std::string GetName() const override {
+    std::string GetName() const override 
+    {
         return Name;
     }
 
-    void Use(class Character* character) override {
-        std::cout << "오크의 발톱을 팔아 골드를 얻었습니다.\n";
+    void Use(class Character* character) override 
+    {
+        std::cout << "오크의 도끼를 팔아 골드를 얻었습니다.\n";
     }
 
-    int GetPrice() const override { return 25; }  // 오크의 발톱 가격
+    int GetPrice() const override 
+    {
+        return 25;  // 오크의 도끼 가격
+    }
+
+    Equipment* GetType() const override 
+    {
+        static Equipment temp("오크의 도끼", 25, 0, Equipment::EquipmentType::Misc);
+        return &temp;
+    }
 };
 
 Orc::Orc(int level)
@@ -29,7 +41,7 @@ Orc::Orc(int level)
 }
 
 void Orc::InitializeLootTable() {
-    LootTable.emplace_back(std::make_unique<OrcClaw>());
+    LootTable.emplace_back(std::make_unique<OrcAxe>());
 }
 
 std::unique_ptr<Item> Orc::DropItem() {

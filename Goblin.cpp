@@ -1,23 +1,36 @@
 #include "Goblin.h"
 #include "Item.h"
+#include "Equipment.h"
 #include <iostream>
 #include <random>
 
-// 고블린의 귀 아이템 클래스 정의 (GoblinEar 클래스)
-class GoblinEar : public Item {
+class GoblinSpear : public Item 
+{
 public:
-    GoblinEar() : Item("고블린의 귀", 15) {}
+    GoblinSpear() : Item("고블린의 창", 20) {}
 
-    std::string GetName() const override {
+    std::string GetName() const override 
+    {
         return Name;
     }
 
-    void Use(class Character* character) override {
-        std::cout << "고블린의 귀를 팔아 골드를 얻었습니다.\n";
+    void Use(class Character* character) override 
+    {
+        std::cout << "고블린의 창을 팔아 골드를 얻었습니다.\n";
     }
 
-    int GetPrice() const override { return 15; }  // 고블린의 귀 가격
+    int GetPrice() const override 
+    {
+        return 20;  // 고블린의 창 가격
+    }
+
+    Equipment* GetType() const override 
+    {
+        static Equipment temp("고블린의 창", 20, 0, Equipment::EquipmentType::Misc);
+        return &temp;
+    }
 };
+
 
 Goblin::Goblin(int level)
     : Monster(level) {
@@ -29,7 +42,7 @@ Goblin::Goblin(int level)
 }
 
 void Goblin::InitializeLootTable() {
-    LootTable.emplace_back(std::make_unique<GoblinEar>());
+    LootTable.emplace_back(std::make_unique<GoblinSpear>());
 }
 
 std::unique_ptr<Item> Goblin::DropItem() {

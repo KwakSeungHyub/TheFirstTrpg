@@ -30,6 +30,7 @@ public:
     // 피해를 받으면 체력 감소
     void TakeDamage(int damage) {
         Health -= damage;
+        std::cout << Name << "가 " << damage << "의 피해를 입었습니다!\n";
         if (Health < 0) {
             Health = 0;
         }

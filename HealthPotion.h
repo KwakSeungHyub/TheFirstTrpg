@@ -3,10 +3,12 @@
 
 class HealthPotion : public Item {
 public:
-    // 기본 생성자
-    HealthPotion() : Item() {}
-    // 생성자에서 Item 생성자 호출
-    HealthPotion(const std::string& name, int price, int amount);
-    std::string GetName() const override;
-    void Use(Character* character) override;
+    // 생성자
+    HealthPotion(const std::string& name, int price, int amount = 1);
+
+    // Use 함수 구현 (체력 회복 효과)
+    virtual void Use(Character* character) override;
+
+    // 장비 타입 반환 (Equipment*로 수정)
+    Equipment* GetType() const override;
 };

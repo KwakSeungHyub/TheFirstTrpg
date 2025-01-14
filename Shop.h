@@ -1,16 +1,16 @@
 #pragma once
-#include "Item.h"
 #include <vector>
-#include <map>
 #include <memory>
-#include "Character.h"
+#include <unordered_map>
+#include "Item.h"
+
 
 class Shop {
-public:
-    
+private:
     std::vector<std::unique_ptr<Item>> AvailableItems;
-    std::map<std::string, std::string> ItemDescriptions;
+    std::unordered_map<std::string, std::string> ItemDescriptions;
 
+public:
     Shop();
     void DisplayItems() const;
     void DisplayItemDetails(int index) const;

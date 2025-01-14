@@ -1,12 +1,8 @@
 #pragma once
-#include "Item.h"
+#include "Equipment.h"
+#include "Shop.h"
+#include <unordered_map>  // unordered_map 헤더 추가
 #include <string>
-#include <vector>
-#include <map>
-#include <memory>
-#include <unordered_map>
-
-class Shop;
 
 class Character {
 public:
@@ -17,32 +13,57 @@ public:
     int Attack;
     int AttackBoostAmount = 0;  // 포션으로 증가한 공격력 추적
     int Experience;
+    int Defense = 0; // 방어력(장비로만 올라감)
     int Gold;
 
-    // 스마트 포인터를 사용한 인벤토리 (아이템과 개수)
-    // Character 클래스의 Inventory 맵을 한글로 설정
-    // std::unordered_map<std::string, int> Inventory;
-    std::unordered_map<std::string, std::unique_ptr<Item>> Inventory; // 포인터로 변경
+    // 스마트 포인터를 사용하는 인벤토리: 아이템과 해당 수량을 저장
+    std::unordered_map<std::string, std::unique_ptr<Item>> Inventory;
 
+    Equipment* EquippedWeapon = nullptr;  // 장착된 무기
+    Equipment* EquippedArmor = nullptr;   // 장착된 방어구
+
+    // 생성자
     Character(const std::string& name);
-    void LevelUp();
-    void GainExperience(int exp);
-    void TakeDamage(int damage);
-    void DisplayStatus() const;
-    void VisitShop(Shop* shop);
-    void ShowInventory() const;
-    void AddItem(std::unique_ptr<Item> item) {
-        const std::string& itemName = item->GetName();
-        if (Inventory.find(itemName) == Inventory.end()) {
-            Inventory[itemName] = std::move(item);  // 새 아이템 추가
-        }
-        else {
-            // 이미 존재하는 아이템이 있다면, 수량을 증가시킴
-            Inventory[itemName]->IncreaseAmount(item->GetAmount());
-        }
-    }
-    void SellItemAtShop(Shop* shop);
-    void AutoUseItems();  // 전투 중 자동 사용 기능
 
-    void ResetAttackBoost();  // 공격력 초기화 함수 추가
+    // 레벨업 메소드
+    void LevelUp();
+
+    // 경험치 획득 메소드
+    void GainExperience(int exp);
+
+    // 데미지 받기 메소드
+    void TakeDamage(int damage);
+
+    // 캐릭터 상태 출력
+    void DisplayStatus() const;
+
+    // 상점 방문 메소드
+    void VisitShop(Shop* shop);
+
+    // 인벤토리 표시
+    void ShowInventory() const;
+
+    // 아이템 추가 메소드
+    void AddItem(std::unique_ptr<Item> item);
+
+    // 상점에서 아이템 판매 메소드
+    void SellItemAtShop(Shop* shop);
+
+    // 전투 중 자동 아이템 사용 메소드
+    void AutoUseItems();
+
+    // 공격력 초기화 메소드 (버프 제거 시)
+    void ResetAttackBoost();
+
+    // 장비 아이템 자동 장착 메소드
+    void AutoEquipItems();
+
+    // 무기 장착 메소드
+    void EquipWeapon(Equipment* newWeapon);
+
+    // 방어구 장착 메소드
+    void EquipArmor(Equipment* newArmor);
+   
+    
+
 };

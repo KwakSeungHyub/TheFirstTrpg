@@ -1,36 +1,34 @@
 #pragma once
 #include <string>
 
+// Equipment 클래스 전방 선언
+class Equipment;  // 전방 선언
+
 class Item {
 public:
     std::string Name;
-    int Price;  // 가격 정보 저장
-    int Amount;  // 수량을 저장할 변수
-    // 기본 생성자
-    Item()
-        : Name(""), Price(0), Amount(0) {
-    }
+    int Price;
+    int Amount;
+
+    Item() : Name(""), Price(0), Amount(0) {}
+
     Item(const std::string& name, int price, int amount = 1)
         : Name(name), Price(price), Amount(amount) {
     }
-    
+
+    virtual ~Item() = default;
 
     virtual std::string GetName() const { return Name; }
     virtual int GetPrice() const { return Price; }
-    int GetAmount() const { return Amount; }
+    virtual int GetAmount() const { return Amount; }
 
-   
-    // 수량 증가 함수
-    void IncreaseAmount(int amount) {
-        Amount += amount;  // 수량을 증가
-    }
-    // 수량 감소 함수 추가
-    void DecreaseAmount(int amount) {
-        Amount -= amount;
-        if (Amount < 0) {
-            Amount = 0;  // 수량이 0 이하로 떨어지지 않게 처리
-        }
-    }
+    void IncreaseAmount(int amount) { Amount += amount; }
+    void DecreaseAmount(int amount) { Amount = (Amount - amount >= 0) ? Amount - amount : 0; }
+
     virtual void Use(class Character* character) = 0;
-    virtual ~Item() = default;
+
+    virtual int GetBonusStat() const { return 0; }
+    virtual bool IsEquipable() const { return false; }
+
+    virtual Equipment* GetType() const = 0;  // Equipment* 반환
 };

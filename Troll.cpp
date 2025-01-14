@@ -1,22 +1,34 @@
 #include "Troll.h"
 #include "Item.h"
+#include "Equipment.h"
 #include <iostream>
 #include <random>
 
-// 트롤의 발톱 아이템 클래스 정의 (TrollClaw 클래스)
-class TrollClaw : public Item {
-public:
-    TrollClaw() : Item("트롤의 발톱", 20) {}
+class TrollClaw : public Item 
+{
+    public:
+        TrollClaw() : Item("트롤의 발톱", 30) {}
 
-    std::string GetName() const override {
-        return Name;
-    }
+        std::string GetName() const override 
+        {
+            return Name;
+        }
 
-    void Use(class Character* character) override {
-        std::cout << "트롤의 발톱을 팔아 골드를 얻었습니다.\n";
-    }
+        void Use(class Character* character) override 
+        {
+            std::cout << "트롤의 발톱을 팔아 골드를 얻었습니다.\n";
+        }
 
-    int GetPrice() const override { return 20; }  // 트롤의 발톱 가격
+        int GetPrice() const override 
+        {
+            return 30;  // 트롤의 발톱 가격
+        }
+
+        Equipment* GetType() const override 
+        {
+            static Equipment temp("트롤의 발톱", 30, 0, Equipment::EquipmentType::Misc);
+            return &temp;
+        }
 };
 
 Troll::Troll(int level)

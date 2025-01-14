@@ -1,23 +1,33 @@
 #include "Slime.h"
 #include "Item.h"
+#include "Equipment.h"
 #include <iostream>
 #include <random>
 
 // 슬라임 체액 아이템 클래스 정의 (SlimeJelly 클래스)
-class SlimeJelly : public Item {
+class SlimeFluid : public Item {
 public:
-    SlimeJelly() : Item("슬라임 체액", 10) {}
+    SlimeFluid() : Item("슬라임 체액", 15) {}
 
     std::string GetName() const override {
         return Name;
     }
 
     void Use(class Character* character) override {
-        std::cout << "슬라임 체액을 사용했지만, 아무 일도 일어나지 않았습니다.\n";
+        std::cout << "슬라임 체액을 팔아 골드를 얻었습니다.\n";
     }
 
-    int GetPrice() const override { return 10; }  // 슬라임 체액 가격
+    int GetPrice() const override {
+        return 15;  // 슬라임 체액 가격
+    }
+
+    Equipment* GetType() const override {
+        static Equipment temp("슬라임 체액", 15, 0, Equipment::EquipmentType::Misc);
+        return &temp;
+    }
 };
+
+
 
 Slime::Slime(int level)
     : Monster(level) {
@@ -29,7 +39,7 @@ Slime::Slime(int level)
 }
 
 void Slime::InitializeLootTable() {
-    LootTable.emplace_back(std::make_unique<SlimeJelly>());
+    LootTable.emplace_back(std::make_unique<SlimeFluid>());
 }
 
 std::unique_ptr<Item> Slime::DropItem() {

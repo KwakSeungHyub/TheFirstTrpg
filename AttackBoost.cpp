@@ -3,17 +3,15 @@
 #include <iostream>
 
 
-AttackBoost::AttackBoost(const std::string& name, int price, int amount)
-    : Item(name, price, amount) {
-    // 추가 초기화가 필요하다면 여기에 작성
-}
-
-
-std::string AttackBoost::GetName() const {
-    return Name;  // 부모 클래스에서 초기화된 Name을 반환
-}
-
+// Use 함수 구현 (공격력 증가 효과)
 void AttackBoost::Use(Character* character) {
-    character->Attack += 10;
-    std::cout << character->Name << "의 공격력 10 증가!(스테이지 종료 후 초기화)\n";
+    character->Attack += GetBonusStat() + 10;  // BonusStat은 기본값을 0으로 설정했지만, 자식 클래스에서 오버라이드할 수 있습니다.
+    std::cout << Name << "을 사용하여 공격력이 " << GetBonusStat() << "만큼 증가했습니다!\n";
+}
+
+// 장비 타입 반환 (Equipment*로 반환)
+Equipment* AttackBoost::GetType() const {
+    // Consumable 타입의 임시 Equipment 객체 반환
+    static Equipment temp("AttackBoost", 50, 1, Equipment::EquipmentType::Consumable);
+    return &temp;
 }
