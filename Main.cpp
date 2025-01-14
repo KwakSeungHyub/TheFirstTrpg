@@ -1,12 +1,16 @@
 #include "GameManager.h"
 #include "Character.h"
 #include "Shop.h"
+#include <Windows.h>
 #include <iostream>
 #include <limits>
 
 int main() 
 {
-         
+    // 콘솔의 출력 인코딩을 UTF-8로 변경
+    SetConsoleOutputCP(CP_UTF8);
+
+
         // 최대 길이 제한 설정
         const size_t maxNameLength = 20;
         std::string playerName;
