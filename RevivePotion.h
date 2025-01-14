@@ -1,11 +1,11 @@
 #pragma once
 #include "Item.h"
 
-class RevivePotion : public Item {
+class RevivePotion: public Item {
 public:
-    // »ı¼ºÀÚ
-    RevivePotion(const std::string& name, int price, int amount = 1);
+    // ìƒì„±ì
+    RevivePotion(const std::string& name,int price,int amount = 1);
 
-    void Use(Character* character) override;  // Use ÇÔ¼ö ¼±¾ğ
-    Equipment* GetType() const override;  // Àåºñ Å¸ÀÔ ¹İÈ¯ ÇÔ¼ö ¼±¾ğ
+    void Use(Character* character) override;  // Use í•¨ìˆ˜ ì„ ì–¸
+    Equipment* GetType() const override;  // ì¥ë¹„ íƒ€ì… ë°˜í™˜ í•¨ìˆ˜ ì„ ì–¸
 };

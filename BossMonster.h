@@ -1,3 +1,4 @@
+
 // BossMonster.h
 #pragma once
 #include "Monster.h"
@@ -5,13 +6,14 @@
 #include <memory>
 #include <vector>
 
-class BossMonster : public Monster {
+class BossMonster: public Monster 
+{
 public:
     BossMonster(int level);
 
-    // Àü¸®Ç° Å×ÀÌºí ÃÊ±âÈ­
+    // ì „ë¦¬í’ˆ í…Œì´ë¸” ì´ˆê¸°í™”
     void InitializeLootTable() override;
 
-    // Àü¸®Ç° µå·Ó
+    // ì „ë¦¬í’ˆ ë“œë¡­
     std::unique_ptr<Item> DropItem() override;
 };

@@ -1,14 +1,15 @@
+
 #pragma once
 #include "Monster.h"
 
-class Troll : public Monster {
+class Troll: public Monster {
 public:
-    // »ı¼ºÀÚ
+    // ìƒì„±ì
     Troll(int level);
 
-    // Àü¸®Ç° Å×ÀÌºí ÃÊ±âÈ­
-    void InitializeLootTable() override;  // °¡»ó ÇÔ¼ö ÀçÁ¤ÀÇ
+    // ì „ë¦¬í’ˆ í…Œì´ë¸” ì´ˆê¸°í™”
+    void InitializeLootTable() override;  // ê°€ìƒ í•¨ìˆ˜ ì¬ì •ì˜
 
-    // Àü¸®Ç° µå·Ó
-    std::unique_ptr<Item> DropItem() override;  // °¡»ó ÇÔ¼ö ÀçÁ¤ÀÇ
+    // ì „ë¦¬í’ˆ ë“œë¡­
+    std::unique_ptr<Item> DropItem() override;  // ê°€ìƒ í•¨ìˆ˜ ì¬ì •ì˜
 };

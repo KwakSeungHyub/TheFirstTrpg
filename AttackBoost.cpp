@@ -3,15 +3,17 @@
 #include <iostream>
 
 
-// Use ÇÔ¼ö ±¸Çö (°ø°İ·Â Áõ°¡ È¿°ú)
-void AttackBoost::Use(Character* character) {
-    character->Attack += GetBonusStat() + 10;  // BonusStatÀº ±âº»°ªÀ» 0À¸·Î ¼³Á¤ÇßÁö¸¸, ÀÚ½Ä Å¬·¡½º¿¡¼­ ¿À¹ö¶óÀÌµåÇÒ ¼ö ÀÖ½À´Ï´Ù.
-    std::cout << Name << "À» »ç¿ëÇÏ¿© °ø°İ·ÂÀÌ " << GetBonusStat() << "¸¸Å­ Áõ°¡Çß½À´Ï´Ù!\n";
+// Use í•¨ìˆ˜ êµ¬í˜„ (ê³µê²©ë ¥ ì¦ê°€ íš¨ê³¼)
+void AttackBoost::Use(Character* character) 
+{
+    character->Attack += GetBonusStat() + 10;  // BonusStatì€ ê¸°ë³¸ê°’ì„ 0ìœ¼ë¡œ ì„¤ì •í–ˆì§€ë§Œ, ìì‹ í´ë˜ìŠ¤ì—ì„œ ì˜¤ë²„ë¼ì´ë“œí•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+    std::cout << Name << "ì„ ì‚¬ìš©í•˜ì—¬ ê³µê²©ë ¥ì´ " << GetBonusStat() << "ë§Œí¼ ì¦ê°€í–ˆìŠµë‹ˆë‹¤!\n";
 }
 
-// Àåºñ Å¸ÀÔ ¹İÈ¯ (Equipment*·Î ¹İÈ¯)
-Equipment* AttackBoost::GetType() const {
-    // Consumable Å¸ÀÔÀÇ ÀÓ½Ã Equipment °´Ã¼ ¹İÈ¯
-    static Equipment temp("AttackBoost", 50, 1, Equipment::EquipmentType::Consumable);
+// ì¥ë¹„ íƒ€ì… ë°˜í™˜ (Equipment*ë¡œ ë°˜í™˜)
+Equipment* AttackBoost::GetType() const 
+{
+    // Consumable íƒ€ì…ì˜ ì„ì‹œ Equipment ê°ì²´ ë°˜í™˜
+    static Equipment temp("AttackBoost",50,1,Equipment::EquipmentType::Consumable);
     return &temp;
 }

@@ -1,13 +1,13 @@
 #pragma once
 #include "Monster.h"
 
-class Goblin : public Monster {
+class Goblin: public Monster {
 public:
     Goblin(int level);
 
-    // Àü¸®Ç° Å×ÀÌºí ÃÊ±âÈ­
+    // ì „ë¦¬í’ˆ í…Œì´ë¸” ì´ˆê¸°í™”
     void InitializeLootTable() override;
 
-    // Àü¸®Ç° µå·Ó
+    // ì „ë¦¬í’ˆ ë“œë¡­
     std::unique_ptr<Item> DropItem() override;
 };

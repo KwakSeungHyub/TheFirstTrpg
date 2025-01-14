@@ -4,29 +4,29 @@
 #include <iostream>
 #include <random>
 
-class GoblinSpear : public Item 
+class GoblinSpear: public Item
 {
 public:
-    GoblinSpear() : Item("∞Ì∫Ì∏∞¿« √¢", 20) {}
+    GoblinSpear(): Item("Í≥†Î∏îÎ¶∞Ïùò Ï∞Ω",20) {}
 
-    std::string GetName() const override 
+    std::string GetName() const override
     {
         return Name;
     }
 
-    void Use(class Character* character) override 
+    void Use(class Character* character) override
     {
-        std::cout << "∞Ì∫Ì∏∞¿« √¢¿ª ∆»æ∆ ∞ÒµÂ∏¶ æÚæ˙Ω¿¥œ¥Ÿ.\n";
+        std::cout << "Í≥†Î∏îÎ¶∞Ïùò Ï∞ΩÏùÑ ÌåîÏïÑ Í≥®ÎìúÎ•º ÏñªÏóàÏäµÎãàÎã§.\n";
     }
 
-    int GetPrice() const override 
+    int GetPrice() const override
     {
-        return 20;  // ∞Ì∫Ì∏∞¿« √¢ ∞°∞›
+        return 20;  // Í≥†Î∏îÎ¶∞Ïùò Ï∞Ω Í∞ÄÍ≤©
     }
 
-    Equipment* GetType() const override 
+    Equipment* GetType() const override
     {
-        static Equipment temp("∞Ì∫Ì∏∞¿« √¢", 20, 0, Equipment::EquipmentType::Misc);
+        static Equipment temp("Í≥†Î∏îÎ¶∞Ïùò Ï∞Ω",20,0,Equipment::EquipmentType::Misc);
         return &temp;
     }
 };
@@ -34,7 +34,7 @@ public:
 
 Goblin::Goblin(int level)
     : Monster(level) {
-    Name = "∞Ì∫Ì∏∞";
+    Name = "Í≥†Î∏îÎ¶∞";
     Health = 70 + (level * 12);
     Attack = 8 + (level * 3);
     Defense = 3 + (level * 2);
@@ -46,16 +46,16 @@ void Goblin::InitializeLootTable() {
 }
 
 std::unique_ptr<Item> Goblin::DropItem() {
-    if (LootTable.empty()) {
-        std::cout << Name << "¥¬ ¿¸∏Æ«∞¿ª ∞°¡ˆ∞Ì ¿÷¡ˆ æ Ω¿¥œ¥Ÿ.\n";
+    if(LootTable.empty()) {
+        std::cout << Name << "Îäî Ï†ÑÎ¶¨ÌíàÏùÑ Í∞ÄÏßÄÍ≥† ÏûàÏßÄ ÏïäÏäµÎãàÎã§.\n";
         return nullptr;
     }
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, LootTable.size() - 1);
+    std::uniform_int_distribution<> dist(0,LootTable.size() - 1);
 
     int index = dist(gen);
-    std::cout << Name << "∞° " << LootTable[index]->GetName() << "∏¶ ∂≥æÓ∆Æ∑»Ω¿¥œ¥Ÿ!\n";
+    std::cout << Name << "Í∞Ä " << LootTable[index]->GetName() << "Î•º Îñ®Ïñ¥Ìä∏Î†∏ÏäµÎãàÎã§!\n";
     return std::move(LootTable[index]);
 }

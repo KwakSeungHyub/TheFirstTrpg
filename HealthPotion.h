@@ -1,14 +1,14 @@
 #pragma once
 #include "Item.h"
 
-class HealthPotion : public Item {
+class HealthPotion: public Item {
 public:
-    // »ı¼ºÀÚ
-    HealthPotion(const std::string& name, int price, int amount = 1);
+    // ìƒì„±ì
+    HealthPotion(const std::string& name,int price,int amount = 1);
 
-    // Use ÇÔ¼ö ±¸Çö (Ã¼·Â È¸º¹ È¿°ú)
+    // Use í•¨ìˆ˜ êµ¬í˜„ (ì²´ë ¥ íšŒë³µ íš¨ê³¼)
     virtual void Use(Character* character) override;
 
-    // Àåºñ Å¸ÀÔ ¹İÈ¯ (Equipment*·Î ¼öÁ¤)
+    // ì¥ë¹„ íƒ€ì… ë°˜í™˜ (Equipment*ë¡œ ìˆ˜ì •)
     Equipment* GetType() const override;
 };

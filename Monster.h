@@ -7,59 +7,65 @@
 #include <iostream>
 #include <random>
 
-class Monster {
+class Monster 
+{
 public:
     std::string Name;
     int Health;
     int Attack;
     int Defense;
     int Level;
-    std::vector<std::unique_ptr<Item>> LootTable; // Àü¸®Ç° Å×ÀÌºí
+    std::vector<std::unique_ptr<Item>> LootTable; // ì „ë¦¬í’ˆ í…Œì´ë¸”
 
-    // ±âº» »ı¼ºÀÚ
-    Monster() : Name("Unknown"), Health(100), Attack(10), Defense(5), Level(1) {}
+    // ê¸°ë³¸ ìƒì„±ì
+    Monster(): Name("Unknown"),Health(100),Attack(10),Defense(5),Level(1) {}
 
-    // ·¹º§ ±â¹İ »ı¼ºÀÚ
-    Monster(int level) : Name("Unknown"), Health(100 + level * 10), Attack(10 + level * 2), Defense(5 + level), Level(level) {}
+    // ë ˆë²¨ ê¸°ë°˜ ìƒì„±ì
+    Monster(int level): Name("Unknown"),Health(100 + level * 10),Attack(10 + level * 2),Defense(5 + level),Level(level) {}
 
-    // ÀÌ¸§, Ã¼·Â, °ø°İ·Â, ¹æ¾î·Â ±â¹İ »ı¼ºÀÚ
-    Monster(const std::string& name, int health, int attack, int defense)
-        : Name(name), Health(health), Attack(attack), Defense(defense), Level(1) {
-    }
+    // ì´ë¦„, ì²´ë ¥, ê³µê²©ë ¥, ë°©ì–´ë ¥ ê¸°ë°˜ ìƒì„±ì
+    Monster(const std::string& name,int health,int attack,int defense)
+        : Name(name),Health(health),Attack(attack),Defense(defense),Level(1) {}
 
-    // ÇÇÇØ¸¦ ¹ŞÀ¸¸é Ã¼·Â °¨¼Ò
-    void TakeDamage(int damage) {
+    // í”¼í•´ë¥¼ ë°›ìœ¼ë©´ ì²´ë ¥ ê°ì†Œ
+    void TakeDamage(int damage) 
+    {
         Health -= damage;
-        std::cout << Name << "°¡ " << damage << "ÀÇ ÇÇÇØ¸¦ ÀÔ¾ú½À´Ï´Ù!\n";
-        if (Health < 0) {
+        std::cout << Name << "ê°€ " << damage << "ì˜ í”¼í•´ë¥¼ ì…ì—ˆìŠµë‹ˆë‹¤!\n";
+        if(Health < 0) 
+        {
             Health = 0;
         }
     }
 
-    // ¸ó½ºÅÍ°¡ ÆĞ¹èÇß´ÂÁö È®ÀÎ
-    bool IsDefeated() const {
+    // ëª¬ìŠ¤í„°ê°€ íŒ¨ë°°í–ˆëŠ”ì§€ í™•ì¸
+    bool IsDefeated() const 
+    {
         return Health <= 0;
     }
 
-    // ±âº» ±¸ÇöÀ» Á¦°ø
-    virtual void InitializeLootTable() {
-        // ±âº» ±¸ÇöÀº ºñ¾îÀÖ´Â Àü¸®Ç° Å×ÀÌºí
+    // ê¸°ë³¸ êµ¬í˜„ì„ ì œê³µ
+    virtual void InitializeLootTable() 
+    {
+        // ê¸°ë³¸ êµ¬í˜„ì€ ë¹„ì–´ìˆëŠ” ì „ë¦¬í’ˆ í…Œì´ë¸”
         LootTable.clear();
     }
 
-    virtual std::unique_ptr<Item> DropItem() {
-        if (LootTable.empty()) {
-            std::cout << Name << "´Â Àü¸®Ç°À» °¡Áö°í ÀÖÁö ¾Ê½À´Ï´Ù.\n";
+    virtual std::unique_ptr<Item> DropItem() 
+    {
+        if(LootTable.empty()) 
+        {
+            std::cout << Name << "ëŠ” ì „ë¦¬í’ˆì„ ê°€ì§€ê³  ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.\n";
             return nullptr;
         }
 
-        // ·£´ıÀ¸·Î Àü¸®Ç°À» ¶³¾î¶ß¸²
+        // ëœë¤ìœ¼ë¡œ ì „ë¦¬í’ˆì„ ë–¨ì–´ëœ¨ë¦¼
         std::random_device rd;
         std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dist(0, LootTable.size() - 1);
+        std::uniform_int_distribution<> dist(0,LootTable.size() - 1);
 
         int index = dist(gen);
-        std::cout << Name << "°¡ " << LootTable[index]->GetName() << "¸¦ ¶³¾î¶ß·È½À´Ï´Ù!\n";
+        std::cout << Name << "ê°€ " << LootTable[index]->GetName() << "ë¥¼ ë–¨ì–´ëœ¨ë ¸ìŠµë‹ˆë‹¤!\n";
         return std::move(LootTable[index]);
     }
 

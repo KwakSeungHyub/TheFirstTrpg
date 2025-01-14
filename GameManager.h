@@ -14,26 +14,26 @@
 class GameManager {
 public:
 
-    // ·£´ı ¸ó½ºÅÍ »ı¼º (std::unique_ptr<Monster> ¹İÈ¯)
+    // ëœë¤ ëª¬ìŠ¤í„° ìƒì„± (std::unique_ptr<Monster> ë°˜í™˜)
     static std::unique_ptr<Monster> GenerateRandomMonster(int level);
 
-    // °ÔÀÓ Èå¸§ Á¦¾î ÇÔ¼ö
-    void StartGame(Character* player, Shop* shop);
+    // ê²Œì„ íë¦„ ì œì–´ í•¨ìˆ˜
+    void StartGame(Character* player,Shop* shop);
 
-    // º¸½º ¸ó½ºÅÍ »ı¼º (std::unique_ptr<BossMonster> ¹İÈ¯)
+    // ë³´ìŠ¤ ëª¬ìŠ¤í„° ìƒì„± (std::unique_ptr<BossMonster> ë°˜í™˜)
     static std::unique_ptr<BossMonster> GenerateBossMonster(int level);
 
-    // ÀüÅõ Ã³¸® ÇÔ¼ö
+    // ì „íˆ¬ ì²˜ë¦¬ í•¨ìˆ˜
     static void Battle(Character* player);
 
-    // »óÁ¡ ¹æ¹® Ã³¸® ÇÔ¼ö
-    static void VisitShop(Character* player, Shop* shop, GameManager* gameManager);
+    // ìƒì  ë°©ë¬¸ ì²˜ë¦¬ í•¨ìˆ˜
+    static void VisitShop(Character* player,Shop* shop,GameManager* gameManager);
 
-    void PurchaseEquipment(Character* player, const std::string& itemName, int price, int bonusStat, Equipment::EquipmentType type);
+    void PurchaseEquipment(Character* player,const std::string& itemName,int price,int bonusStat,Equipment::EquipmentType type);
 
-    // ÀÎº¥Åä¸® È®ÀÎ ÇÔ¼ö
+    // ì¸ë²¤í† ë¦¬ í™•ì¸ í•¨ìˆ˜
     static void DisplayInventory(Character* player);
 
-    // º¸½º ¸ó½ºÅÍ ÀüÅõ Ã³¸® ÇÔ¼ö
+    // ë³´ìŠ¤ ëª¬ìŠ¤í„° ì „íˆ¬ ì²˜ë¦¬ í•¨ìˆ˜
     void BossBattle(Character* player);
 };

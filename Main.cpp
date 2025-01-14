@@ -4,38 +4,42 @@
 #include <iostream>
 #include <limits>
 
-int main() {
-    // √÷¥Î ±Ê¿Ã ¡¶«— º≥¡§
-    const size_t maxNameLength = 20;
-    std::string playerName;
+int main() 
+{
+         
+        // ÏµúÎåÄ Í∏∏Ïù¥ Ï†úÌïú ÏÑ§Ï†ï
+        const size_t maxNameLength = 20;
+        std::string playerName;
 
-    std::cout << "ƒ≥∏Ø≈Õ ¿Ã∏ß¿ª ¿‘∑¬«ÿ¡÷ººø‰ (√÷¥Î " << maxNameLength << "¿⁄): ";
+        std::cout << "Ï∫êÎ¶≠ÌÑ∞ Ïù¥Î¶ÑÏùÑ ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî (ÏµúÎåÄ " << maxNameLength << "Ïûê): ";
 
-    std::getline(std::cin, playerName);
+        std::getline(std::cin,playerName);
 
-    // ¿Ã∏ß ±Ê¿Ã ¡¶«— √≥∏Æ / ∞¯πÈ ¿‘∑¬ √≥∏Æ
-    while (playerName.empty() || playerName.length() > maxNameLength) {
-        if (playerName.empty()) {
-            std::cout << "¿Ã∏ß¿∫ ∫ÒæÓ ¿÷¿ª ºˆ æ¯Ω¿¥œ¥Ÿ. ¥ŸΩ√ ¿‘∑¬«ÿ¡÷ººø‰: ";
+        // Ïù¥Î¶Ñ Í∏∏Ïù¥ Ï†úÌïú Ï≤òÎ¶¨ / Í≥µÎ∞± ÏûÖÎ†• Ï≤òÎ¶¨
+        while(playerName.empty() || playerName.length() > maxNameLength) 
+        {
+                if(playerName.empty()) 
+                {
+                    std::cout << "Ïù¥Î¶ÑÏùÄ ÎπÑÏñ¥ ÏûàÏùÑ Ïàò ÏóÜÏäµÎãàÎã§. Îã§Ïãú ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî: ";
+                } else 
+                {
+                    std::cout << "Ïù¥Î¶ÑÏù¥ ÎÑàÎ¨¥ ÍπÅÎãàÎã§. ÏµúÎåÄ " << maxNameLength << "Ïûê Ïù¥ÎÇ¥Î°ú ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî: ";
+                }
+                std::getline(std::cin,playerName);
         }
-        else {
-            std::cout << "¿Ã∏ß¿Ã ≥ π´ ±È¥œ¥Ÿ. √÷¥Î " << maxNameLength << "¿⁄ ¿Ã≥ª∑Œ ¿‘∑¬«ÿ¡÷ººø‰: ";
-        }
-        std::getline(std::cin, playerName);
-    }
 
 
-    // ƒ≥∏Ø≈ÕøÕ ªÛ¡° ª˝º∫
-    Character* player = new Character(playerName);
-    Shop* shop = new Shop();
+        // Ï∫êÎ¶≠ÌÑ∞ÏôÄ ÏÉÅÏ†ê ÏÉùÏÑ±
+        Character* player = new Character(playerName);
+        Shop* shop = new Shop();
 
-    // ∞‘¿” ∏≈¥œ¿˙ ª˝º∫ »ƒ Ω√¿€
-    GameManager gameManager;
-    gameManager.StartGame(player, shop);
+        // Í≤åÏûÑ Îß§ÎãàÏ†Ä ÏÉùÏÑ± ÌõÑ ÏãúÏûë
+        GameManager gameManager;
+        gameManager.StartGame(player,shop);
 
-    // ∏ﬁ∏∏Æ «ÿ¡¶
-    delete player;
-    delete shop;
+        // Î©îÎ™®Î¶¨ Ìï¥Ï†ú
+        delete player;
+        delete shop;
 
-    return 0;
+        return 0;
 }

@@ -1,15 +1,17 @@
+
 #pragma once
 #include "Item.h"
 #include "Equipment.h"
 
-class AttackBoost : public Item {
+class AttackBoost: public Item 
+{
 public:
-    // »ı¼ºÀÚ
-    AttackBoost(const std::string& name, int price, int amount = 1) {};
+    // ìƒì„±ì
+    AttackBoost(const std::string& name,int price,int amount = 1) {};
 
-    // Use ÇÔ¼ö ±¸Çö (°ø°İ·Â Áõ°¡ È¿°ú)
+    // Use í•¨ìˆ˜ êµ¬í˜„ (ê³µê²©ë ¥ ì¦ê°€ íš¨ê³¼)
     void Use(Character* character) override;
 
-    // Àåºñ Å¸ÀÔ ¹İÈ¯ (Equipment*·Î ¼öÁ¤)
+    // ì¥ë¹„ íƒ€ì… ë°˜í™˜ (Equipment*ë¡œ ìˆ˜ì •)
     Equipment* GetType() const override;
 };

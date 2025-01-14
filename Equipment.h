@@ -1,42 +1,46 @@
 #pragma once
-#include "Item.h"  // Item.h Æ÷ÇÔ
+#include "Item.h"  // Item.h í¬í•¨
 
-class Equipment : public Item 
+class Equipment: public Item
 {
 
-    public:
-        enum class EquipmentType 
-        {
-            Weapon,
-            Armor,
-            Accessory,
-            Consumable,
-            Misc
-        };
-        // Type¿¡ ´ëÇÑ Getter
-        EquipmentType GetEquimentType() const { return Type; } // EquipmentType ¹İÈ¯
+public:
+    enum class EquipmentType
+    {
+        Weapon,
+        Armor,
+        Accessory,
+        Consumable,
+        Misc
+    };
+    // Typeì— ëŒ€í•œ Getter
+    EquipmentType GetEquimentType() const 
+    {
+        return Type;
+    } // EquipmentType ë°˜í™˜
 
-        // Equipment Å¬·¡½º ³»ºÎ¿¡¼­ CompareEquipmentType ÇÔ¼ö Á¤ÀÇ
-        // staticÀ¸·Î Á¤ÀÇµÈ ÇÔ¼ö·Î ºñ±³¸¦ ´Ü¼øÈ­ÇÒ ¼ö ÀÖ½À´Ï´Ù.
-        static bool CompareEquipmentType(Equipment::EquipmentType lhs, Equipment::EquipmentType rhs) {
-            return lhs == rhs;
-        }
+// Equipment í´ë˜ìŠ¤ ë‚´ë¶€ì—ì„œ CompareEquipmentType í•¨ìˆ˜ ì •ì˜
+// staticìœ¼ë¡œ ì •ì˜ëœ í•¨ìˆ˜ë¡œ ë¹„êµë¥¼ ë‹¨ìˆœí™”í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+    static bool CompareEquipmentType(Equipment::EquipmentType lhs,Equipment::EquipmentType rhs) 
+    {
+        return lhs == rhs;
+    }
 
 
 
-        Equipment(const std::string& name, int price, int bonusStat, EquipmentType type);
+    Equipment(const std::string& name,int price,int bonusStat,EquipmentType type);
 
-        // ¸Ş¼­µå ¿À¹ö¶óÀÌµå
-        void Use(class Character* character) override;
+    // ë©”ì„œë“œ ì˜¤ë²„ë¼ì´ë“œ
+    void Use(class Character* character) override;
 
-        std::string GetName() const override;
-        int GetBonusStat() const override;
-        int GetPrice() const override;
-        bool IsEquipable() const override;
-    
-        Equipment* GetType() const override;  // ¹İÈ¯ Çü½ÄÀ» Equipment*·Î À¯Áö
+    std::string GetName() const override;
+    int GetBonusStat() const override;
+    int GetPrice() const override;
+    bool IsEquipable() const override;
 
-    private:
-        int BonusStat;
-        EquipmentType Type;
+    Equipment* GetType() const override;  // ë°˜í™˜ í˜•ì‹ì„ Equipment*ë¡œ ìœ ì§€
+
+private:
+    int BonusStat;
+    EquipmentType Type;
 };

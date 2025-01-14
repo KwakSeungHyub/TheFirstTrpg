@@ -1,14 +1,14 @@
 #pragma once
 #include "Monster.h"
 
-class Slime : public Monster {
+class Slime: public Monster {
 public:
-    // »ı¼ºÀÚ
+    // ìƒì„±ì
     Slime(int level);
 
-    // Àü¸®Ç° Å×ÀÌºí ÃÊ±âÈ­
+    // ì „ë¦¬í’ˆ í…Œì´ë¸” ì´ˆê¸°í™”
     void InitializeLootTable() override;
 
-    // Àü¸®Ç° µå·Ó
+    // ì „ë¦¬í’ˆ ë“œë¡­
     std::unique_ptr<Item> DropItem() override;
 };

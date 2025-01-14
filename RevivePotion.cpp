@@ -2,24 +2,24 @@
 #include "Character.h"
 #include <iostream>
 
-// »ı¼ºÀÚ
-RevivePotion::RevivePotion(const std::string& name, int price, int amount)
-    : Item(name, price, amount) {
+// ìƒì„±ì
+RevivePotion::RevivePotion(const std::string& name,int price,int amount)
+    : Item(name,price,amount) {}
+
+// Use í•¨ìˆ˜ êµ¬í˜„ (ìºë¦­í„° ë¶€í™œ íš¨ê³¼)
+void RevivePotion::Use(Character* character) 
+{
+    if(character->Health <= 0) {
+        character->Health = character -> MaxHealth / 2;  // ë¶€í™œ ì‹œ ìµœëŒ€ ì²´ë ¥ì˜ ì ˆë°˜ìœ¼ë¡œ ì„¤ì •
+        std::cout << Name << "ì„ ì‚¬ìš©í•˜ì—¬ ìºë¦­í„°ê°€ ë¶€í™œí–ˆìŠµë‹ˆë‹¤!\n";
+    } else {
+        std::cout << "ì´ë¯¸ ì‚´ì•„ìˆëŠ” ìºë¦­í„°ì…ë‹ˆë‹¤.\n";
+    }
 }
 
-// Use ÇÔ¼ö ±¸Çö (Ä³¸¯ÅÍ ºÎÈ° È¿°ú)
-void RevivePotion::Use(Character* character) {
-    if (character->Health <= 0) {
-        character->Health = character -> MaxHealth / 2;  // ºÎÈ° ½Ã ÃÖ´ë Ã¼·ÂÀÇ Àı¹İÀ¸·Î ¼³Á¤
-        std::cout << Name << "À» »ç¿ëÇÏ¿© Ä³¸¯ÅÍ°¡ ºÎÈ°Çß½À´Ï´Ù!\n";
-    }
-    else {
-        std::cout << "ÀÌ¹Ì »ì¾ÆÀÖ´Â Ä³¸¯ÅÍÀÔ´Ï´Ù.\n";
-    }
-}
-
-// Àåºñ Å¸ÀÔ ¹İÈ¯
-Equipment* RevivePotion::GetType() const {
-    static Equipment temp("ºÎÈ° Æ÷¼Ç", 50, 0, Equipment::EquipmentType::Consumable);
-    return &temp;  // ¿¹½Ã·Î ¼Òºñ¼º ¾ÆÀÌÅÛÀ¸·Î ¼³Á¤
+// ì¥ë¹„ íƒ€ì… ë°˜í™˜
+Equipment* RevivePotion::GetType() const 
+{
+    static Equipment temp("ë¶€í™œ í¬ì…˜",50,0,Equipment::EquipmentType::Consumable);
+    return &temp;  // ì˜ˆì‹œë¡œ ì†Œë¹„ì„± ì•„ì´í…œìœ¼ë¡œ ì„¤ì •
 }

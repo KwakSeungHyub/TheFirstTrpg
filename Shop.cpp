@@ -7,84 +7,81 @@
 #include <iostream>
 #include <memory>
 
-Shop::Shop() 
+Shop::Shop()
 {
-    AvailableItems.emplace_back(std::make_unique<HealthPotion>("Ã¼·Â Æ÷¼Ç", 20, 1)); // 1 Ãß°¡
-    AvailableItems.emplace_back(std::make_unique<AttackBoost>("°ø°İ·Â Æ÷¼Ç", 50, 1)); // 1 Ãß°¡
-    AvailableItems.emplace_back(std::make_unique<RevivePotion>("ºÎÈ° Æ÷¼Ç", 100, 1)); // 1 Ãß°¡
+    AvailableItems.emplace_back(std::make_unique<HealthPotion>("ì²´ë ¥ í¬ì…˜",20,1)); // 1 ì¶”ê°€
+    AvailableItems.emplace_back(std::make_unique<AttackBoost>("ê³µê²©ë ¥ í¬ì…˜",50,1)); // 1 ì¶”ê°€
+    AvailableItems.emplace_back(std::make_unique<RevivePotion>("ë¶€í™œ í¬ì…˜",100,1)); // 1 ì¶”ê°€
 
-    AvailableItems.emplace_back(std::make_unique<Equipment>("¸ñ°Ë", 100, 3, Equipment::EquipmentType::Weapon));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("³ª¹«°©¿Ê", 100, 5, Equipment::EquipmentType::Armor));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("±¸¸®°Ë", 200, 5, Equipment::EquipmentType::Weapon));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("±¸¸®°©¿Ê", 200, 7, Equipment::EquipmentType::Armor));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("ëª©ê²€",100,3,Equipment::EquipmentType::Weapon));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("ë‚˜ë¬´ê°‘ì˜·",100,5,Equipment::EquipmentType::Armor));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("êµ¬ë¦¬ê²€",200,5,Equipment::EquipmentType::Weapon));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("êµ¬ë¦¬ê°‘ì˜·",200,7,Equipment::EquipmentType::Armor));
 
-    ItemDescriptions["Ã¼·Â Æ÷¼Ç"] = "Ã¼·ÂÀ» È¸º¹ÇÕ´Ï´Ù.";
-    ItemDescriptions["°ø°İ·Â Æ÷¼Ç"] = "°ø°İ·ÂÀ» ÀÏ½ÃÀûÀ¸·Î Áõ°¡½ÃÅµ´Ï´Ù.";
-    ItemDescriptions["ºÎÈ° Æ÷¼Ç"] = "»ç¸Á ½Ã »ç¿ëµÇ¾î Ã¼·ÂÀ» È¸º¹ÇÕ´Ï´Ù.";
-    ItemDescriptions["¸ñ°Ë"] = "°ø°İ·ÂÀ» 3 Áõ°¡½ÃÅ°´Â ¹«±â.";
-    ItemDescriptions["³ª¹«°©¿Ê"] = "¹æ¾î·ÂÀ» 5 Áõ°¡½ÃÅ°´Â ¹æ¾î±¸.";
-    ItemDescriptions["±¸¸®°Ë"] = "°ø°İ·ÂÀ» 5 Áõ°¡½ÃÅ°´Â ¹«±â.";
-    ItemDescriptions["±¸¸®°©¿Ê"] = "¹æ¾î·ÂÀ» 7 Áõ°¡½ÃÅ°´Â ¹æ¾î±¸.";
+    ItemDescriptions["ì²´ë ¥ í¬ì…˜"] = "ì²´ë ¥ì„ íšŒë³µí•©ë‹ˆë‹¤.";
+    ItemDescriptions["ê³µê²©ë ¥ í¬ì…˜"] = "ê³µê²©ë ¥ì„ ì¼ì‹œì ìœ¼ë¡œ ì¦ê°€ì‹œí‚µë‹ˆë‹¤.";
+    ItemDescriptions["ë¶€í™œ í¬ì…˜"] = "ì‚¬ë§ ì‹œ ì‚¬ìš©ë˜ì–´ ì²´ë ¥ì„ íšŒë³µí•©ë‹ˆë‹¤.";
+    ItemDescriptions["ëª©ê²€"] = "ê³µê²©ë ¥ì„ 3 ì¦ê°€ì‹œí‚¤ëŠ” ë¬´ê¸°.";
+    ItemDescriptions["ë‚˜ë¬´ê°‘ì˜·"] = "ë°©ì–´ë ¥ì„ 5 ì¦ê°€ì‹œí‚¤ëŠ” ë°©ì–´êµ¬.";
+    ItemDescriptions["êµ¬ë¦¬ê²€"] = "ê³µê²©ë ¥ì„ 5 ì¦ê°€ì‹œí‚¤ëŠ” ë¬´ê¸°.";
+    ItemDescriptions["êµ¬ë¦¬ê°‘ì˜·"] = "ë°©ì–´ë ¥ì„ 7 ì¦ê°€ì‹œí‚¤ëŠ” ë°©ì–´êµ¬.";
 }
 
-void Shop::DisplayItems() const 
+void Shop::DisplayItems() const
 {
-    std::cout << "»óÁ¡ ÆÇ¸Å ¾ÆÀÌÅÛ ¸ñ·Ï:\n";
-    for (size_t i = 0; i < AvailableItems.size(); ++i) 
+    std::cout << "ìƒì  íŒë§¤ ì•„ì´í…œ ëª©ë¡:\n";
+    for(size_t i = 0; i < AvailableItems.size(); ++i)
     {
         std::cout << i + 1 << ". " << AvailableItems[i]->GetName() << " - "
-            << AvailableItems[i]->GetPrice() << " °ñµå\n";
+            << AvailableItems[i]->GetPrice() << " ê³¨ë“œ\n";
     }
 }
 
-void Shop::BuyItem(int index, Character* player) {
-    if (index < 0 || index >= AvailableItems.size()) {
-        std::cout << "Àß¸øµÈ ¼±ÅÃÀÔ´Ï´Ù.\n";
+void Shop::BuyItem(int index,Character* player) {
+    if(index < 0 || index >= AvailableItems.size()) {
+        std::cout << "ì˜ëª»ëœ ì„ íƒì…ë‹ˆë‹¤.\n";
         return;
     }
 
     int price = AvailableItems[index]->GetPrice();
-    if (player->Gold >= price) {
+    if(player->Gold >= price) {
         player->Gold -= price;
         player->AddItem(std::move(AvailableItems[index]));
         AvailableItems.erase(AvailableItems.begin() + index);
-        std::cout << "±¸¸Å ¿Ï·á!\n";
-    }
-    else {
-        std::cout << "°ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù.\n";
+        std::cout << "êµ¬ë§¤ ì™„ë£Œ!\n";
+    } else {
+        std::cout << "ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n";
     }
 }
-// ¾ÆÀÌÅÛ ÆÇ¸Å
-void Shop::SellItem(const std::string& itemName, Character* player) 
+// ì•„ì´í…œ íŒë§¤
+void Shop::SellItem(const std::string& itemName,Character* player)
 {
     auto it = player->Inventory.find(itemName);
-    if (it != player->Inventory.end() && it->second->GetAmount() > 0) {
+    if(it != player->Inventory.end() && it->second->GetAmount() > 0) {
         int sellPrice = it->second->GetPrice() / 2;
         player->Gold += sellPrice;
         it->second->DecreaseAmount(1);
-        std::cout << itemName << "À»(¸¦) " << sellPrice << " °ñµå¿¡ ÆÇ¸ÅÇß½À´Ï´Ù.\n";
-    }
-    else {
-        std::cout << "ÀÌ ¾ÆÀÌÅÛÀ» °¡Áö°í ÀÖÁö ¾Ê½À´Ï´Ù.\n";
+        std::cout << itemName << "ì„(ë¥¼) " << sellPrice << " ê³¨ë“œì— íŒë§¤í–ˆìŠµë‹ˆë‹¤.\n";
+    } else {
+        std::cout << "ì´ ì•„ì´í…œì„ ê°€ì§€ê³  ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.\n";
     }
 }
-// ¾ÆÀÌÅÛ »ó¼¼ ¼³¸í¿ë ¸Ş¼­µå(index ±âÁØ)
-void Shop::DisplayItemDetails(int index) const 
+// ì•„ì´í…œ ìƒì„¸ ì„¤ëª…ìš© ë©”ì„œë“œ(index ê¸°ì¤€)
+void Shop::DisplayItemDetails(int index) const
 {
-    if (index < 0 || index >= AvailableItems.size()) 
+    if(index < 0 || index >= AvailableItems.size())
     {
-        std::cout << "Àß¸øµÈ ¾ÆÀÌÅÛ ¼±ÅÃÀÔ´Ï´Ù.\n";
+        std::cout << "ì˜ëª»ëœ ì•„ì´í…œ ì„ íƒì…ë‹ˆë‹¤.\n";
         return;
     }
 
     const std::string& itemName = AvailableItems[index]->GetName();
     auto it = ItemDescriptions.find(itemName);
-    if (it != ItemDescriptions.end()) 
+    if(it != ItemDescriptions.end())
     {
         std::cout << itemName << ": " << it->second << "\n";
-    }
-    else 
+    } else
     {
-        std::cout << itemName << ": ¼³¸íÀÌ ¾ø½À´Ï´Ù.\n";
+        std::cout << itemName << ": ì„¤ëª…ì´ ì—†ìŠµë‹ˆë‹¤.\n";
     }
 }

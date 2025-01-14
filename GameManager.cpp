@@ -1,6 +1,6 @@
 #include "GameManager.h"
 #include <iostream>
-#include <cstdlib>  // rand() ÇÔ¼ö »ç¿ë
+#include <cstdlib>  // rand() í•¨ìˆ˜ ì‚¬ìš©
 #include "HealthPotion.h"
 #include "AttackBoost.h"
 #include "RevivePotion.h"
@@ -8,430 +8,427 @@
 #include <map>
 std::unique_ptr<Monster> GameManager::GenerateRandomMonster(int level)
 {
-    int randomMonster = rand() % 4;  // 0ºÎÅÍ 3±îÁö ·£´ı ¼ıÀÚ »ı¼º
+    int randomMonster = rand() % 4;  // 0ë¶€í„° 3ê¹Œì§€ ëœë¤ ìˆ«ì ìƒì„±
 
     std::unique_ptr<Monster> monster;
 
-    switch (randomMonster) {
+    switch(randomMonster) {
     case 0:
-        std::cout << "½½¶óÀÓÀ» ¸¶ÁÖÃÆ´Ù!\n";
-        monster = std::make_unique<Slime>(level);  // Slime Å¬·¡½º »ç¿ë
-        break;
+    std::cout << "ìŠ¬ë¼ì„ì„ ë§ˆì£¼ì³¤ë‹¤!\n";
+    monster = std::make_unique<Slime>(level);  // Slime í´ë˜ìŠ¤ ì‚¬ìš©
+    break;
     case 1:
-        std::cout << "°íºí¸°À» ¸¶ÁÖÃÆ´Ù!\n";
-        monster = std::make_unique<Goblin>(level);  // Goblin Å¬·¡½º »ç¿ë
-        break;
+    std::cout << "ê³ ë¸”ë¦°ì„ ë§ˆì£¼ì³¤ë‹¤!\n";
+    monster = std::make_unique<Goblin>(level);  // Goblin í´ë˜ìŠ¤ ì‚¬ìš©
+    break;
     case 2:
-        std::cout << "Æ®·ÑÀ» ¸¶ÁÖÃÆ´Ù!\n";
-        monster = std::make_unique<Troll>(level);  // Troll Å¬·¡½º »ç¿ë
-        break;
+    std::cout << "íŠ¸ë¡¤ì„ ë§ˆì£¼ì³¤ë‹¤!\n";
+    monster = std::make_unique<Troll>(level);  // Troll í´ë˜ìŠ¤ ì‚¬ìš©
+    break;
     case 3:
-        std::cout << "¿ÀÅ©¸¦ ¸¶ÁÖÃÆ´Ù!\n";
-        monster = std::make_unique<Orc>(level);  // Orc Å¬·¡½º »ç¿ë
-        break;
+    std::cout << "ì˜¤í¬ë¥¼ ë§ˆì£¼ì³¤ë‹¤!\n";
+    monster = std::make_unique<Orc>(level);  // Orc í´ë˜ìŠ¤ ì‚¬ìš©
+    break;
     default:
-        std::cout << "±âº» ¸ó½ºÅÍ¸¦ ¸¶ÁÖÃÆ´Ù!\n";
-        monster = std::make_unique<Monster>(level);  // ±âº» ¸ó½ºÅÍ
-        break;
+    std::cout << "ê¸°ë³¸ ëª¬ìŠ¤í„°ë¥¼ ë§ˆì£¼ì³¤ë‹¤!\n";
+    monster = std::make_unique<Monster>(level);  // ê¸°ë³¸ ëª¬ìŠ¤í„°
+    break;
     }
 
-    return monster;  // »ı¼ºµÈ ¸ó½ºÅÍ ¸®ÅÏ
+    return monster;  // ìƒì„±ëœ ëª¬ìŠ¤í„° ë¦¬í„´
 }
 
 
 
 
 
-void GameManager::StartGame(Character* player, Shop* shop)
+void GameManager::StartGame(Character* player,Shop* shop)
 {
     int choice;
     do {
-        std::cout << "\nÇöÀç »óÅÂ:\n";
+        std::cout << "\ní˜„ì¬ ìƒíƒœ:\n";
         player->DisplayStatus();
 
-        std::cout << "\n¾î¶² È°µ¿À» ÇÏ½Ã°Ú½À´Ï±î?\n";
-        std::cout << "1. ÀüÅõ\n2. »óÁ¡ ¹æ¹®\n3. ÀÎº¥Åä¸® È®ÀÎ\n4. °ÔÀÓ Á¾·á\n";
-        std::cout << "¿øÇÏ´Â µ¿ÀÛÀ» ¼±ÅÃÇÏ¼¼¿ä: ";
+        std::cout << "\nì–´ë–¤ í™œë™ì„ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?\n";
+        std::cout << "1. ì „íˆ¬\n2. ìƒì  ë°©ë¬¸\n3. ì¸ë²¤í† ë¦¬ í™•ì¸\n4. ê²Œì„ ì¢…ë£Œ\n";
+        std::cout << "ì›í•˜ëŠ” ë™ì‘ì„ ì„ íƒí•˜ì„¸ìš”: ";
         std::cin >> choice;
-        std::cin.ignore(); // ¹öÆÛ ºñ¿ì±â
+        std::cin.ignore(); // ë²„í¼ ë¹„ìš°ê¸°
 
-        if (choice == 1) {
-            // ·¹º§ 10 ÀÌ»óÀÏ ¶§ º¸½º ¸ó½ºÅÍ¿Í ÀüÅõ
-            if (player->Level >= 10) {
-                BossBattle(player);
-                break;  // º¸½º ÀüÅõ ÈÄ °ÔÀÓ Á¾·á
-            }
-            else {
-                Battle(player);  // ÀÏ¹İ ¸ó½ºÅÍ¿Í ÀüÅõ
-            }
-        }
-        else if (choice == 2) {
-            VisitShop(player, shop, this);  // gameManager Á¦°ÅÇÏ°í Á÷Á¢ È£Ãâ
-        }
-        else if (choice == 3) {
+        if(choice == 1) 
+        {
+                // ë ˆë²¨ 10 ì´ìƒì¼ ë•Œ ë³´ìŠ¤ ëª¬ìŠ¤í„°ì™€ ì „íˆ¬
+                if(player->Level >= 10) 
+                {
+                    BossBattle(player);
+                    break;  // ë³´ìŠ¤ ì „íˆ¬ í›„ ê²Œì„ ì¢…ë£Œ
+                } else 
+                {
+                    Battle(player);  // ì¼ë°˜ ëª¬ìŠ¤í„°ì™€ ì „íˆ¬
+                }
+        } 
+        else if(choice == 2) 
+        {
+            VisitShop(player,shop,this);  // gameManager ì œê±°í•˜ê³  ì§ì ‘ í˜¸ì¶œ
+        } 
+        else if(choice == 3) 
+        {
             DisplayInventory(player);
+        } else if(choice == 4) 
+        {
+            std::cout << "ê²Œì„ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.\n";
+        } else 
+        {
+            std::cout << "ì˜ëª»ëœ ì„ íƒì…ë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•˜ì„¸ìš”.\n";
         }
-        else if (choice == 4) {
-            std::cout << "°ÔÀÓÀ» Á¾·áÇÕ´Ï´Ù.\n";
-        }
-        else {
-            std::cout << "Àß¸øµÈ ¼±ÅÃÀÔ´Ï´Ù. ´Ù½Ã ½ÃµµÇÏ¼¼¿ä.\n";
-        }
-    } while (choice != 4);
+    } while(choice != 4);
 }
-// º¸½º ¸ó½ºÅÍ »ı¼º
+// ë³´ìŠ¤ ëª¬ìŠ¤í„° ìƒì„±
 std::unique_ptr<BossMonster> GameManager::GenerateBossMonster(int level)
 {
-    std::cout << "¸¶¿ÕÀÇ ¼º¿¡ µµÂøÇß´Ù!\n";
-    return std::make_unique<BossMonster>(level);  // BossMonster Å¬·¡½º¸¦ »ç¿ë
+    std::cout << "ë§ˆì™•ì˜ ì„±ì— ë„ì°©í–ˆë‹¤!\n";
+    return std::make_unique<BossMonster>(level);  // BossMonster í´ë˜ìŠ¤ë¥¼ ì‚¬ìš©
 }
 
 void GameManager::Battle(Character* player)
 {
-    // ·£´ı ¸ó½ºÅÍ »ı¼º
+    // ëœë¤ ëª¬ìŠ¤í„° ìƒì„±
     std::unique_ptr<Monster> monster = GenerateRandomMonster(player->Level);
 
-    // ÀüÅõ ½ÃÀÛ Àü¿¡ ¾ÆÀÌÅÛ ÀÚµ¿ »ç¿ë
+    // ì „íˆ¬ ì‹œì‘ ì „ì— ì•„ì´í…œ ìë™ ì‚¬ìš©
     player->AutoUseItems();
 
-    std::cout << "¾ß»ı " << monster->Name << "°¡ ³ªÅ¸³µ´Ù!\n";
-    std::cout << "¸ó½ºÅÍ ÀÌ¸§: " << monster->Name << "\n";
-    std::cout << "¸ó½ºÅÍ ·¹º§: " << monster->Level << "\n";
-    std::cout << "¸ó½ºÅÍ Ã¼·Â: " << monster->Health << "\n";
-    std::cout << "¸ó½ºÅÍ °ø°İ·Â: " << monster->Attack << "\n";
+    std::cout << "ì•¼ìƒ " << monster->Name << "ê°€ ë‚˜íƒ€ë‚¬ë‹¤!\n";
+    std::cout << "ëª¬ìŠ¤í„° ì´ë¦„: " << monster->Name << "\n";
+    std::cout << "ëª¬ìŠ¤í„° ë ˆë²¨: " << monster->Level << "\n";
+    std::cout << "ëª¬ìŠ¤í„° ì²´ë ¥: " << monster->Health << "\n";
+    std::cout << "ëª¬ìŠ¤í„° ê³µê²©ë ¥: " << monster->Attack << "\n";
 
-    // ¸ó½ºÅÍ°¡ Á¸ÀçÇÏ¸é ÀüÅõ ½ÃÀÛ
-    if (monster != nullptr) {
-        std::cout << player->Name << "¿Í " << monster->Name << "ÀÇ ÀüÅõ°¡ ½ÃÀÛµË´Ï´Ù!\n";
-        while (monster->Health > 0 && player->Health > 0) {
-            std::cout << player->Name << "ÀÇ °ø°İ! " << monster->Name << "ÀÇ Ã¼·ÂÀÌ " << monster->Health << "·Î °¨¼Ò!\n";
-            monster->TakeDamage(player->Attack);
+    // ëª¬ìŠ¤í„°ê°€ ì¡´ì¬í•˜ë©´ ì „íˆ¬ ì‹œì‘
+    if(monster != nullptr) 
+    {
+            std::cout << player->Name << "ì™€ " << monster->Name << "ì˜ ì „íˆ¬ê°€ ì‹œì‘ë©ë‹ˆë‹¤!\n";
+            while(monster->Health > 0 && player->Health > 0) 
+            {
+                std::cout << player->Name << "ì˜ ê³µê²©! " << monster->Name << "ì˜ ì²´ë ¥ì´ " << monster->Health << "ë¡œ ê°ì†Œ!\n";
+                monster->TakeDamage(player->Attack);
 
-            if (monster->Health > 0) {
-                // ÇÇÇØ °è»ê ½Ã ¹æ¾î·Â¸¸ °í·Á (EquippedArmor¿¡ ÀÇÇÑ Ãß°¡ ¹æ¾î·ÂÀº ÀÌ¹Ì ¹İ¿µµÊ)
-                int damageToPlayer = std::max(0, monster->Attack - player->Defense); // ¹æ¾î·Â Â÷°¨
-                std::cout << monster->Name << "ÀÇ °ø°İ! " << player->Name << "ÀÇ Ã¼·ÂÀÌ " << player->Health << "·Î °¨¼Ò!\n";
-                player->TakeDamage(damageToPlayer);
+                if(monster->Health > 0) 
+                {
+                        // í”¼í•´ ê³„ì‚° ì‹œ ë°©ì–´ë ¥ë§Œ ê³ ë ¤ (EquippedArmorì— ì˜í•œ ì¶”ê°€ ë°©ì–´ë ¥ì€ ì´ë¯¸ ë°˜ì˜ë¨)
+                        int damageToPlayer = std::max(0,monster->Attack - player->Defense); // ë°©ì–´ë ¥ ì°¨ê°
+                        std::cout << monster->Name << "ì˜ ê³µê²©! " << player->Name << "ì˜ ì²´ë ¥ì´ " << player->Health << "ë¡œ ê°ì†Œ!\n";
+                        player->TakeDamage(damageToPlayer);
+                }
+
+                // ìƒíƒœ ì¶œë ¥
+                std::cout << player->Name << "ì˜ ì²´ë ¥: " << player->Health << "\n";
+                std::cout << monster->Name << "ì˜ ì²´ë ¥: " << monster->Health << "\n";
             }
 
-            // »óÅÂ Ãâ·Â
-            std::cout << player->Name << "ÀÇ Ã¼·Â: " << player->Health << "\n";
-            std::cout << monster->Name << "ÀÇ Ã¼·Â: " << monster->Health << "\n";
-        }
-
-        // ÀüÅõ °á°ú
-        if (monster->Health <= 0)
-        {
-            std::cout << monster->Name << "À» Ã³Ä¡Çß½À´Ï´Ù!\n";
-            player->GainExperience(100);  // °æÇèÄ¡ È¹µæ
-            // Àü¸®Ç° µå·Ó
-            std::unique_ptr<Item> loot = monster->DropItem();
-            if (loot != nullptr) {
-                std::cout << "Àü¸®Ç°À¸·Î " << loot->GetName() << "À»(¸¦) È¹µæÇß½À´Ï´Ù!\n";
-                player->AddItem(std::move(loot));  // ÀÎº¥Åä¸®¿¡ ¾ÆÀÌÅÛ Ãß°¡
+            // ì „íˆ¬ ê²°ê³¼
+            if(monster->Health <= 0)
+            {
+                    std::cout << monster->Name << "ì„ ì²˜ì¹˜í–ˆìŠµë‹ˆë‹¤!\n";
+                    player->GainExperience(100);  // ê²½í—˜ì¹˜ íšë“
+                    // ì „ë¦¬í’ˆ ë“œë¡­
+                    std::unique_ptr<Item> loot = monster->DropItem();
+                    if(loot != nullptr) 
+                    {
+                        std::cout << "ì „ë¦¬í’ˆìœ¼ë¡œ " << loot->GetName() << "ì„(ë¥¼) íšë“í–ˆìŠµë‹ˆë‹¤!\n";
+                        player->AddItem(std::move(loot));  // ì¸ë²¤í† ë¦¬ì— ì•„ì´í…œ ì¶”ê°€
+                    } else 
+                    {
+                        std::cout << "ì „ë¦¬í’ˆì´ ì—†ìŠµë‹ˆë‹¤.\n";
+                    }
+            } 
+            else
+            {
+                std::cout << player->Name << "ì´(ê°€) ì“°ëŸ¬ì¡ŒìŠµë‹ˆë‹¤. ê²Œì„ ì˜¤ë²„.\n";
+                exit(0);  // í”„ë¡œê·¸ë¨ ì¢…ë£Œ
             }
-            else {
-                std::cout << "Àü¸®Ç°ÀÌ ¾ø½À´Ï´Ù.\n";
-            }
-        }
-        else
-        {
-            std::cout << player->Name << "ÀÌ(°¡) ¾²·¯Á³½À´Ï´Ù. °ÔÀÓ ¿À¹ö.\n";
-            exit(0);  // ÇÁ·Î±×·¥ Á¾·á
-        }
-    }
+    } 
     else
     {
-        std::cout << "¸ó½ºÅÍ°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù!\n";
+        std::cout << "ëª¬ìŠ¤í„°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤!\n";
     }
-    player->DisplayStatus();  // ÀüÅõ ÈÄ »óÅÂ Ç¥½Ã
+    player->DisplayStatus();  // ì „íˆ¬ í›„ ìƒíƒœ í‘œì‹œ
 }
 
 void GameManager::BossBattle(Character* player)
 {
-    // ·£´ı º¸½º ¸ó½ºÅÍ »ı¼º (º¸½º ¸ó½ºÅÍ´Â ·¹º§°ú ´É·ÂÄ¡°¡ ³ôÀ» ¼ö ÀÖÀ½)
+    // ëœë¤ ë³´ìŠ¤ ëª¬ìŠ¤í„° ìƒì„± (ë³´ìŠ¤ ëª¬ìŠ¤í„°ëŠ” ë ˆë²¨ê³¼ ëŠ¥ë ¥ì¹˜ê°€ ë†’ì„ ìˆ˜ ìˆìŒ)
     std::unique_ptr<Monster> boss = GenerateBossMonster(player->Level);
 
-    // ÀüÅõ ½ÃÀÛ Àü¿¡ ¾ÆÀÌÅÛ ÀÚµ¿ »ç¿ë
+    // ì „íˆ¬ ì‹œì‘ ì „ì— ì•„ì´í…œ ìë™ ì‚¬ìš©
     player->AutoUseItems();
 
-    std::cout << boss->Name << "ÀÌ ³ªÅ¸³µ´Ù!\n";
-    std::cout << "º¸½º ·¹º§: " << boss->Level << "\n";
-    std::cout << "º¸½º Ã¼·Â: " << boss->Health << "\n";
-    std::cout << "º¸½º °ø°İ·Â: " << boss->Attack << "\n";
+    std::cout << boss->Name << "ì´ ë‚˜íƒ€ë‚¬ë‹¤!\n";
+    std::cout << "ë³´ìŠ¤ ë ˆë²¨: " << boss->Level << "\n";
+    std::cout << "ë³´ìŠ¤ ì²´ë ¥: " << boss->Health << "\n";
+    std::cout << "ë³´ìŠ¤ ê³µê²©ë ¥: " << boss->Attack << "\n";
 
-    // º¸½º ¸ó½ºÅÍ°¡ Á¸ÀçÇÏ¸é ÀüÅõ ½ÃÀÛ
-    if (boss != nullptr)
+    // ë³´ìŠ¤ ëª¬ìŠ¤í„°ê°€ ì¡´ì¬í•˜ë©´ ì „íˆ¬ ì‹œì‘
+    if(boss != nullptr)
     {
-        std::cout << player->Name << "¿Í " << boss->Name << "ÀÇ º¸½º ÀüÅõ°¡ ½ÃÀÛµË´Ï´Ù!\n";
-        while (boss->Health > 0 && player->Health > 0)
+        std::cout << player->Name << "ì™€ " << boss->Name << "ì˜ ë³´ìŠ¤ ì „íˆ¬ê°€ ì‹œì‘ë©ë‹ˆë‹¤!\n";
+        while(boss->Health > 0 && player->Health > 0)
         {
-            // ÇÃ·¹ÀÌ¾îÀÇ °ø°İ
-            std::cout << player->Name << "ÀÇ °ø°İ! " << boss->Name << "ÀÇ Ã¼·ÂÀÌ " << boss->Health << "·Î °¨¼Ò!\n";
+            // í”Œë ˆì´ì–´ì˜ ê³µê²©
+            std::cout << player->Name << "ì˜ ê³µê²©! " << boss->Name << "ì˜ ì²´ë ¥ì´ " << boss->Health << "ë¡œ ê°ì†Œ!\n";
             boss->TakeDamage(player->Attack);
 
-            // º¸½º°¡ »ì¾ÆÀÖ´Ù¸é º¸½ºÀÇ °ø°İ
-            if (boss->Health > 0)
+            // ë³´ìŠ¤ê°€ ì‚´ì•„ìˆë‹¤ë©´ ë³´ìŠ¤ì˜ ê³µê²©
+            if(boss->Health > 0)
             {
-                // ÇÇÇØ °è»ê ½Ã ¹æ¾î·Â¸¸ °í·Á (EquippedArmor¿¡ ÀÇÇÑ Ãß°¡ ¹æ¾î·ÂÀº ÀÌ¹Ì ¹İ¿µµÊ)
-                int damageToPlayer = std::max(0, boss->Attack - player->Defense); // ¹æ¾î·Â Â÷°¨
-                std::cout << boss->Name << "ÀÇ °ø°İ! " << player->Name << "ÀÇ Ã¼·ÂÀÌ " << player->Health << "·Î °¨¼Ò!\n";
+                // í”¼í•´ ê³„ì‚° ì‹œ ë°©ì–´ë ¥ë§Œ ê³ ë ¤ (EquippedArmorì— ì˜í•œ ì¶”ê°€ ë°©ì–´ë ¥ì€ ì´ë¯¸ ë°˜ì˜ë¨)
+                int damageToPlayer = std::max(0,boss->Attack - player->Defense); // ë°©ì–´ë ¥ ì°¨ê°
+                std::cout << boss->Name << "ì˜ ê³µê²©! " << player->Name << "ì˜ ì²´ë ¥ì´ " << player->Health << "ë¡œ ê°ì†Œ!\n";
                 player->TakeDamage(damageToPlayer);
             }
 
-            // »óÅÂ Ãâ·Â
-            std::cout << player->Name << "ÀÇ Ã¼·Â: " << player->Health << "\n";
-            std::cout << boss->Name << "ÀÇ Ã¼·Â: " << boss->Health << "\n";
+            // ìƒíƒœ ì¶œë ¥
+            std::cout << player->Name << "ì˜ ì²´ë ¥: " << player->Health << "\n";
+            std::cout << boss->Name << "ì˜ ì²´ë ¥: " << boss->Health << "\n";
         }
 
-        // ÀüÅõ °á°ú
-        if (boss->Health <= 0)
+        // ì „íˆ¬ ê²°ê³¼
+        if(boss->Health <= 0)
         {
-            std::cout << boss->Name << "À» Ã³Ä¡Çß½À´Ï´Ù!\n";
-            player->GainExperience(500);  // º¸½º Ã³Ä¡ ½Ã ³ôÀº °æÇèÄ¡ È¹µæ
+            std::cout << boss->Name << "ì„ ì²˜ì¹˜í–ˆìŠµë‹ˆë‹¤!\n";
+            player->GainExperience(500);  // ë³´ìŠ¤ ì²˜ì¹˜ ì‹œ ë†’ì€ ê²½í—˜ì¹˜ íšë“
 
-            // Àü¸®Ç° µå·Ó
+            // ì „ë¦¬í’ˆ ë“œë¡­
             std::unique_ptr<Item> loot = boss->DropItem();
-            if (loot != nullptr) {
-                std::cout << "Àü¸®Ç°À¸·Î " << loot->GetName() << "À»(¸¦) È¹µæÇß½À´Ï´Ù!\n";
-                player->AddItem(std::move(loot));  // ÀÎº¥Åä¸®¿¡ ¾ÆÀÌÅÛ Ãß°¡
-            }
-            else {
-                std::cout << "Àü¸®Ç°ÀÌ ¾ø½À´Ï´Ù.\n";
+            if(loot != nullptr) {
+                std::cout << "ì „ë¦¬í’ˆìœ¼ë¡œ " << loot->GetName() << "ì„(ë¥¼) íšë“í–ˆìŠµë‹ˆë‹¤!\n";
+                player->AddItem(std::move(loot));  // ì¸ë²¤í† ë¦¬ì— ì•„ì´í…œ ì¶”ê°€
+            } else {
+                std::cout << "ì „ë¦¬í’ˆì´ ì—†ìŠµë‹ˆë‹¤.\n";
             }
 
-            // °ÔÀÓ Å¬¸®¾î ¸Ş½ÃÁö Ãâ·Â
-            std::cout << player->Name << "´Ô, º¸½º¸¦ Ã³Ä¡ÇÏ¿© °ÔÀÓÀ» Å¬¸®¾îÇß½À´Ï´Ù!\n";
-            std::cout << "ÃàÇÏÇÕ´Ï´Ù! °ÔÀÓÀ» Å¬¸®¾îÇÏ¼Ì½À´Ï´Ù!\n";
+            // ê²Œì„ í´ë¦¬ì–´ ë©”ì‹œì§€ ì¶œë ¥
+            std::cout << player->Name << "ë‹˜, ë³´ìŠ¤ë¥¼ ì²˜ì¹˜í•˜ì—¬ ê²Œì„ì„ í´ë¦¬ì–´í–ˆìŠµë‹ˆë‹¤!\n";
+            std::cout << "ì¶•í•˜í•©ë‹ˆë‹¤! ê²Œì„ì„ í´ë¦¬ì–´í•˜ì…¨ìŠµë‹ˆë‹¤!\n";
 
-            // °ÔÀÓ Á¾·á Ã³¸®
-            exit(0);  // ÇÁ·Î±×·¥ Á¾·á
-        }
-        else
+            // ê²Œì„ ì¢…ë£Œ ì²˜ë¦¬
+            exit(0);  // í”„ë¡œê·¸ë¨ ì¢…ë£Œ
+        } else
         {
-            std::cout << player->Name << "ÀÌ(°¡) ¾²·¯Á³½À´Ï´Ù. °ÔÀÓ ¿À¹ö.\n";
-            exit(0);  // ÇÁ·Î±×·¥ Á¾·á
+            std::cout << player->Name << "ì´(ê°€) ì“°ëŸ¬ì¡ŒìŠµë‹ˆë‹¤. ê²Œì„ ì˜¤ë²„.\n";
+            exit(0);  // í”„ë¡œê·¸ë¨ ì¢…ë£Œ
         }
-    }
-    else {
-        std::cout << "º¸½º ¸ó½ºÅÍ°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù!\n";
+    } else {
+        std::cout << "ë³´ìŠ¤ ëª¬ìŠ¤í„°ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤!\n";
     }
 
-    player->DisplayStatus();  // ÀüÅõ ÈÄ »óÅÂ Ç¥½Ã
+    player->DisplayStatus();  // ì „íˆ¬ í›„ ìƒíƒœ í‘œì‹œ
 }
 
-void GameManager::VisitShop(Character* player, Shop* shop, GameManager* gameManager)
+void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManager)
 {
-    while (true)
+    while(true)
     {
-        std::cout << "»óÁ¡¿¡ ¿À½Å °ÍÀ» È¯¿µÇÕ´Ï´Ù! ¹«¾ùÀ» ÇÏ½Ã°Ú½À´Ï±î?\n";
-        std::cout << "1. »ç¿ë ¾ÆÀÌÅÛ ±¸¸Å\n";
-        std::cout << "2. Àåºñ ¾ÆÀÌÅÛ ±¸¸Å\n";
-        std::cout << "3. ¾ÆÀÌÅÛ ÆÇ¸Å\n";
-        std::cout << "4. ¾ÆÀÌÅÛ ¸ñ·Ï È®ÀÎ\n";
-        std::cout << "5. »óÁ¡ Á¾·á (¼ıÀÚ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä): ";
+        std::cout << "ìƒì ì— ì˜¤ì‹  ê²ƒì„ í™˜ì˜í•©ë‹ˆë‹¤! ë¬´ì—‡ì„ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?\n";
+        std::cout << "1. ì‚¬ìš© ì•„ì´í…œ êµ¬ë§¤\n";
+        std::cout << "2. ì¥ë¹„ ì•„ì´í…œ êµ¬ë§¤\n";
+        std::cout << "3. ì•„ì´í…œ íŒë§¤\n";
+        std::cout << "4. ì•„ì´í…œ ëª©ë¡ í™•ì¸\n";
+        std::cout << "5. ìƒì  ì¢…ë£Œ (ìˆ«ìë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”): ";
 
         int choice;
         std::cin >> choice;
 
         int index = 0;
         std::vector<std::string> itemNames;
-        std::unordered_map<std::string, std::unique_ptr<Item>>::iterator itemToSell;  // ¿©±â¼­ ÃÊ±âÈ­ÇØÁÖ¸é µÊ
+        std::unordered_map<std::string,std::unique_ptr<Item>>::iterator itemToSell;  // ì—¬ê¸°ì„œ ì´ˆê¸°í™”í•´ì£¼ë©´ ë¨
 
-        switch (choice)
+        switch(choice)
         {
-        case 1:  // »ç¿ë ¾ÆÀÌÅÛ ±¸¸Å
-            std::cout << "\n»ç¿ë ¾ÆÀÌÅÛ ¸ñ·ÏÀÔ´Ï´Ù. ÇöÀç º¸À¯ °ñµå(" << player->Gold << ")\n";
-            std::cout << "1. Ã¼·Â Æ÷¼Ç (20 °ñµå)\n";
-            std::cout << "2. °ø°İ·Â Æ÷¼Ç (50 °ñµå)\n";
-            std::cout << "3. ºÎÈ° Æ÷¼Ç (100 °ñµå)\n";
-            std::cout << "4. µÚ·Î°¡±â\n";
+        case 1:  // ì‚¬ìš© ì•„ì´í…œ êµ¬ë§¤
+        std::cout << "\nì‚¬ìš© ì•„ì´í…œ ëª©ë¡ì…ë‹ˆë‹¤. í˜„ì¬ ë³´ìœ  ê³¨ë“œ(" << player->Gold << ")\n";
+        std::cout << "1. ì²´ë ¥ í¬ì…˜ (20 ê³¨ë“œ)\n";
+        std::cout << "2. ê³µê²©ë ¥ í¬ì…˜ (50 ê³¨ë“œ)\n";
+        std::cout << "3. ë¶€í™œ í¬ì…˜ (100 ê³¨ë“œ)\n";
+        std::cout << "4. ë’¤ë¡œê°€ê¸°\n";
 
-            int buyChoice;
-            std::cin >> buyChoice;
+        int buyChoice;
+        std::cin >> buyChoice;
 
-            switch (buyChoice)
+        switch(buyChoice)
+        {
+        case 1:  // ì²´ë ¥ í¬ì…˜
+        if(player->Gold >= 20)
+        {
+            auto it = player->Inventory.find("ì²´ë ¥ í¬ì…˜");
+            if(it != player->Inventory.end())
             {
-            case 1:  // Ã¼·Â Æ÷¼Ç
-                if (player->Gold >= 20)
-                {
-                    auto it = player->Inventory.find("Ã¼·Â Æ÷¼Ç");
-                    if (it != player->Inventory.end())
-                    {
-                        it->second->IncreaseAmount(1);
-                    }
-                    else
-                    {
-                        player->AddItem(std::make_unique<HealthPotion>("Ã¼·Â Æ÷¼Ç", 20, 1));
-                    }
-                    player->Gold -= 20;
-                    std::cout << "Ã¼·Â Æ÷¼ÇÀ» ±¸¸ÅÇß½À´Ï´Ù.\n";
-                }
-                else
-                {
-                    std::cout << "°ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù.\n";
-                }
-                break;
-
-            case 2:  // °ø°İ·Â Æ÷¼Ç
-                if (player->Gold >= 50)
-                {
-                    auto it = player->Inventory.find("°ø°İ·Â Æ÷¼Ç");
-                    if (it != player->Inventory.end())
-                    {
-                        it->second->IncreaseAmount(1);
-                    }
-                    else
-                    {
-                        player->AddItem(std::make_unique<AttackBoost>("°ø°İ·Â Æ÷¼Ç", 50, 1));
-                    }
-                    player->Gold -= 50;
-                    std::cout << "°ø°İ·Â Æ÷¼ÇÀ» ±¸¸ÅÇß½À´Ï´Ù.\n";
-                }
-                else
-                {
-                    std::cout << "°ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù.\n";
-                }
-                break;
-
-            case 3:  // ºÎÈ° Æ÷¼Ç
-                if (player->Gold >= 100)
-                {
-                    auto it = player->Inventory.find("ºÎÈ° Æ÷¼Ç");
-                    if (it != player->Inventory.end())
-                    {
-                        it->second->IncreaseAmount(1);
-                    }
-                    else
-                    {
-                        player->AddItem(std::make_unique<RevivePotion>("ºÎÈ° Æ÷¼Ç", 100, 1));
-                    }
-                    player->Gold -= 100;
-                    std::cout << "ºÎÈ° Æ÷¼ÇÀ» ±¸¸ÅÇß½À´Ï´Ù.\n";
-                }
-                else
-                {
-                    std::cout << "°ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù.\n";
-                }
-                break;
-
-            case 4:  // µÚ·Î°¡±â
-                std::cout << "»óÁ¡À¸·Î µ¹¾Æ°©´Ï´Ù.\n";
-                break;
-            }
-            break;
-
-        case 2:  // Àåºñ ¾ÆÀÌÅÛ ±¸¸Å
-            std::cout << "\nÀåºñ ¾ÆÀÌÅÛ ¸ñ·ÏÀÔ´Ï´Ù. ÇöÀç º¸À¯ °ñµå(" << player->Gold << ")\n";
-            std::cout << "1. ¸ñ°Ë (100 °ñµå)\n";
-            std::cout << "2. ³ª¹«°©¿Ê (100 °ñµå)\n";
-            std::cout << "3. ±¸¸®°Ë (200 °ñµå)\n";
-            std::cout << "4. ±¸¸®°©¿Ê (200 °ñµå)\n";
-            std::cout << "5. µÚ·Î°¡±â\n";
-
-            std::cin >> buyChoice;
-
-            switch (buyChoice)
+                it->second->IncreaseAmount(1);
+            } else
             {
-            case 1:  // ¸ñ°Ë (¹«±â)
-                gameManager->PurchaseEquipment(player, "¸ñ°Ë", 100, 3, Equipment::EquipmentType::Weapon);
-                break;
-
-            case 2:  // ³ª¹«°©¿Ê (¹æ¾î±¸)
-                gameManager->PurchaseEquipment(player, "³ª¹«°©¿Ê", 100, 5, Equipment::EquipmentType::Armor);
-                break;
-
-            case 3:  // ±¸¸®°Ë (¹«±â)
-                gameManager->PurchaseEquipment(player, "±¸¸®°Ë", 200, 5, Equipment::EquipmentType::Weapon);
-                break;
-
-            case 4:  // ±¸¸®°©¿Ê (¹æ¾î±¸)
-                gameManager->PurchaseEquipment(player, "±¸¸®°©¿Ê", 200, 7, Equipment::EquipmentType::Armor);
-                break;
-
-            case 5:  // µÚ·Î°¡±â
-                std::cout << "»óÁ¡À¸·Î µ¹¾Æ°©´Ï´Ù.\n";
-                break;
-
-            default:
-                std::cout << "Àß¸øµÈ ¼±ÅÃÀÔ´Ï´Ù. ´Ù½Ã ½ÃµµÇØ ÁÖ¼¼¿ä.\n";
-                break;
+                player->AddItem(std::make_unique<HealthPotion>("ì²´ë ¥ í¬ì…˜",20,1));
             }
-            break;
+            player->Gold -= 20;
+            std::cout << "ì²´ë ¥ í¬ì…˜ì„ êµ¬ë§¤í–ˆìŠµë‹ˆë‹¤.\n";
+        } else
+        {
+            std::cout << "ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n";
+        }
+        break;
 
-        case 3:  // ¾ÆÀÌÅÛ ÆÇ¸Å
-            std::cout << "ÆÇ¸ÅÇÒ ¾ÆÀÌÅÛÀ» ¼±ÅÃÇÏ¼¼¿ä.\n";
-            std::cout << "ÇöÀç º¸À¯ÇÑ ¾ÆÀÌÅÛ ¸ñ·Ï:\n";
-            index = 1;
-
-            // ¾ÆÀÌÅÛ ¸ñ·Ï Ãâ·Â
-            for (const auto& item : player->Inventory) {
-                std::cout << index++ << ". " << item.first << ": " << item.second->GetAmount() << " °³\n";
+        case 2:  // ê³µê²©ë ¥ í¬ì…˜
+        if(player->Gold >= 50)
+        {
+            auto it = player->Inventory.find("ê³µê²©ë ¥ í¬ì…˜");
+            if(it != player->Inventory.end())
+            {
+                it->second->IncreaseAmount(1);
+            } else
+            {
+                player->AddItem(std::make_unique<AttackBoost>("ê³µê²©ë ¥ í¬ì…˜",50,1));
             }
+            player->Gold -= 50;
+            std::cout << "ê³µê²©ë ¥ í¬ì…˜ì„ êµ¬ë§¤í–ˆìŠµë‹ˆë‹¤.\n";
+        } else
+        {
+            std::cout << "ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n";
+        }
+        break;
 
-            std::cout << "ÆÇ¸ÅÇÒ ¾ÆÀÌÅÛ ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä: ";
-            int sellChoice;
-            std::cin >> sellChoice;
-
-            if (sellChoice < 1 || sellChoice >= index) {
-                std::cout << "Àß¸øµÈ ¹øÈ£ÀÔ´Ï´Ù.\n";
-                break;
+        case 3:  // ë¶€í™œ í¬ì…˜
+        if(player->Gold >= 100)
+        {
+            auto it = player->Inventory.find("ë¶€í™œ í¬ì…˜");
+            if(it != player->Inventory.end())
+            {
+                it->second->IncreaseAmount(1);
+            } else
+            {
+                player->AddItem(std::make_unique<RevivePotion>("ë¶€í™œ í¬ì…˜",100,1));
             }
+            player->Gold -= 100;
+            std::cout << "ë¶€í™œ í¬ì…˜ì„ êµ¬ë§¤í–ˆìŠµë‹ˆë‹¤.\n";
+        } else
+        {
+            std::cout << "ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n";
+        }
+        break;
 
-            // ÆÇ¸ÅÇÒ ¾ÆÀÌÅÛ Ã£±â
-            itemToSell = player->Inventory.begin();
-            std::advance(itemToSell, sellChoice - 1);  // ÆÇ¸ÅÇÒ ¾ÆÀÌÅÛÀ¸·Î ÀÌµ¿
+        case 4:  // ë’¤ë¡œê°€ê¸°
+        std::cout << "ìƒì ìœ¼ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤.\n";
+        break;
+        }
+        break;
 
-            std::cout << itemToSell->first << "¸¦ ÆÇ¸ÅÇß½À´Ï´Ù.\n";
-            player->Gold += itemToSell->second->GetPrice();  // ÆÇ¸Å ±İ¾×¸¸Å­ °ñµå Ãß°¡
-            player->Inventory.erase(itemToSell);  // ¾ÆÀÌÅÛ »èÁ¦
-            break;
+        case 2:  // ì¥ë¹„ ì•„ì´í…œ êµ¬ë§¤
+        std::cout << "\nì¥ë¹„ ì•„ì´í…œ ëª©ë¡ì…ë‹ˆë‹¤. í˜„ì¬ ë³´ìœ  ê³¨ë“œ(" << player->Gold << ")\n";
+        std::cout << "1. ëª©ê²€ (100 ê³¨ë“œ)\n";
+        std::cout << "2. ë‚˜ë¬´ê°‘ì˜· (100 ê³¨ë“œ)\n";
+        std::cout << "3. êµ¬ë¦¬ê²€ (200 ê³¨ë“œ)\n";
+        std::cout << "4. êµ¬ë¦¬ê°‘ì˜· (200 ê³¨ë“œ)\n";
+        std::cout << "5. ë’¤ë¡œê°€ê¸°\n";
 
-        case 4:  // ¾ÆÀÌÅÛ ¸ñ·Ï È®ÀÎ
-            std::cout << "ÇöÀç º¸À¯ÇÑ ¾ÆÀÌÅÛ ¸ñ·Ï:\n";
-            index = 1;
-            for (const auto& item : player->Inventory) {
-                std::cout << index++ << ". " << item.first << ": " << item.second->GetAmount() << " °³\n";
-            }
-            break;
+        std::cin >> buyChoice;
 
-        case 5:  // »óÁ¡ Á¾·á
-            std::cout << "»óÁ¡À» Á¾·áÇÕ´Ï´Ù.\n";
-            return;
+        switch(buyChoice)
+        {
+        case 1:  // ëª©ê²€ (ë¬´ê¸°)
+        gameManager->PurchaseEquipment(player,"ëª©ê²€",100,3,Equipment::EquipmentType::Weapon);
+        break;
+
+        case 2:  // ë‚˜ë¬´ê°‘ì˜· (ë°©ì–´êµ¬)
+        gameManager->PurchaseEquipment(player,"ë‚˜ë¬´ê°‘ì˜·",100,5,Equipment::EquipmentType::Armor);
+        break;
+
+        case 3:  // êµ¬ë¦¬ê²€ (ë¬´ê¸°)
+        gameManager->PurchaseEquipment(player,"êµ¬ë¦¬ê²€",200,5,Equipment::EquipmentType::Weapon);
+        break;
+
+        case 4:  // êµ¬ë¦¬ê°‘ì˜· (ë°©ì–´êµ¬)
+        gameManager->PurchaseEquipment(player,"êµ¬ë¦¬ê°‘ì˜·",200,7,Equipment::EquipmentType::Armor);
+        break;
+
+        case 5:  // ë’¤ë¡œê°€ê¸°
+        std::cout << "ìƒì ìœ¼ë¡œ ëŒì•„ê°‘ë‹ˆë‹¤.\n";
+        break;
 
         default:
-            std::cout << "Àß¸øµÈ ¼±ÅÃÀÔ´Ï´Ù. ´Ù½Ã ½ÃµµÇØ ÁÖ¼¼¿ä.\n";
+        std::cout << "ì˜ëª»ëœ ì„ íƒì…ë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ ì£¼ì„¸ìš”.\n";
+        break;
+        }
+        break;
+
+        case 3:  // ì•„ì´í…œ íŒë§¤
+        std::cout << "íŒë§¤í•  ì•„ì´í…œì„ ì„ íƒí•˜ì„¸ìš”.\n";
+        std::cout << "í˜„ì¬ ë³´ìœ í•œ ì•„ì´í…œ ëª©ë¡:\n";
+        index = 1;
+
+        // ì•„ì´í…œ ëª©ë¡ ì¶œë ¥
+        for(const auto& item : player->Inventory) {
+            std::cout << index++ << ". " << item.first << ": " << item.second->GetAmount() << " ê°œ\n";
+        }
+
+        std::cout << "íŒë§¤í•  ì•„ì´í…œ ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”: ";
+        int sellChoice;
+        std::cin >> sellChoice;
+
+        if(sellChoice < 1 || sellChoice >= index) {
+            std::cout << "ì˜ëª»ëœ ë²ˆí˜¸ì…ë‹ˆë‹¤.\n";
             break;
+        }
+
+        // íŒë§¤í•  ì•„ì´í…œ ì°¾ê¸°
+        itemToSell = player->Inventory.begin();
+        std::advance(itemToSell,sellChoice - 1);  // íŒë§¤í•  ì•„ì´í…œìœ¼ë¡œ ì´ë™
+
+        std::cout << itemToSell->first << "ë¥¼ íŒë§¤í–ˆìŠµë‹ˆë‹¤.\n";
+        player->Gold += itemToSell->second->GetPrice();  // íŒë§¤ ê¸ˆì•¡ë§Œí¼ ê³¨ë“œ ì¶”ê°€
+        player->Inventory.erase(itemToSell);  // ì•„ì´í…œ ì‚­ì œ
+        break;
+
+        case 4:  // ì•„ì´í…œ ëª©ë¡ í™•ì¸
+        std::cout << "í˜„ì¬ ë³´ìœ í•œ ì•„ì´í…œ ëª©ë¡:\n";
+        index = 1;
+        for(const auto& item : player->Inventory) {
+            std::cout << index++ << ". " << item.first << ": " << item.second->GetAmount() << " ê°œ\n";
+        }
+        break;
+
+        case 5:  // ìƒì  ì¢…ë£Œ
+        std::cout << "ìƒì ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.\n";
+        return;
+
+        default:
+        std::cout << "ì˜ëª»ëœ ì„ íƒì…ë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ ì£¼ì„¸ìš”.\n";
+        break;
         }
     }
 }
 
 
-void GameManager::PurchaseEquipment(Character* player, const std::string& itemName, int price, int bonusStat, Equipment::EquipmentType type)
+void GameManager::PurchaseEquipment(Character* player,const std::string& itemName,int price,int bonusStat,Equipment::EquipmentType type)
 {
-    if (player->Gold >= price)
+    if(player->Gold >= price)
     {
-        // Àåºñ°¡ ÀÌ¹Ì ÀÎº¥Åä¸®¿¡ ÀÖ´ÂÁö È®ÀÎ
+        // ì¥ë¹„ê°€ ì´ë¯¸ ì¸ë²¤í† ë¦¬ì— ìˆëŠ”ì§€ í™•ì¸
         auto it = player->Inventory.find(itemName);
-        if (it != player->Inventory.end()) // ÀÌ¹Ì °¡Áö°í ÀÖ´Â °æ¿ì
+        if(it != player->Inventory.end()) // ì´ë¯¸ ê°€ì§€ê³  ìˆëŠ” ê²½ìš°
         {
-            it->second->IncreaseAmount(1);  // ¼ö·® Áõ°¡
-        }
-        else // »õ·Î¿î Àåºñ ±¸¸Å
+            it->second->IncreaseAmount(1);  // ìˆ˜ëŸ‰ ì¦ê°€
+        } else // ìƒˆë¡œìš´ ì¥ë¹„ êµ¬ë§¤
         {
-            // Equipment °´Ã¼¸¦ std::unique_ptr<Item>·Î º¯È¯ÇÏ¿© Àü´Ş
-            std::unique_ptr<Item> item = std::move(std::make_unique<Equipment>(itemName, price, bonusStat, type));
+            // Equipment ê°ì²´ë¥¼ std::unique_ptr<Item>ë¡œ ë³€í™˜í•˜ì—¬ ì „ë‹¬
+            std::unique_ptr<Item> item = std::move(std::make_unique<Equipment>(itemName,price,bonusStat,type));
 
-            // AddItem¿¡¼­ std::move(item)À» ÅëÇØ ¼ÒÀ¯±ÇÀ» ³Ñ±é´Ï´Ù.
-            player->AddItem(std::move(item));  // AddItem ÇÔ¼ö¿¡¼­ ¼ÒÀ¯±ÇÀ» Àü´Ş
+            // AddItemì—ì„œ std::move(item)ì„ í†µí•´ ì†Œìœ ê¶Œì„ ë„˜ê¹ë‹ˆë‹¤.
+            player->AddItem(std::move(item));  // AddItem í•¨ìˆ˜ì—ì„œ ì†Œìœ ê¶Œì„ ì „ë‹¬
         }
 
-        player->Gold -= price;  // °ñµå Â÷°¨
-        std::cout << itemName << "À»(¸¦) ±¸¸ÅÇß½À´Ï´Ù.\n";
-    }
-    else
+        player->Gold -= price;  // ê³¨ë“œ ì°¨ê°
+        std::cout << itemName << "ì„(ë¥¼) êµ¬ë§¤í–ˆìŠµë‹ˆë‹¤.\n";
+    } else
     {
-        std::cout << "°ñµå°¡ ºÎÁ·ÇÕ´Ï´Ù.\n";
+        std::cout << "ê³¨ë“œê°€ ë¶€ì¡±í•©ë‹ˆë‹¤.\n";
     }
 }
 
@@ -440,9 +437,9 @@ void GameManager::PurchaseEquipment(Character* player, const std::string& itemNa
 
 void GameManager::DisplayInventory(Character* player)
 {
-    std::cout << "ÀÎº¥Åä¸®:\n";
-    for (const auto& item : player->Inventory)
+    std::cout << "ì¸ë²¤í† ë¦¬:\n";
+    for(const auto& item : player->Inventory)
     {
-        std::cout << item.first << ": " << item.second->GetName() << " (" << item.second -> GetAmount() << " °³)\n";
+        std::cout << item.first << ": " << item.second->GetName() << " (" << item.second -> GetAmount() << " ê°œ)\n";
     }
 }

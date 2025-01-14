@@ -16,6 +16,7 @@ public:
     int Defense = 0; // 방어력(장비로만 올라감)
     int Gold;
 
+
     // 스마트 포인터를 사용하는 인벤토리: 아이템과 해당 수량을 저장
     std::unordered_map<std::string, std::unique_ptr<Item>> Inventory;
 

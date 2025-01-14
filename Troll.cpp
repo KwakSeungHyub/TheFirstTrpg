@@ -4,36 +4,36 @@
 #include <iostream>
 #include <random>
 
-class TrollClaw : public Item 
+class TrollClaw: public Item
 {
-    public:
-        TrollClaw() : Item("∆Æ∑—¿« πﬂ≈È", 30) {}
+public:
+    TrollClaw(): Item("Ìä∏Î°§Ïùò Î∞úÌÜ±",30) {}
 
-        std::string GetName() const override 
-        {
-            return Name;
-        }
+    std::string GetName() const override
+    {
+        return Name;
+    }
 
-        void Use(class Character* character) override 
-        {
-            std::cout << "∆Æ∑—¿« πﬂ≈È¿ª ∆»æ∆ ∞ÒµÂ∏¶ æÚæ˙Ω¿¥œ¥Ÿ.\n";
-        }
+    void Use(class Character* character) override
+    {
+        std::cout << "Ìä∏Î°§Ïùò Î∞úÌÜ±ÏùÑ ÌåîÏïÑ Í≥®ÎìúÎ•º ÏñªÏóàÏäµÎãàÎã§.\n";
+    }
 
-        int GetPrice() const override 
-        {
-            return 30;  // ∆Æ∑—¿« πﬂ≈È ∞°∞›
-        }
+    int GetPrice() const override
+    {
+        return 30;  // Ìä∏Î°§Ïùò Î∞úÌÜ± Í∞ÄÍ≤©
+    }
 
-        Equipment* GetType() const override 
-        {
-            static Equipment temp("∆Æ∑—¿« πﬂ≈È", 30, 0, Equipment::EquipmentType::Misc);
-            return &temp;
-        }
+    Equipment* GetType() const override
+    {
+        static Equipment temp("Ìä∏Î°§Ïùò Î∞úÌÜ±",30,0,Equipment::EquipmentType::Misc);
+        return &temp;
+    }
 };
 
 Troll::Troll(int level)
     : Monster(level) {
-    Name = "∆Æ∑—";
+    Name = "Ìä∏Î°§";
     Health = 100 + (level * 15);
     Attack = 10 + (level * 4);
     Defense = 5 + (level * 3);
@@ -45,16 +45,16 @@ void Troll::InitializeLootTable() {
 }
 
 std::unique_ptr<Item> Troll::DropItem() {
-    if (LootTable.empty()) {
-        std::cout << Name << "¥¬ ¿¸∏Æ«∞¿ª ∞°¡ˆ∞Ì ¿÷¡ˆ æ Ω¿¥œ¥Ÿ.\n";
+    if(LootTable.empty()) {
+        std::cout << Name << "Îäî Ï†ÑÎ¶¨ÌíàÏùÑ Í∞ÄÏßÄÍ≥† ÏûàÏßÄ ÏïäÏäµÎãàÎã§.\n";
         return nullptr;
     }
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0, LootTable.size() - 1);
+    std::uniform_int_distribution<> dist(0,LootTable.size() - 1);
 
     int index = dist(gen);
-    std::cout << Name << "∞° " << LootTable[index]->GetName() << "∏¶ ∂≥æÓ∆Æ∑»Ω¿¥œ¥Ÿ!\n";
+    std::cout << Name << "Í∞Ä " << LootTable[index]->GetName() << "Î•º Îñ®Ïñ¥Ìä∏Î†∏ÏäµÎãàÎã§!\n";
     return std::move(LootTable[index]);
 }

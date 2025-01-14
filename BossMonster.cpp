@@ -5,59 +5,64 @@
 #include <iostream>
 #include <random>
 
-class DemonLordSword : public Item {
+class DemonLordSword: public Item 
+{
 public:
-    DemonLordSword() : Item("∏∂ø’¿« ∞À", 1000) {}
+    DemonLordSword(): Item("ÎßàÏôïÏùò Í≤Ä",1000) {}
 
-    std::string GetName() const override {
+    std::string GetName() const override 
+    {
         return Name;
     }
 
-    void Use(class Character* character) override {
-        std::cout << "∏∂ø’¿« ∞À¿ª ∆»æ∆ ∞ÒµÂ∏¶ æÚæ˙Ω¿¥œ¥Ÿ.\n";
+    void Use(class Character* character) override 
+    {
+        std::cout << "ÎßàÏôïÏùò Í≤ÄÏùÑ ÌåîÏïÑ Í≥®ÎìúÎ•º ÏñªÏóàÏäµÎãàÎã§.\n";
     }
 
-    int GetPrice() const override {
-        return 1000;  // ∏∂ø’¿« ∞À ∞°∞›
+    int GetPrice() const override 
+    {
+        return 1000;  // ÎßàÏôïÏùò Í≤Ä Í∞ÄÍ≤©
     }
 
-    Equipment* GetType() const override {
-        static Equipment temp("∏∂ø’¿« ∞À", 1000, 0, Equipment::EquipmentType::Misc);
+    Equipment* GetType() const override 
+    {
+        static Equipment temp("ÎßàÏôïÏùò Í≤Ä",1000,0,Equipment::EquipmentType::Misc);
         return &temp;
     }
 };
 
 
-// BossMonster ≈¨∑°Ω∫ ±∏«ˆ
+// BossMonster ÌÅ¥ÎûòÏä§ Íµ¨ÌòÑ
 BossMonster::BossMonster(int level)
-    : Monster(level) 
+    : Monster(level)
 {
-    Name = "∏∂ø’";
+    Name = "ÎßàÏôï";
     Health = 500 + (level * 50);
     Attack = 50 + (level * 10);
     Defense = 40 + (level * 5);
     InitializeLootTable();
 }
 
-void BossMonster::InitializeLootTable() 
+void BossMonster::InitializeLootTable()
 {
-    LootTable.clear();  // ¿Ã¿¸ ¿¸∏Æ«∞ ≈◊¿Ã∫Ì √ ±‚»≠
+    LootTable.clear();  // Ïù¥Ï†Ñ Ï†ÑÎ¶¨Ìíà ÌÖåÏù¥Î∏î Ï¥àÍ∏∞Ìôî
     LootTable.emplace_back(std::make_unique<DemonLordSword>());
 }
 
-std::unique_ptr<Item> BossMonster::DropItem() 
+std::unique_ptr<Item> BossMonster::DropItem()
 {
-        if (LootTable.empty()) 
-        {
-            std::cout << Name << "¥¬ ¿¸∏Æ«∞¿ª ∞°¡ˆ∞Ì ¿÷¡ˆ æ Ω¿¥œ¥Ÿ.\n";
-            return nullptr;
-        }
+    if(LootTable.empty())
+    {
+        std::cout << Name << "Îäî Ï†ÑÎ¶¨ÌíàÏùÑ Í∞ÄÏßÄÍ≥† ÏûàÏßÄ ÏïäÏäµÎãàÎã§.\n";
+        return nullptr;
+    }
 
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> dist(0, LootTable.size() - 1);
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0,LootTable.size() - 1);
 
-        int index = dist(gen);
-        std::cout << Name << "∞° " << LootTable[index]->GetName() << "∏¶ ∂≥æÓ∆Æ∑»Ω¿¥œ¥Ÿ!\n";
-        return std::move(LootTable[index]);
+    int index = dist(gen);
+    std::cout << Name << "Í∞Ä " << LootTable[index]->GetName() << "Î•º Îñ®Ïñ¥Ìä∏Î†∏ÏäµÎãàÎã§!\n";
+    return std::move(LootTable[index]);
 }

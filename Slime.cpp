@@ -4,34 +4,38 @@
 #include <iostream>
 #include <random>
 
-// ½½¶óÀÓ Ã¼¾× ¾ÆÀÌÅÛ Å¬·¡½º Á¤ÀÇ (SlimeJelly Å¬·¡½º)
-class SlimeFluid : public Item {
+// ìŠ¬ë¼ì„ ì²´ì•¡ ì•„ì´í…œ í´ë˜ìŠ¤ ì •ì˜ (SlimeJelly í´ë˜ìŠ¤)
+class SlimeFluid : public Item 
+{
 public:
-    SlimeFluid() : Item("½½¶óÀÓ Ã¼¾×", 15) {}
+    SlimeFluid() : Item("ìŠ¬ë¼ì„ ì²´ì•¡", 15) {}
 
-    std::string GetName() const override {
+    std::string GetName() const override 
+    {
         return Name;
     }
 
-    void Use(class Character* character) override {
-        std::cout << "½½¶óÀÓ Ã¼¾×À» ÆÈ¾Æ °ñµå¸¦ ¾ò¾ú½À´Ï´Ù.\n";
+    void Use(class Character* character) override 
+    {
+        std::cout << "ìŠ¬ë¼ì„ ì²´ì•¡ì„ íŒ”ì•„ ê³¨ë“œë¥¼ ì–»ì—ˆìŠµë‹ˆë‹¤.\n";
     }
 
     int GetPrice() const override {
-        return 15;  // ½½¶óÀÓ Ã¼¾× °¡°İ
+        return 15;  // ìŠ¬ë¼ì„ ì²´ì•¡ ê°€ê²©
     }
 
-    Equipment* GetType() const override {
-        static Equipment temp("½½¶óÀÓ Ã¼¾×", 15, 0, Equipment::EquipmentType::Misc);
+    Equipment* GetType() const override 
+    {
+        static Equipment temp("ìŠ¬ë¼ì„ ì²´ì•¡", 15, 0, Equipment::EquipmentType::Misc);
         return &temp;
     }
 };
 
 
 
-Slime::Slime(int level)
-    : Monster(level) {
-    Name = "½½¶óÀÓ";
+Slime::Slime(int level) : Monster(level) 
+{
+    Name = "ìŠ¬ë¼ì„";
     Health = 50 + (level * 10);
     Attack = 5 + (level * 2);
     Defense = 2 + (level * 2);
@@ -42,9 +46,11 @@ void Slime::InitializeLootTable() {
     LootTable.emplace_back(std::make_unique<SlimeFluid>());
 }
 
-std::unique_ptr<Item> Slime::DropItem() {
-    if (LootTable.empty()) {
-        std::cout << Name << "´Â Àü¸®Ç°À» °¡Áö°í ÀÖÁö ¾Ê½À´Ï´Ù.\n";
+std::unique_ptr<Item> Slime::DropItem() 
+{
+    if (LootTable.empty()) 
+    {
+        std::cout << Name << "ëŠ” ì „ë¦¬í’ˆì„ ê°€ì§€ê³  ìˆì§€ ì•ŠìŠµë‹ˆë‹¤.\n";
         return nullptr;
     }
 
@@ -53,6 +59,6 @@ std::unique_ptr<Item> Slime::DropItem() {
     std::uniform_int_distribution<> dist(0, LootTable.size() - 1);
 
     int index = dist(gen);
-    std::cout << Name << "°¡ " << LootTable[index]->GetName() << "¸¦ ¶³¾îÆ®·È½À´Ï´Ù!\n";
+    std::cout << Name << "ê°€ " << LootTable[index]->GetName() << "ë¥¼ ë–¨ì–´íŠ¸ë ¸ìŠµë‹ˆë‹¤!\n";
     return std::move(LootTable[index]);
 }

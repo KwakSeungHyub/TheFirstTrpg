@@ -1,19 +1,21 @@
 #include "item.h"
 #include "Equipment.h"
 
-Equipment::Equipment(const std::string& name, int price, int bonusStat, EquipmentType type)
-    : Item(name, price), BonusStat(bonusStat), Type(type) {
+Equipment::Equipment(const std::string& name,int price,int bonusStat,EquipmentType type)
+    : Item(name,price),BonusStat(bonusStat),Type(type) {}
+
+void Equipment::Use(class Character* character) 
+{
+    // ì¥ë¹„ ì‚¬ìš©ì— ê´€í•œê±´ ìºë¦­í„°ì— ì „ë¶€ êµ¬í˜„
 }
 
-void Equipment::Use(class Character* character) {
-    // ±¸Çö ³»¿ë
-}
-
-std::string Equipment::GetName() const {
+std::string Equipment::GetName() const 
+{
     return Name;
 }
 
-int Equipment::GetBonusStat() const {
+int Equipment::GetBonusStat() const 
+{
     return BonusStat;
 }
 
@@ -22,12 +24,13 @@ int Equipment::GetPrice() const {
     return Price;
 }
 
-bool Equipment::IsEquipable() const {
-    
-    return true;  // ¿¹½Ã·Î Ç×»ó ÀåÂø °¡´ÉÇÏµµ·Ï ¼³Á¤
+bool Equipment::IsEquipable() const 
+{
+    return true;  // ì˜ˆì‹œë¡œ í•­ìƒ ì¥ì°© ê°€ëŠ¥í•˜ë„ë¡ ì„¤ì •
 }
 
-Equipment* Equipment::GetType() const {
-    // EquipmentTypeÀ» Equipment*·Î º¯È¯ÇÏ¿© ¹İÈ¯ÇÏ´Â ¿¹½Ã
+Equipment* Equipment::GetType() const 
+{
+    // EquipmentTypeì„ Equipment*ë¡œ ë³€í™˜í•˜ì—¬ ë°˜í™˜í•˜ëŠ” ì˜ˆì‹œ
     return const_cast<Equipment*>(this);
 }

@@ -2,19 +2,18 @@
 #include "Character.h"
 #include <iostream>
 
-// »ý¼ºÀÚ
-HealthPotion::HealthPotion(const std::string& name, int price, int amount)
-    : Item(name, price, amount) {
-}
+// ìƒì„±ìž
+HealthPotion::HealthPotion(const std::string& name,int price,int amount)
+    : Item(name,price,amount) {}
 
-// Use ÇÔ¼ö ±¸Çö (Ã¼·Â È¸º¹ È¿°ú)
+// Use í•¨ìˆ˜ êµ¬í˜„ (ì²´ë ¥ íšŒë³µ íš¨ê³¼)
 void HealthPotion::Use(Character* character) {
-    character->Health += 50;  // ¿¹½Ã·Î Ã¼·Â 50 È¸º¹
-    std::cout << Name << "À» »ç¿ëÇÏ¿© Ã¼·ÂÀÌ 50¸¸Å­ È¸º¹µÇ¾ú½À´Ï´Ù!\n";
+    character->Health += 50;  // ì˜ˆì‹œë¡œ ì²´ë ¥ 50 íšŒë³µ
+    std::cout << Name << "ì„ ì‚¬ìš©í•˜ì—¬ ì²´ë ¥ì´ 50ë§Œí¼ íšŒë³µë˜ì—ˆìŠµë‹ˆë‹¤!\n";
 }
 
-// Àåºñ Å¸ÀÔ ¹ÝÈ¯
+// ìž¥ë¹„ íƒ€ìž… ë°˜í™˜
 Equipment* HealthPotion::GetType() const {
-    static Equipment temp("Ã¼·Â Æ÷¼Ç", 50, 0, Equipment::EquipmentType::Consumable);
+    static Equipment temp("ì²´ë ¥ í¬ì…˜",50,0,Equipment::EquipmentType::Consumable);
     return &temp;
 }
