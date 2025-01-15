@@ -172,6 +172,7 @@ void GameManager::Battle(Character* player)
             player->Gold += rand_gold; //골드 획득
             std::cout << rand_gold << "골드를 획득하셨습니다!\n";
             player ->GainExperience(100);  // 경험치 획득
+            
             player -> ResetAttackBoost();
             // 전리품 드롭
             std::unique_ptr<Item> loot = monster->DropItem();

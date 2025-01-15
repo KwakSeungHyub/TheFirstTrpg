@@ -222,10 +222,15 @@ void Character::AutoUseItems()
 // 공격력 초기화
 void Character::ResetAttackBoost()
 {
-    // 공격력 10만큼 감소(효과 제거)
-    Attack -= 10;
-    AttackBoostAmount = 0;
-    std::cout << "전투가 끝났습니다. 공격력이 초기화되었습니다. 현재 공격력: " << Attack << "\n";
+    // 공격력 10만큼 감소 공격력 포션을 먹었을 때만 적용되게(효과 제거)
+    if(AttackBoostAmount == 1) 
+    {
+        Attack -= 10;
+        std::cout << "전투가 끝났습니다. 공격력이 초기화되었습니다. 현재 공격력: " << Attack << "\n";
+        AttackBoostAmount = 0;
+    }
+    
+    
 }
 
 // 무기 장착
