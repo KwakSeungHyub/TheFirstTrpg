@@ -9,7 +9,7 @@ AttackBoost::AttackBoost(const std::string& name,int price,int amount)
 void AttackBoost::Use(Character* character)
 {
     character->Attack += GetBonusStat() + 10;  // BonusStat은 기본값을 0으로 설정했지만, 자식 클래스에서 오버라이드할 수 있습니다.
-    std::cout << Name << "을 사용하여 공격력이 " << GetBonusStat() << "만큼 증가했습니다!\n";
+    std::cout << Name << "을 사용하여 공격력이 10이 증가했습니다! 현재 공격력은 "<<character->Attack <<"입니다\n";
 }
 
 // 장비 타입 반환 (Equipment*로 반환)
