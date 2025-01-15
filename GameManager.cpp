@@ -399,7 +399,7 @@ void GameManager::VisitShop(Character* player, Shop* shop, GameManager* gameMana
         std::cout << "8. 미스릴 갑옷 (1000 골드)\n";
         std::cout << "9. 드래곤슬레이어 (2000 골드)\n";
         std::cout << "0. 드래곤비늘갑옷 (2000 골드)\n";
-        std::cout << "99. 뒤로가기\n";
+        std::cout << "9. 뒤로가기\n";
 
         std::cin >> buyChoice;
 
