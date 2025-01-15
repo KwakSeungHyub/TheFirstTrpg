@@ -8,7 +8,7 @@ using namespace std;
 
 
 Character::Character(const std::string& name)
-    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100) {
+    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100), minimum(10), maximum(20) {
 }
 
 // 레벨업 기능
@@ -20,6 +20,8 @@ void Character::LevelUp()
     Attack += 5;
     Health = MaxHealth;
     Experience;
+    minimum += 5;
+    maximum += 5;
     std::cout << "레벨 업! 현재 레벨: " << Level << "!\n";
 }
 
