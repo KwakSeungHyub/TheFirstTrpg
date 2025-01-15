@@ -23,17 +23,24 @@ void Character::LevelUp()
     std::cout << "레벨 업! 현재 레벨: " << Level << "!\n";
 }
 
+
 // 경험치 획득 및 레벨업 체크
 void Character::GainExperience(int exp)
 {
     Experience += exp;
     std::cout << exp << " 경험치를 획득했습니다.\n";
-    if (Experience >= Level * 100)
-    {
-        Experience -= Level * 100;
-        LevelUp();
+    
+    // 경험치가 최대 경험치를 초과할 경우 처리
+    while (Experience >= MaxExperience) {
+        int overflow = Experience - MaxExperience; // 초과된 경험치
+        Experience = overflow; // 초과 경험치를 현재 경험치로 설정
+        LevelUp(); // 레벨업
     }
+    
+    // 레벨업 후에 전체 경험치(MaxExperience) 갱신
+    std::cout << "현재 경험치: " << Experience << " / " << MaxExperience << std::endl;
 }
+
 
 // 데미지 받기
 void Character::TakeDamage(int damage)
