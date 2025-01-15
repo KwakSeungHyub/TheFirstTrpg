@@ -116,7 +116,7 @@ void GameManager::Battle(Character* player)
     std::unique_ptr<Monster> monster = GenerateRandomMonster(player->Level);
 
     // 전투 시작 전에 아이템 자동 사용
-    player->AutoUseItems();
+    
 
     int turn = 1; // 몬스터와 턴제로 몇번 싸우는걸 출력하기위해서
 
