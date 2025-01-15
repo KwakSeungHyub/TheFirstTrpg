@@ -21,5 +21,4 @@ public:
     // 아이템 판매
     void SellItem(const std::string& itemName, Character* player);
 
-    void PurchaseEquipment();
 };

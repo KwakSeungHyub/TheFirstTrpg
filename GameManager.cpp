@@ -397,16 +397,16 @@ void GameManager::VisitShop(Character* player,Shop* shop,GameManager* gameManage
         case 2:  // 장비 아이템 구매
         std::cout << "\n=================================================\n";
         std::cout << "\n장비 아이템 목록입니다. 현재 보유 골드(" << player->Gold << ")\n";
-        std::cout << "1. 목검 (100 골드)\n";
-        std::cout << "2. 나무갑옷 (100 골드)\n";
-        std::cout << "3. 구리검 (200 골드)\n";
-        std::cout << "4. 구리갑옷 (200 골드)\n";
-        std::cout << "5. 철검 (500 골드)\n";
-        std::cout << "6. 철갑옷 (500 골드)\n";
-        std::cout << "7. 미스릴 창(1000 골드)\n";
-        std::cout << "8. 미스릴 갑옷 (1000 골드)\n";
-        std::cout << "9. 드래곤슬레이어 (2000 골드)\n";
-        std::cout << "0. 드래곤비늘갑옷 (2000 골드)\n";
+        std::cout << "1. 목검 (100 골드) : 공격력이 3 증가합니다.\n";
+        std::cout << "2. 나무갑옷 (100 골드) : 방어력이 5 증가합니다.\n";
+        std::cout << "3. 구리검 (200 골드) : 공격력이 5 증가합니다.\n";
+        std::cout << "4. 구리갑옷 (200 골드) : 방어력이 7 증가합니다.\n";
+        std::cout << "5. 철검 (500 골드) : 공격력이 20 증가합니다.\n";
+        std::cout << "6. 철갑옷 (500 골드) : 방어력이 20 증가합니다.\n";
+        std::cout << "7. 미스릴 창(1000 골드) : 공격력이 30 증가합니다.\n";
+        std::cout << "8. 미스릴 갑옷 (1000 골드): 방어력이 30 증가합니다.\n";
+        std::cout << "9. 드래곤슬레이어 (2000 골드) : 공격력이 50 증가합니다.\n";
+        std::cout << "0. 드래곤비늘갑옷 (2000 골드) : 방어력이 50 증가합니다.\n";
         std::cout << "99. 뒤로가기\n";
         std::cout << "선택해주세요 :";
         std::cin >> buyChoice;  // 한 번만 입력 받음
@@ -616,13 +616,6 @@ void GameManager::PurchaseEquipment(Character* player,const std::string& itemNam
         std::cout << "골드가 부족합니다.\n";
     }
 }
-
-
-
-
-
-
-
 
 void GameManager::DisplayInventory(Character* player)
 {

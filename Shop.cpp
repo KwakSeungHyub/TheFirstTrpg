@@ -118,8 +118,7 @@ void Shop::SellItem(const std::string& itemName, Character* player)
         std::cout << "이 아이템을 가지고 있지 않습니다.\n";
     }
 }
-void Shop::PurchaseEquipment()
-{}
+
 // 아이템 상세 설명용 메서드(index 기준)
 void Shop::DisplayItemDetails(int index) const
 {
