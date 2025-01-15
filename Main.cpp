@@ -46,6 +46,6 @@ int main()
         delete shop;
 
 
-        std::cout << "의현: 내가 다 끝내주마";
+       
         return 0;
 }

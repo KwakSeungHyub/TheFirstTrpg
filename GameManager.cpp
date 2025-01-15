@@ -96,7 +96,7 @@ void GameManager::Battle(Character* player)
 {
     std::random_device rd; //시드값 생성 조금 느리다
     std::mt19937 mt(rd()); //mt19937은 난수엔진타입 
-    std::uniform_int_distribution<int> dist(5, 10);//5~10까지 범위지정
+    std::uniform_int_distribution<int> dist(10, 20);//5~10까지 범위지정
     int rand_gold = dist(mt);
 
     // 랜덤 몬스터 생성
