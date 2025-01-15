@@ -16,22 +16,32 @@ int main()
     const size_t maxNameLength = 20;
     std::string playerName;
 
-    std::cout << "캐릭터 이름을 입력해주세요 (최대 " << maxNameLength << "자): ";
-
-    std::getline(std::cin, playerName);
-
-    // 이름 길이 제한 처리 / 공백 입력 처리
-    while (playerName.empty() || playerName.length() > maxNameLength)
+    // 이름 길이 및 공백 검사
+    while(true)
     {
-        if (playerName.empty())
+        std::cout << "플레이어 이름을 입력하세요: ";
+        std::getline(std::cin,playerName);
+
+        // 공백 제거를 위한 임시 변수 생성
+        std::string trimmedName = playerName;
+        trimmedName.erase(remove_if(trimmedName.begin(),trimmedName.end(),isspace),trimmedName.end());
+
+        // 공백 입력 처리
+        if(trimmedName.empty())
         {
-            std::cout << "이름은 비어 있을 수 없습니다. 다시 입력해주세요: ";
+            std::cout << "이름은 비어 있을 수 없습니다. 다시 입력해주세요.\n";
+            continue;
         }
-        else
+
+        // 길이 초과 처리
+        if(playerName.length() > maxNameLength)
         {
-            std::cout << "이름이 너무 깁니다. 최대 " << maxNameLength << "자 이내로 입력해주세요: ";
+            std::cout << "이름이 너무 깁니다. 최대 " << maxNameLength << "자 이내로 입력해주세요.\n";
+            continue;
         }
-        std::getline(std::cin, playerName);
+
+        // 유효한 이름일 경우 반복문 탈출
+        break;
     }
 
 

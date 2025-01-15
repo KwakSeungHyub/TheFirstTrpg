@@ -5,8 +5,9 @@
 class AttackBoost : public Item
 {
 public:
-    // 생성자
-    AttackBoost(const std::string& name, int price, int amount = 1) {};
+    
+    //생성자
+    AttackBoost(const std::string & name,int price,int amount = 1);
 
     // Use 함수 구현 (공격력 증가 효과)
     void Use(Character* character) override;

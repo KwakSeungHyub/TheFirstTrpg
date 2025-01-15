@@ -13,11 +13,17 @@ Shop::Shop()
     AvailableItems.emplace_back(std::make_unique<AttackBoost>("공격력 포션", 50, 1)); // 1 추가
     AvailableItems.emplace_back(std::make_unique<RevivePotion>("부활 포션", 100, 1)); // 1 추가
 
-    AvailableItems.emplace_back(std::make_unique<Equipment>("목검", 100, 3, Equipment::EquipmentType::Weapon));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("나무갑옷", 100, 5, Equipment::EquipmentType::Armor));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("구리검", 200, 5, Equipment::EquipmentType::Weapon));
-    AvailableItems.emplace_back(std::make_unique<Equipment>("구리갑옷", 200, 7, Equipment::EquipmentType::Armor));
-
+    AvailableItems.emplace_back(std::make_unique<Equipment>("목검", 100, 7, Equipment::EquipmentType::Weapon));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("나무갑옷", 100, 7, Equipment::EquipmentType::Armor));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("구리검", 200, 10, Equipment::EquipmentType::Weapon));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("구리갑옷", 200, 10, Equipment::EquipmentType::Armor));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("철검",300,20,Equipment::EquipmentType::Weapon));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("철갑옷",300,20,Equipment::EquipmentType::Armor));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("미스릴 검",500,35,Equipment::EquipmentType::Weapon));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("미스릴 갑옷",500,35,Equipment::EquipmentType::Armor));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("드래곤 슬레이어",1000,50,Equipment::EquipmentType::Weapon));
+    AvailableItems.emplace_back(std::make_unique<Equipment>("드래곤 비늘갑옷",1000,50,Equipment::EquipmentType::Armor));
+   
     ItemDescriptions["체력 포션"] = "체력을 회복합니다.";
     ItemDescriptions["공격력 포션"] = "공격력을 일시적으로 증가시킵니다.";
     ItemDescriptions["부활 포션"] = "사망 시 사용되어 체력을 회복합니다.";
@@ -25,6 +31,10 @@ Shop::Shop()
     ItemDescriptions["나무갑옷"] = "방어력을 5 증가시키는 방어구.";
     ItemDescriptions["구리검"] = "공격력을 5 증가시키는 무기.";
     ItemDescriptions["구리갑옷"] = "방어력을 7 증가시키는 방어구.";
+    ItemDescriptions["철검"] = "공격력을 10 증가시키는 무기.";
+    ItemDescriptions["철갑옷"] = "방어력을 10 증가시키는 방어구.";
+    ItemDescriptions["드래곤 슬레이어"] = "공격력을 20 증가시키는 무기.";
+    ItemDescriptions["드래곤 비늘갑옷"] = "방어력을 20 증가시키는 방어구.";
 }
 
 void Shop::DisplayItems() const
