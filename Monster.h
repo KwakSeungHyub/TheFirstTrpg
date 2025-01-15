@@ -20,18 +20,15 @@ public:
     std::vector<std::unique_ptr<Item>> LootTable; // 전리품 테이블
 
     // 기본 생성자
-    Monster() : Name("Unknown"), Health(100), Attack(10), Defense(5), Level(1) {}
+    Monster() : Name("Unknown"), Health(100), Attack(10), Defense(5), Level(1), MaxHealth(Health){}
 
     // 레벨 기반 생성자
-    Monster(int level) : Name("Unknown"), Health(100 + level * 10), Attack(10 + level * 2), Defense(5 + level), Level(level) {}
+    Monster(int level) : Name("Unknown"), Health(100 + level * 10), Attack(10 + level * 2), Defense(5 + level), Level(level), MaxHealth(Health) {}
 
     // 이름, 체력, 공격력, 방어력 기반 생성자
     Monster(const std::string& name, int health, int attack, int defense)
-        : Name(name), Health(health), Attack(attack), Defense(defense), Level(1) {
+        : Name(name), Health(health), Attack(attack), Defense(defense), Level(1), MaxHealth(health) {
     }
-
-    // 몬스터를 잡았을때 주는 경험치를 반환하는 함수
-    int GetExperience() const { return Experience; }
 
     // 피해를 받으면 체력 감소
     void TakeDamage(int damage)

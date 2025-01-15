@@ -8,7 +8,7 @@ using namespace std;
 
 
 Character::Character(const std::string& name)
-    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100) {
+    : Name(name), Level(1), Health(150), MaxHealth(150), Attack(20), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100), minimum(10), maximum(20) {
 }
 
 // 레벨업 기능
@@ -20,8 +20,9 @@ void Character::LevelUp()
     Attack += 5;
     Health = MaxHealth;
     Experience;
+    minimum += 5;
+    maximum += 5;
     std::cout << "레벨 업! 현재 레벨: " << Level << "!\n";
-    cout << "캐릭터의 경험치 칸 이 " << MaxExperience << "로 증가하였습니다!\n";
 }
 
 
@@ -63,6 +64,7 @@ void Character::DisplayStatus() const {
     cout << " 레벨  :  " << Level << endl;
     cout << " 체력  :  " << Health << "/" << MaxHealth << endl;
     cout << "공격력 :  " << Attack << endl;
+    cout << "방어력 :  " << Defense << endl;
     cout << " 골드  :  " << Gold << endl;
     cout << " EXP   :  " << Experience << "/" << MaxExperience << endl;
     cout << "=======================\n";
@@ -187,18 +189,31 @@ void Character::AutoUseItems()
 
     // 공격력 포션 사용
     auto attackBoostPotion = Inventory.find("공격력 포션");
-    if (attackBoostPotion != Inventory.end() && attackBoostPotion->second->GetAmount() > 0)
-    {
-        std::cout << "자동으로 공격력 포션을 사용합니다!\n";
-        attackBoostPotion->second->Use(this);
-        attackBoostPotion->second->DecreaseAmount(1);
-        if (attackBoostPotion->second->GetAmount() == 0)
-        {
-            Inventory.erase(attackBoostPotion);
+    // 공격력 포션이 있고, 이미 사용한 적이 없는 경우만 허용
+    if(attackBoostPotion != Inventory.end() && AttackBoostAmount == 0) {
+        if(attackBoostPotion->second->GetAmount() > 0) {  // 포션 수량 확인
+            if(AttackBoostAmount == 0) {  // 아직 사용하지 않은 경우
+                std::cout << "자동으로 공격력 포션을 사용합니다!\n";
+                attackBoostPotion->second->Use(this);  // 포션 사용
+                attackBoostPotion->second->DecreaseAmount(1);  // 포션 수량 감소
+
+                // 포션 수량 0일 시 인벤토리에서 제거
+                if(attackBoostPotion->second->GetAmount() == 0) {
+                    Inventory.erase(attackBoostPotion);
+                }
+
+                // 포션 사용 상태 기록 (AttackBoostAmount를 사용했음을 기록)
+                AttackBoostAmount = 1;  // 포션을 사용한 상태로 설정
+            } else {
+                std::cout << "이미 공격력 포션을 사용하여 추가 사용이 불가능합니다!\n";
+            }
+        } else {
+            std::cout << "공격력 포션이 없습니다!\n";  // 포션이 수량이 0일 때 메시지 출력
         }
-        AttackBoostAmount = 10;
-        Attack += AttackBoostAmount;
-    }
+    } 
+
+
+
     // 자동으로 최적의 무기와 방어구 장착
     AutoEquipItems();
 }
@@ -207,103 +222,102 @@ void Character::AutoUseItems()
 // 공격력 초기화
 void Character::ResetAttackBoost()
 {
-    Attack -= AttackBoostAmount;
-    AttackBoostAmount = 0;
-    std::cout << "전투가 끝났습니다. 공격력이 초기화되었습니다. 현재 공격력: " << Attack << "\n";
+    // 공격력 10만큼 감소 공격력 포션을 먹었을 때만 적용되게(효과 제거)
+    if(AttackBoostAmount == 1) 
+    {
+        Attack -= 10;
+        std::cout << "전투가 끝났습니다. 공격력이 초기화되었습니다. 현재 공격력: " << Attack << "\n";
+        AttackBoostAmount = 0;
+    }
+    
+    
 }
 
+// 무기 장착
 void Character::EquipWeapon(Equipment* weapon)
 {
-    if (weapon && weapon->GetEquimentType() == Equipment::EquipmentType::Weapon)
+    // 무기가 유효한지, Equipment 타입인지 체크
+    if(weapon && weapon->GetEquimentType() == Equipment::EquipmentType::Weapon)
     {
-        // 이전 무기 제거
-        if (EquippedWeapon)
+        // 기존 무기 해제 처리
+        if(EquippedWeapon != nullptr)
         {
-            Attack -= EquippedWeapon->GetBonusStat(); // 기존 무기 효과를 빼는 부분
+            // 기존 무기가 있는 경우에만 보너스를 빼기
+            Attack -= EquippedWeapon->GetBonusStat();  // 기존 무기 효과를 빼는 부분
+            std::cout << "기존 무기 " << EquippedWeapon->GetName() << "의 효과가 제거되었습니다.\n";
         }
-        // 새 무기 장착
-        EquippedWeapon = weapon;
-        Attack += weapon->GetBonusStat(); // 새 무기 추가 효과
 
-        // 포인터 상태 점검
-        std::cout << "새로운 무기 장착: " << (EquippedWeapon ? EquippedWeapon->GetName() : "없음") << "\n";
+        // 새로운 무기 장착
+        EquippedWeapon = weapon;
+        Attack += weapon->GetBonusStat();  // 새 무기 추가 효과
+        std::cout << weapon->GetName() << " 무기가 장착되었습니다.\n";
+    } else
+    {
+        std::cout << "장착할 수 있는 무기가 아닙니다.\n";
     }
 }
 
-void Character::EquipArmor(Equipment* armor) {
-    if (armor && armor->GetEquimentType() == Equipment::EquipmentType::Armor)
+void Character::EquipArmor(Equipment* armor)
+{
+    // 방어구가 유효한지, Equipment 타입인지 체크
+    if(armor && armor->GetEquimentType() == Equipment::EquipmentType::Armor)
     {
-        // 이전에 장착한 방어구가 있다면 해당 방어구 효과를 뺀다.
-        if (EquippedArmor != nullptr) {
-            Defense -= EquippedArmor->GetBonusStat();
+        // 기존 방어구 해제 처리
+        if(EquippedArmor != nullptr)
+        {
+            // 기존 방어구가 있을 경우 방어력 보너스를 빼기
+            Defense -= EquippedArmor->GetBonusStat();  // 기존 방어구 효과를 빼는 부분
+            std::cout << "기존 방어구 " << EquippedArmor->GetName() << "의 효과가 제거되었습니다.\n";
         }
 
-        // 새로운 방어구를 장착하고, 방어력 증가
+        // 새로운 방어구 장착
         EquippedArmor = armor;
         Defense += armor->GetBonusStat();  // 방어구의 방어력 추가
-
-        // 포인터 상태 점검
-        std::cout << "새로운 방어구 장착: " << (EquippedArmor ? EquippedArmor->GetName() : "없음") << "\n";
-    }
-    else {
+        std::cout << armor->GetName() << " 방어구가 장착되었습니다.\n";
+    } else {
         std::cout << "장착할 수 있는 방어구가 아닙니다.\n";
     }
 }
 
 
-
-
-
-
-void Character::AutoEquipItems() {
+void Character::AutoEquipItems()
+{
     Equipment* bestWeapon = nullptr;
     Equipment* bestArmor = nullptr;
 
     // 인벤토리에서 가장 좋은 무기와 방어구를 찾음
-    for (const auto& item : Inventory) {
+    for(const auto& item : Inventory) {
         const auto& itemPtr = item.second;
 
         // 아이템이 Equipment 타입일 경우만 처리
         Equipment* equipmentItem = dynamic_cast<Equipment*>(itemPtr.get());
-        if (!equipmentItem) {
+        if(!equipmentItem) {
             continue;  // Equipment가 아니면 건너뛰기
         }
 
-        // equipmentItem->GetType()은 EquipmentType을 반환하므로,
-        // 바로 CompareEquipmentType에 넘겨주면 됩니다.
-        // AutoEquipItems 함수에서 비교
-        // 무기 비교
-        if (equipmentItem->GetEquimentType() == Equipment::EquipmentType::Weapon) {
-            if (!bestWeapon || equipmentItem->GetBonusStat() > bestWeapon->GetBonusStat()) {
-                bestWeapon = equipmentItem;
-            }
+        // 무기 비교 (현재 장착된 무기가 없다면)
+        if(!EquippedWeapon && equipmentItem->GetEquimentType() == Equipment::EquipmentType::Weapon) {
+            bestWeapon = equipmentItem;
         }
 
-        // 방어구 비교
-        if (equipmentItem->GetEquimentType() == Equipment::EquipmentType::Armor) {
-            if (!bestArmor || equipmentItem->GetBonusStat() > bestArmor->GetBonusStat()) {
-                bestArmor = equipmentItem;
-            }
+        // 방어구 비교 (현재 장착된 방어구가 없다면)
+        if(!EquippedArmor && equipmentItem->GetEquimentType() == Equipment::EquipmentType::Armor) {
+            bestArmor = equipmentItem;
         }
-
-
-
-
     }
 
     // 최적의 무기 장착
-    if (bestWeapon) {
+    if(bestWeapon) {
         EquipWeapon(bestWeapon);  // 새 무기 장착
         std::cout << bestWeapon->GetName() << "을(를) 무기로 장착합니다.\n";
-        std::cout << "현재 공격력은 " << Attack << "입니다.\n";
         Inventory.erase(bestWeapon->GetName());  // 인벤토리에서 제거
     }
 
     // 최적의 방어구 장착
-    if (bestArmor) {
+    if(bestArmor) {
         EquipArmor(bestArmor);  // 새 방어구 장착
         std::cout << bestArmor->GetName() << "을(를) 방어구로 장착합니다.\n";
-        std::cout << "현재 방어력은 " << Defense << "입니다.\n";
         Inventory.erase(bestArmor->GetName());  // 인벤토리에서 제거
     }
 }
+
