@@ -1,7 +1,7 @@
 #pragma once
 #include "Monster.h"
 
-class Orc: public Monster {
+class Orc : public Monster {
 public:
     // 생성자
     Orc(int level);

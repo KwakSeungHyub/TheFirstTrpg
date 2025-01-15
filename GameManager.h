@@ -18,7 +18,7 @@ public:
     static std::unique_ptr<Monster> GenerateRandomMonster(int level);
 
     // 게임 흐름 제어 함수
-    void StartGame(Character* player,Shop* shop);
+    void StartGame(Character* player, Shop* shop);
 
     // 보스 몬스터 생성 (std::unique_ptr<BossMonster> 반환)
     static std::unique_ptr<BossMonster> GenerateBossMonster(int level);
@@ -27,9 +27,9 @@ public:
     static void Battle(Character* player);
 
     // 상점 방문 처리 함수
-    static void VisitShop(Character* player,Shop* shop,GameManager* gameManager);
+    static void VisitShop(Character* player, Shop* shop, GameManager* gameManager);
 
-    void PurchaseEquipment(Character* player,const std::string& itemName,int price,int bonusStat,Equipment::EquipmentType type);
+    void PurchaseEquipment(Character* player, const std::string& itemName, int price, int bonusStat, Equipment::EquipmentType type);
 
     // 인벤토리 확인 함수
     static void DisplayInventory(Character* player);
