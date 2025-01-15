@@ -3,8 +3,9 @@
 #include <iostream>
 
 // 생성자
-HealthPotion::HealthPotion(const std::string& name,int price,int amount)
-    : Item(name,price,amount) {}
+HealthPotion::HealthPotion(const std::string& name, int price, int amount)
+    : Item(name, price, amount) {
+}
 
 // Use 함수 구현 (체력 회복 효과)
 void HealthPotion::Use(Character* character) {
@@ -14,6 +15,6 @@ void HealthPotion::Use(Character* character) {
 
 // 장비 타입 반환
 Equipment* HealthPotion::GetType() const {
-    static Equipment temp("체력 포션",50,0,Equipment::EquipmentType::Consumable);
+    static Equipment temp("체력 포션", 50, 0, Equipment::EquipmentType::Consumable);
     return &temp;
 }
