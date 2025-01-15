@@ -491,20 +491,26 @@ void GameManager::VisitShop(Character* player, Shop* shop, GameManager* gameMana
                 std::cout << itemToSell->first << " " << itemAmount << "개를 판매했습니다. 총 " << totalPrice << " 골드가 추가되었습니다.\n";
                 player->Inventory.erase(itemToSell);  // 아이템 삭제
             } else {
-                // 수량 감소
-                player->Gold += itemToSell->second->GetPrice();
-                std::cout << itemToSell->first << " 1개를 판매했습니다. " << itemToSell->second->GetPrice() << " 골드가 추가되었습니다.\n";
-                itemToSell->second->DecreaseAmount(1);  // 수량 1 감소
-                if(itemToSell->second->GetAmount() == 0) {
-                    player->Inventory.erase(itemToSell);  // 수량이 0이 되면 아이템 제거
+                std::cout << itemToSell->first << " 1개를 판매 하시겠습니까?";
+                char sellChoice;
+                std::cin >> sellChoice;
+                if(sellChoice == 'Y' || sellChoice == 'y') {
+                    int totalPrice = itemAmount * itemToSell->second->GetPrice();
+                    player->Gold += totalPrice;
+                    std::cout << itemToSell->first << " " << itemAmount << "개를 판매했습니다. 총 " << totalPrice << " 골드가 추가되었습니다.\n";
+                    player->Inventory.erase(itemToSell);  // 아이템 삭제
+                } else {
+                    // 수량 감소
+                    std::cout << "판매를 진행하지 않습니다. 전 메뉴로 돌아갑니다.\n";
+                    return;
                 }
             }
         } else {
             // 수량이 1개일 경우 판매 여부 확인
             std::cout << itemToSell->first << "이(가) " << itemAmount << "개 있습니다. 판매하시겠습니까? (Y/N): ";
-            char bulkSellChoice;
-            std::cin >> bulkSellChoice;
-            if(bulkSellChoice == 'Y' || bulkSellChoice == 'y') {
+            char sellChoice;
+            std::cin >> sellChoice;
+            if(sellChoice == 'Y' || sellChoice == 'y') {
                 int totalPrice = itemAmount * itemToSell->second->GetPrice();
                 player->Gold += totalPrice;
                 std::cout << itemToSell->first << " " << itemAmount << "개를 판매했습니다. 총 " << totalPrice << " 골드가 추가되었습니다.\n";
