@@ -21,7 +21,7 @@ public:
 
     int GetPrice() const override
     {
-        return 30;  // 트롤의 발톱 가격
+        return 90;  // 트롤의 발톱 가격
     }
 
     Equipment* GetType() const override
@@ -38,6 +38,7 @@ Troll::Troll(int level)
     Health = MaxHealth;
     Attack = 10 + (level * 4);
     Defense = 5 + (level * 3);
+    Experience = 110 + (level * 5);
     InitializeLootTable();
 }
 
