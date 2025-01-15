@@ -4,10 +4,10 @@
 #include <iostream>
 #include <random>
 
-class OrcAxe: public Item
+class OrcAxe : public Item
 {
 public:
-    OrcAxe(): Item("오크의 도끼",25) {}
+    OrcAxe() : Item("오크의 도끼", 25) {}
 
     std::string GetName() const override
     {
@@ -26,28 +26,29 @@ public:
 
     Equipment* GetType() const override
     {
-        static Equipment temp("오크의 도끼",25,0,Equipment::EquipmentType::Misc);
+        static Equipment temp("오크의 도끼", 25, 0, Equipment::EquipmentType::Misc);
         return &temp;
     }
 };
 
-Orc::Orc(int level): Monster(level) 
+Orc::Orc(int level) : Monster(level)
 {
     Name = "오크";
-    Health = 120 + (level * 18);
+    MaxHealth = 120 + (level * 18);
+    Health = MaxHealth;
     Attack = 12 + (level * 5);
     Defense = 8 + (level * 4);
     InitializeLootTable();
 }
 
-void Orc::InitializeLootTable() 
+void Orc::InitializeLootTable()
 {
     LootTable.emplace_back(std::make_unique<OrcAxe>());
 }
 
-std::unique_ptr<Item> Orc::DropItem() 
+std::unique_ptr<Item> Orc::DropItem()
 {
-    if(LootTable.empty()) 
+    if (LootTable.empty())
     {
         std::cout << Name << "는 전리품을 가지고 있지 않습니다.\n";
         return nullptr;
@@ -55,7 +56,7 @@ std::unique_ptr<Item> Orc::DropItem()
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dist(0,LootTable.size() - 1);
+    std::uniform_int_distribution<> dist(0, LootTable.size() - 1);
 
     int index = dist(gen);
     std::cout << Name << "가 " << LootTable[index]->GetName() << "를 떨어트렸습니다!\n";
