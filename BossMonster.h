@@ -1,4 +1,3 @@
-
 // BossMonster.h
 #pragma once
 #include "Monster.h"
@@ -6,7 +5,7 @@
 #include <memory>
 #include <vector>
 
-class BossMonster: public Monster 
+class BossMonster : public Monster
 {
 public:
     BossMonster(int level);
