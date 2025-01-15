@@ -1,4 +1,3 @@
-
 #include "GameManager.h"
 #include <iostream>
 #include "HealthPotion.h"
@@ -8,6 +7,7 @@
 #include <map>
 using namespace std;
 
+//일반 몬스터 생성
 std::unique_ptr<Monster> GameManager::GenerateRandomMonster(int level)
 {
     std::random_device rd;
@@ -49,9 +49,12 @@ std::unique_ptr<Monster> GameManager::GenerateRandomMonster(int level)
     return monster;  // 생성된 몬스터 리턴
 }
 
-
-
-
+// 보스 몬스터 생성
+std::unique_ptr<BossMonster> GameManager::GenerateBossMonster(int level)
+{
+    std::cout << "마왕의 성에 도착했다!\n";
+    return std::make_unique<BossMonster>(level);  // BossMonster 클래스를 사용
+}
 
 void GameManager::StartGame(Character* player, Shop* shop)
 {
@@ -97,18 +100,13 @@ void GameManager::StartGame(Character* player, Shop* shop)
         }
     } while (choice != 4);
 }
-// 보스 몬스터 생성
-std::unique_ptr<BossMonster> GameManager::GenerateBossMonster(int level)
-{
-    std::cout << "마왕의 성에 도착했다!\n";
-    return std::make_unique<BossMonster>(level);  // BossMonster 클래스를 사용
-}
+
 
 void GameManager::Battle(Character* player)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(10,20);
+    std::uniform_int_distribution<int> dist(player->minimum, player->maximum);
     int rand_gold = dist(gen);
 
 
@@ -157,6 +155,7 @@ void GameManager::Battle(Character* player)
             cout << player->Name << "의 공격! " << monster->Name << " 에게 " << damageToMonster << "만큼의 피해를 입혔습니다.\n";
             cout << monster->Name << "체력: " << monster->Health << " / " << monster->MaxHealth << "\n";
             
+            //몬스터의 공격
             int damageToPlayer = std::max(0,monster->Attack - player->Defense); // 방어력 차감
             player->Health -= damageToPlayer;
             player->Health = max(0, player->Health);  // 플레이어의 음수 체력 방지
@@ -170,8 +169,9 @@ void GameManager::Battle(Character* player)
         if (monster->Health <= 0)
         {
             std::cout << monster->Name << "을 처치했습니다!\n";
+            player->Gold += rand_gold; //골드 획득
+            std::cout << rand_gold << "골드를 획득하셨습니다!\n";
             player ->GainExperience(100);  // 경험치 획득
-            player ->Gold += rand_gold; //골드 획득
             player -> ResetAttackBoost();
             // 전리품 드롭
             std::unique_ptr<Item> loot = monster->DropItem();
