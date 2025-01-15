@@ -13,7 +13,10 @@
 
 class GameManager {
 public:
-
+    int minimum;
+    int maximum;
+    GameManager() :minimum(50), maximum(100) {}
+    
     // 랜덤 몬스터 생성 (std::unique_ptr<Monster> 반환)
     static std::unique_ptr<Monster> GenerateRandomMonster(int level);
 
@@ -24,7 +27,7 @@ public:
     static std::unique_ptr<BossMonster> GenerateBossMonster(int level);
 
     // 전투 처리 함수
-    static void Battle(Character* player);
+    void Battle(Character* player);
 
     // 상점 방문 처리 함수
     static void VisitShop(Character* player, Shop* shop, GameManager* gameManager);
