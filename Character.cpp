@@ -8,11 +8,7 @@ using namespace std;
 
 
 Character::Character(const std::string& name)
-<<<<<<< Updated upstream
     : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100) {
-=======
-    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(9000), AttackBoostAmount(0), Defense(0), MaxExperience(100), minimum(10), maximum(20) {
->>>>>>> Stashed changes
 }
 
 // 레벨업 기능
