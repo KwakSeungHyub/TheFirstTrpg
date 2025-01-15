@@ -6,6 +6,7 @@
 #include <iostream>
 #include <limits>
 
+
 int main()
 {
     // 콘솔의 출력 인코딩을 UTF-8로 변경
@@ -24,7 +25,7 @@ int main()
 
         // 공백 제거를 위한 임시 변수 생성
         std::string trimmedName = playerName;
-        trimmedName.erase(remove_if(trimmedName.begin(),trimmedName.end(),isspace),trimmedName.end());
+        trimmedName.erase(std::remove_if(trimmedName.begin(), trimmedName.end(), [](unsigned char x){ return std::isspace(x); }), trimmedName.end());
 
         // 공백 입력 처리
         if(trimmedName.empty())
