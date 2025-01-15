@@ -150,6 +150,7 @@ void GameManager::Battle(Character* player)
             turn++;
             // 플레이어의 공격
             int damageToMonster = std::max(0,player->Attack - monster->Defense); // 방어력 차감
+            cout << damageToMonster<< "만큼의 피해를 입혔습니다.\n";
             monster->Health -= damageToMonster;
             monster->Health = max(0, monster->Health);  // 몬스터의 음수 체력 방지
             // 피해 계산 시 방어력만 고려 (EquippedArmor에 의한 추가 방어력은 이미 반영됨)
@@ -169,8 +170,9 @@ void GameManager::Battle(Character* player)
         if (monster->Health <= 0)
         {
             std::cout << monster->Name << "을 처치했습니다!\n";
-            player->GainExperience(100);  // 경험치 획득
-            player->Gold += rand_gold; //골드 획득
+            player ->GainExperience(100);  // 경험치 획득
+            player ->Gold += rand_gold; //골드 획득
+            player -> ResetAttackBoost();
             // 전리품 드롭
             std::unique_ptr<Item> loot = monster->DropItem();
             if (loot != nullptr) {

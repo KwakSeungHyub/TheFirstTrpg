@@ -62,6 +62,7 @@ void Character::DisplayStatus() const {
     cout << " 레벨  :  " << Level << endl;
     cout << " 체력  :  " << Health << "/" << MaxHealth << endl;
     cout << "공격력 :  " << Attack << endl;
+    cout << "방어력 :  " << Defense << endl;
     cout << " 골드  :  " << Gold << endl;
     cout << " EXP   :  " << Experience << "/" << MaxExperience << endl;
     cout << "=======================\n";
@@ -186,19 +187,30 @@ void Character::AutoUseItems()
 
     // 공격력 포션 사용
     auto attackBoostPotion = Inventory.find("공격력 포션");
-    if (attackBoostPotion != Inventory.end() && attackBoostPotion->second->GetAmount() > 0 && AttackBoostAmount == 0) 
-    // AttackBoostAmount가 증가했으면 공격력 포션을 이미 먹은 상태이므로 추가 복용 불가능하게 처리하기 위해 추가
+
+    // 공격력 포션이 있고, 이미 사용한 적이 없는 경우만 허용
+    if(attackBoostPotion != Inventory.end() && attackBoostPotion->second->GetAmount() > 0)
     {
-        std::cout << "자동으로 공격력 포션을 사용합니다!\n";
-        attackBoostPotion->second->Use(this);
-        attackBoostPotion->second->DecreaseAmount(1);
-        if (attackBoostPotion->second->GetAmount() == 0)
+        if(AttackBoostAmount == 0)
         {
-            Inventory.erase(attackBoostPotion);
+            std::cout << "자동으로 공격력 포션을 사용합니다!\n";
+            attackBoostPotion->second->Use(this);
+            attackBoostPotion->second->DecreaseAmount(1);
+
+            // 포션 수량 0일 시 인벤토리에서 제거
+            if(attackBoostPotion->second->GetAmount() == 0)
+            {
+                Inventory.erase(attackBoostPotion);
+            }
+        } else
+        {
+            std::cout << "이미 공격력 포션을 사용하여 추가 사용이 불가능합니다!\n";
         }
-        AttackBoostAmount = 10;
-        Attack += AttackBoostAmount;
+    } else
+    {
+        std::cout << "공격력 포션이 없습니다!\n";
     }
+
     // 자동으로 최적의 무기와 방어구 장착
     AutoEquipItems();
 }
