@@ -8,11 +8,11 @@ using namespace std;
 
 
 Character::Character(const std::string& name)
-    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100), minimum(50), maximum(100) {
+    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100) {
 }
 
 // 레벨업 기능
-void Character::LevelUp()
+void Character::LevelUp(int &mini, int &max)
 {
     Level++;
     MaxHealth += 20;
@@ -20,14 +20,14 @@ void Character::LevelUp()
     Attack += 5;
     Health = MaxHealth;
     Experience;
-    minimum += 30;
-    maximum += 30;
+    mini += 50;
+    max += 50;
     std::cout << "레벨 업! 현재 레벨: " << Level << "!\n";
 }
 
 
 // 경험치 획득 및 레벨업 체크
-void Character::GainExperience(int exp)
+void Character::GainExperience(int exp, int &mini, int &max)
 {
     Experience += exp;
     std::cout << exp << " 경험치를 획득했습니다.\n";
@@ -36,7 +36,7 @@ void Character::GainExperience(int exp)
     while (Experience >= MaxExperience) {
         int overflow = Experience - MaxExperience; // 초과된 경험치
         Experience = overflow; // 초과 경험치를 현재 경험치로 설정
-        LevelUp(); // 레벨업
+        LevelUp(mini,max); // 레벨업
     }
     
     // 레벨업 후에 전체 경험치(MaxExperience) 갱신

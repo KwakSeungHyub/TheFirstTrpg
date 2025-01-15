@@ -16,8 +16,7 @@ public:
     int MaxExperience;
     int Defense = 0; // 방어력(장비로만 올라감)
     int Gold;
-    int minimum;
-    int maximum;
+   
 
     // 스마트 포인터를 사용하는 인벤토리: 아이템과 해당 수량을 저장
     std::unordered_map<std::string, std::unique_ptr<Item>> Inventory;
@@ -29,10 +28,10 @@ public:
     Character(const std::string& name);
 
     // 레벨업 메소드
-    void LevelUp();
+    void LevelUp(int &mini, int& max);
 
     // 경험치 획득 메소드
-    void GainExperience(int exp);
+    void GainExperience(int exp,int &mi, int &ma);
 
     // 데미지 받기 메소드
     void TakeDamage(int damage);
