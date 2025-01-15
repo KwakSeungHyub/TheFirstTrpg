@@ -189,29 +189,30 @@ void Character::AutoUseItems()
 
     // 공격력 포션 사용
     auto attackBoostPotion = Inventory.find("공격력 포션");
-
     // 공격력 포션이 있고, 이미 사용한 적이 없는 경우만 허용
-    if(attackBoostPotion != Inventory.end() && attackBoostPotion->second->GetAmount() > 0)
-    {
-        if(AttackBoostAmount == 0)
-        {
-            std::cout << "자동으로 공격력 포션을 사용합니다!\n";
-            attackBoostPotion->second->Use(this);
-            attackBoostPotion->second->DecreaseAmount(1);
+    if(attackBoostPotion != Inventory.end() && AttackBoostAmount == 0) {
+        if(attackBoostPotion->second->GetAmount() > 0) {  // 포션 수량 확인
+            if(AttackBoostAmount == 0) {  // 아직 사용하지 않은 경우
+                std::cout << "자동으로 공격력 포션을 사용합니다!\n";
+                attackBoostPotion->second->Use(this);  // 포션 사용
+                attackBoostPotion->second->DecreaseAmount(1);  // 포션 수량 감소
 
-            // 포션 수량 0일 시 인벤토리에서 제거
-            if(attackBoostPotion->second->GetAmount() == 0)
-            {
-                Inventory.erase(attackBoostPotion);
+                // 포션 수량 0일 시 인벤토리에서 제거
+                if(attackBoostPotion->second->GetAmount() == 0) {
+                    Inventory.erase(attackBoostPotion);
+                }
+
+                // 포션 사용 상태 기록 (AttackBoostAmount를 사용했음을 기록)
+                AttackBoostAmount = 1;  // 포션을 사용한 상태로 설정
+            } else {
+                std::cout << "이미 공격력 포션을 사용하여 추가 사용이 불가능합니다!\n";
             }
-        } else
-        {
-            std::cout << "이미 공격력 포션을 사용하여 추가 사용이 불가능합니다!\n";
+        } else {
+            std::cout << "공격력 포션이 없습니다!\n";  // 포션이 수량이 0일 때 메시지 출력
         }
-    } else
-    {
-        std::cout << "공격력 포션이 없습니다!\n";
-    }
+    } 
+
+
 
     // 자동으로 최적의 무기와 방어구 장착
     AutoEquipItems();
@@ -221,7 +222,8 @@ void Character::AutoUseItems()
 // 공격력 초기화
 void Character::ResetAttackBoost()
 {
-    Attack -= AttackBoostAmount;
+    // 공격력 10만큼 감소(효과 제거)
+    Attack -= 10;
     AttackBoostAmount = 0;
     std::cout << "전투가 끝났습니다. 공격력이 초기화되었습니다. 현재 공격력: " << Attack << "\n";
 }

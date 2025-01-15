@@ -19,7 +19,7 @@ int main()
     // 이름 길이 및 공백 검사
     while(true)
     {
-        std::cout << "플레이어 이름을 입력하세요: ";
+        std::cout << "플레이어 이름을 입력하세요(영어,숫자,특수문자만 가능 + 20자 이하): ";
         std::getline(std::cin,playerName);
 
         // 공백 제거를 위한 임시 변수 생성

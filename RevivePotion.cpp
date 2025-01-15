@@ -22,6 +22,6 @@ void RevivePotion::Use(Character* character)
 // 장비 타입 반환
 Equipment* RevivePotion::GetType() const
 {
-    static Equipment temp("부활 포션", 50, 0, Equipment::EquipmentType::Consumable);
+    Equipment temp("부활 포션", 50, 0, Equipment::EquipmentType::Consumable);
     return &temp;  // 예시로 소비성 아이템으로 설정
 }
