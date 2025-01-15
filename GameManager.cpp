@@ -1,4 +1,3 @@
-
 #include "GameManager.h"
 #include <iostream>
 #include "HealthPotion.h"
@@ -8,6 +7,7 @@
 #include <map>
 using namespace std;
 
+//일반 몬스터 생성
 std::unique_ptr<Monster> GameManager::GenerateRandomMonster(int level)
 {
     std::random_device rd;
@@ -49,9 +49,12 @@ std::unique_ptr<Monster> GameManager::GenerateRandomMonster(int level)
     return monster;  // 생성된 몬스터 리턴
 }
 
-
-
-
+// 보스 몬스터 생성
+std::unique_ptr<BossMonster> GameManager::GenerateBossMonster(int level)
+{
+    std::cout << "마왕의 성에 도착했다!\n";
+    return std::make_unique<BossMonster>(level);  // BossMonster 클래스를 사용
+}
 
 void GameManager::StartGame(Character* player, Shop* shop)
 {
@@ -97,18 +100,13 @@ void GameManager::StartGame(Character* player, Shop* shop)
         }
     } while (choice != 4);
 }
-// 보스 몬스터 생성
-std::unique_ptr<BossMonster> GameManager::GenerateBossMonster(int level)
-{
-    std::cout << "마왕의 성에 도착했다!\n";
-    return std::make_unique<BossMonster>(level);  // BossMonster 클래스를 사용
-}
+
 
 void GameManager::Battle(Character* player)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dist(10,20);
+    std::uniform_int_distribution<int> dist(player->minimum, player->maximum);
     int rand_gold = dist(gen);
 
 
@@ -118,7 +116,7 @@ void GameManager::Battle(Character* player)
     std::unique_ptr<Monster> monster = GenerateRandomMonster(player->Level);
 
     // 전투 시작 전에 아이템 자동 사용
-    player->AutoUseItems();
+    
 
     int turn = 1; // 몬스터와 턴제로 몇번 싸우는걸 출력하기위해서
 
@@ -157,6 +155,7 @@ void GameManager::Battle(Character* player)
             cout << player->Name << "의 공격! " << monster->Name << " 에게 " << damageToMonster << "만큼의 피해를 입혔습니다.\n";
             cout << monster->Name << "체력: " << monster->Health << " / " << monster->MaxHealth << "\n";
             
+            //몬스터의 공격
             int damageToPlayer = std::max(0,monster->Attack - player->Defense); // 방어력 차감
             player->Health -= damageToPlayer;
             player->Health = max(0, player->Health);  // 플레이어의 음수 체력 방지
@@ -170,8 +169,10 @@ void GameManager::Battle(Character* player)
         if (monster->Health <= 0)
         {
             std::cout << monster->Name << "을 처치했습니다!\n";
+            player->Gold += rand_gold; //골드 획득
+            std::cout << rand_gold << "골드를 획득하셨습니다!\n";
             player ->GainExperience(100);  // 경험치 획득
-            player ->Gold += rand_gold; //골드 획득
+            
             player -> ResetAttackBoost();
             // 전리품 드롭
             std::unique_ptr<Item> loot = monster->DropItem();
@@ -454,78 +455,99 @@ void GameManager::VisitShop(Character* player, Shop* shop, GameManager* gameMana
                 std::cout << "인벤토리가 비어 있습니다.\n";
                 break;
             }
-        cout << "\n=============================\n";
-        std::cout << "판매할 아이템을 선택하세요.\n\n";
-        std::cout << "현재 보유한 아이템 목록:\n";
-        index = 1;
+            std::cout << "\n=============================\n";
+            std::cout << "판매할 아이템을 선택하세요.\n\n";
+            std::cout << "현재 보유한 아이템 목록:\n";
+            index = 1;
 
-        // 아이템 목록 출력
-        for(const auto& item : player->Inventory) {
-            std::cout << index++ << ". " << item.first << ": " << item.second->GetAmount() << " 개\n";
-        }
+            // 아이템 목록 출력
+            for(const auto& item : player->Inventory) {
+                std::cout << index++ << ". " << item.first << ": " << item.second->GetAmount() << " 개\n";
+            }
 
-        std::cout << "판매할 아이템 번호를 입력하세요: ";
-        int sellChoice;
-        std::cin >> sellChoice;
+            std::cout << "판매할 아이템 번호를 입력하세요: ";
+            int sellChoice;
+            std::cin >> sellChoice;
 
-        // 범위 검사 먼저 수행
-        if(sellChoice < 1 || sellChoice >= index) {
-            std::cout << "잘못된 번호입니다.\n";
-            break;
-        }
+            // 범위 검사 먼저 수행
+            if(sellChoice < 1 || sellChoice >= index) {
+                std::cout << "잘못된 번호입니다.\n";
+                break;
+            }
 
-        // **선택한 아이템을 찾기 (sellChoice가 유효한 경우에만)**
-        auto itemToSell = std::next(player->Inventory.begin(),sellChoice - 1);
+            // 선택한 아이템을 찾기 (sellChoice가 유효한 경우에만)
+            auto itemToSell = std::next(player->Inventory.begin(),sellChoice - 1);
+            if(itemToSell == player->Inventory.end()) {
+                std::cout << "해당 아이템이 인벤토리에 없습니다.\n";
+                return;
+            }
+
+            // 선택한 아이템 수량 확인
+            int itemAmount = itemToSell->second->GetAmount();
+            int totalPrice = itemToSell->second->GetPrice();  // 기본 가격
+
+            // GetType()으로 Equipment 객체를 가져오기
+            Equipment* equipment = itemToSell->second->GetType();
+
+            // EquipmentType 확인
+            if(equipment) {
+                // EquipmentType을 가져와서 비교
+                if(equipment->GetTypeText() =="Consumable" ||
+                    equipment->GetTypeText() =="Weapon" ||
+                    equipment->GetTypeText() =="Armor") {
+                    totalPrice = static_cast<int>(totalPrice * 0.6);  //상점 구매 항목은 60% 가격으로 판매
+                }
+            }
 
 
-        // 선택한 아이템 수량 확인
-        int itemAmount = itemToSell->second->GetAmount();
+            if(itemAmount > 1) {
+                // 수량이 2개 이상일 경우 일괄 판매 여부 확인
+                std::cout << itemToSell->first << "이(가) " << itemAmount << "개 있습니다. 일괄 판매하시겠습니까? (Y/N): ";
+                char bulkSellChoice;
+                std::cin >> bulkSellChoice;
 
-        if(itemAmount > 1) {
-            // 수량이 2개 이상일 경우 일괄 판매 여부 확인
-            std::cout << itemToSell->first << "이(가) " << itemAmount << "개 있습니다. 일괄 판매하시겠습니까? (Y/N): ";
-            char bulkSellChoice;
-            std::cin >> bulkSellChoice;
+                if(bulkSellChoice == 'Y' || bulkSellChoice == 'y') {
+                    int bulkTotalPrice = totalPrice * itemAmount;  // 총 가격 계산
+                    player->Gold += bulkTotalPrice;
+                    std::cout << itemToSell->first << " " << itemAmount << "개를 판매했습니다. 총 " << bulkTotalPrice << " 골드가 추가되었습니다.\n";
 
-            if(bulkSellChoice == 'Y' || bulkSellChoice == 'y') {
-                int totalPrice = itemAmount * itemToSell->second->GetPrice();
-                player->Gold += totalPrice;
-                std::cout << itemToSell->first << " " << itemAmount << "개를 판매했습니다. 총 " << totalPrice << " 골드가 추가되었습니다.\n";
-                player->Inventory.erase(itemToSell);  // 아이템 삭제
+                    // 아이템 삭제 (반복자 무효화됨)
+                    player->Inventory.erase(itemToSell);
+                } else {
+                    std::cout << itemToSell->first << " 1개를 판매 하시겠습니까?";
+                    char sellChoice;
+                    std::cin >> sellChoice;
+                    if(sellChoice == 'Y' || sellChoice == 'y') {
+                        player->Gold += totalPrice;
+
+                        // 반복자 사용 후 삭제
+                        std::cout << itemToSell->first << " 1개를 판매했습니다. 총 "
+                            << totalPrice << " 골드가 추가되었습니다.\n";
+
+                        // 아이템 삭제 (반복자 무효화됨)
+                        player->Inventory.erase(itemToSell);
+                    } else {
+                        std::cout << "판매를 진행하지 않습니다. 전 메뉴로 돌아갑니다.\n";
+                        return;
+                    }
+                }
             } else {
-                std::cout << itemToSell->first << " 1개를 판매 하시겠습니까?";
+                // 수량이 1개일 경우 판매 여부 확인
+                std::cout << itemToSell->first << "이(가) " << itemAmount << "개 있습니다. 판매하시겠습니까? (Y/N): ";
                 char sellChoice;
                 std::cin >> sellChoice;
                 if(sellChoice == 'Y' || sellChoice == 'y') {
-                    int totalPrice = itemAmount * itemToSell->second->GetPrice();
                     player->Gold += totalPrice;
-                    std::cout << itemToSell->first << " " << itemAmount << "개를 판매했습니다. 총 " << totalPrice << " 골드가 추가되었습니다.\n";
-                    player->Inventory.erase(itemToSell);  // 아이템 삭제
+                    std::cout << itemToSell->first << " 1개를 판매했습니다. 총 "
+                        << totalPrice << " 골드가 추가되었습니다.\n";
+
+                    // 아이템 삭제 (반복자 무효화됨)
+                    player->Inventory.erase(itemToSell);
                 } else {
-                    // 수량 감소
                     std::cout << "판매를 진행하지 않습니다. 전 메뉴로 돌아갑니다.\n";
                     return;
                 }
             }
-        } else {
-            // 수량이 1개일 경우 판매 여부 확인
-            std::cout << itemToSell->first << "이(가) " << itemAmount << "개 있습니다. 판매하시겠습니까? (Y/N): ";
-            char sellChoice;
-            std::cin >> sellChoice;
-            if(sellChoice == 'Y' || sellChoice == 'y') {
-                int totalPrice = itemAmount * itemToSell->second->GetPrice();
-                player->Gold += totalPrice;
-                std::cout << itemToSell->first << " " << itemAmount << "개를 판매했습니다. 총 " << totalPrice << " 골드가 추가되었습니다.\n";
-                player->Inventory.erase(itemToSell);  // 아이템 삭제
-            } else {
-                // 수량 감소
-                std::cout << "판매를 진행하지 않습니다. 전 메뉴로 돌아갑니다.\n";
-                return;
-            }
-            player->Gold += itemToSell->second->GetPrice();
-            std::cout << itemToSell->first << "을(를) 판매했습니다. " << itemToSell->second->GetPrice() << " 골드가 추가되었습니다.\n";
-            player->Inventory.erase(itemToSell);
-        }
 
         break;
         }

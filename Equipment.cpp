@@ -35,3 +35,12 @@ Equipment* Equipment::GetType() const
     // EquipmentType을 Equipment*로 변환하여 반환하는 예시
     return const_cast<Equipment*>(this);
 }
+std::string Equipment::GetTypeText() const {
+    switch(Type) 
+    {
+        case EquipmentType::Consumable: return "Consumable";
+        case EquipmentType::Weapon: return "Weapon";
+        case EquipmentType::Armor: return "Armor";
+        case EquipmentType::Misc:   return "Misc";
+    }
+}
