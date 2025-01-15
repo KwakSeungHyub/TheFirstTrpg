@@ -38,6 +38,7 @@ Troll::Troll(int level)
     Health = MaxHealth;
     Attack = 10 + (level * 4);
     Defense = 5 + (level * 3);
+    Experience = 110 + (level * 5);
     InitializeLootTable();
 }
 

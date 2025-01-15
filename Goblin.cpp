@@ -39,6 +39,7 @@ Goblin::Goblin(int level)
     Health = MaxHealth;
     Attack = 8 + (level * 3);
     Defense = 3 + (level * 2);
+    Experience = 100 + (level *5);
     InitializeLootTable();
 }
 

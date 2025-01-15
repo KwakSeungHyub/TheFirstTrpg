@@ -16,11 +16,12 @@ void Character::LevelUp()
 {
     Level++;
     MaxHealth += 20;
-    MaxExperience += 30;
+    MaxExperience += 15;
     Attack += 5;
     Health = MaxHealth;
     Experience;
     std::cout << "레벨 업! 현재 레벨: " << Level << "!\n";
+    cout << "캐릭터의 경험치 칸 이 " << MaxExperience << "로 증가하였습니다!\n";
 }
 
 

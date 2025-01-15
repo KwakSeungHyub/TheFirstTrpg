@@ -16,6 +16,7 @@ public:
     int Attack;
     int Defense;
     int Level;
+    int Experience;
     std::vector<std::unique_ptr<Item>> LootTable; // 전리품 테이블
 
     // 기본 생성자
@@ -28,6 +29,9 @@ public:
     Monster(const std::string& name, int health, int attack, int defense)
         : Name(name), Health(health), Attack(attack), Defense(defense), Level(1) {
     }
+
+    // 몬스터를 잡았을때 주는 경험치를 반환하는 함수
+    int GetExperience() const { return Experience; }
 
     // 피해를 받으면 체력 감소
     void TakeDamage(int damage)

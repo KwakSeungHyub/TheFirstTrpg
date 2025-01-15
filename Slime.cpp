@@ -40,6 +40,7 @@ Slime::Slime(int level) : Monster(level)
     Health = MaxHealth;
     Attack = 5 + (level * 2);
     Defense = 2 + (level * 2);
+    Experience = 95 + (level * 5);
     InitializeLootTable();
 }
 

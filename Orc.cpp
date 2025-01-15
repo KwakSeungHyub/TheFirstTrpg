@@ -38,6 +38,7 @@ Orc::Orc(int level) : Monster(level)
     Health = MaxHealth;
     Attack = 12 + (level * 5);
     Defense = 8 + (level * 4);
+    Experience = 130 + (level * 5);
     InitializeLootTable();
 }
 
