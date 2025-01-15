@@ -16,6 +16,7 @@ public:
     int Attack;
     int Defense;
     int Level;
+    int Experience;
     std::vector<std::unique_ptr<Item>> LootTable; // 전리품 테이블
 
     // 기본 생성자

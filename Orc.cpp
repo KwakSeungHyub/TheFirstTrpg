@@ -21,7 +21,7 @@ public:
 
     int GetPrice() const override
     {
-        return 25;  // 오크의 도끼 가격
+        return 110;  // 오크의 도끼 가격
     }
 
     Equipment* GetType() const override
@@ -38,6 +38,7 @@ Orc::Orc(int level) : Monster(level)
     Health = MaxHealth;
     Attack = 12 + (level * 5);
     Defense = 8 + (level * 4);
+    Experience = 130 + (level * 5);
     InitializeLootTable();
 }
 

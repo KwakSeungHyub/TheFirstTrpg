@@ -109,9 +109,6 @@ void GameManager::Battle(Character* player)
     std::uniform_int_distribution<int> dist(player->minimum, player->maximum);
     int rand_gold = dist(gen);
 
-
-
-
     // 랜덤 몬스터 생성
     std::unique_ptr<Monster> monster = GenerateRandomMonster(player->Level);
 
@@ -171,8 +168,8 @@ void GameManager::Battle(Character* player)
             std::cout << monster->Name << "을 처치했습니다!\n";
             player->Gold += rand_gold; //골드 획득
             std::cout << rand_gold << "골드를 획득하셨습니다!\n";
-            player ->GainExperience(100);  // 경험치 획득
-            
+            player->GainExperience(monster->Experience);  // 경험치 획득
+
             player -> ResetAttackBoost();
             // 전리품 드롭
             std::unique_ptr<Item> loot = monster->DropItem();
