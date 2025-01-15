@@ -20,4 +20,6 @@ public:
     void BuyItem(int index, Character* player);
     // 아이템 판매
     void SellItem(const std::string& itemName, Character* player);
+
+    void PurchaseEquipment();
 };

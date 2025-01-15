@@ -47,23 +47,63 @@ void Shop::DisplayItems() const
     }
 }
 
-void Shop::BuyItem(int index, Character* player) {
-    if (index < 0 || index >= AvailableItems.size()) {
+void Shop::BuyItem(int index,Character* player) {
+    if(index < 0 || index >= AvailableItems.size()) {
         std::cout << "잘못된 선택입니다.\n";
         return;
     }
 
+    // 가격 확인
     int price = AvailableItems[index]->GetPrice();
-    if (player->Gold >= price) {
+
+    if(player->Gold >= price) {
         player->Gold -= price;
-        player->AddItem(std::move(AvailableItems[index]));
-        AvailableItems.erase(AvailableItems.begin() + index);
+
+        // 아이템을 인벤토리에 추가
+        std::unique_ptr<Item> purchasedItem = std::move(AvailableItems[index]);
+
+        // 장비 아이템인지 확인
+        Equipment* equipment = dynamic_cast<Equipment*>(purchasedItem.get());
+
+        if(equipment) {
+            // 장비 아이템 구매한 경우
+            std::cout << "구매한 장비: " << equipment->GetName() << ", 타입: " << equipment->GetTypeText() << "\n";
+
+            // 장비 구매
+            player->AddItem(std::move(purchasedItem));
+
+            // 장비 유형에 따른 추가 처리 (예: 무기, 방어구 등)
+            if(equipment->GetEquimentType() == Equipment::EquipmentType::Weapon) {
+                player->EquipWeapon(equipment);  // 무기 장착
+            } else if(equipment->GetEquimentType() == Equipment::EquipmentType::Armor) {
+                player->EquipArmor(equipment);   // 방어구 장착
+            }
+
+            // 구매 후 AvailableItems에서 해당 아이템 삭제
+            AvailableItems.erase(AvailableItems.begin() + index);
+        } else {
+            // 사용 아이템인 경우
+            std::cout << "구매한 아이템: " << purchasedItem->GetName() << " 사용 아이템입니다.\n";
+
+            // 사용 아이템도 인벤토리에 추가
+            player->AddItem(std::move(purchasedItem));
+        }
+
+        // 골드 차감
+        player->Gold -= equipment ? equipment->GetPrice() : purchasedItem->GetPrice();
+
+
+
+
         std::cout << "구매 완료!\n";
-    }
-    else {
+    } else {
         std::cout << "골드가 부족합니다.\n";
     }
 }
+
+
+
+
 // 아이템 판매
 void Shop::SellItem(const std::string& itemName, Character* player)
 {
@@ -78,6 +118,8 @@ void Shop::SellItem(const std::string& itemName, Character* player)
         std::cout << "이 아이템을 가지고 있지 않습니다.\n";
     }
 }
+void Shop::PurchaseEquipment()
+{}
 // 아이템 상세 설명용 메서드(index 기준)
 void Shop::DisplayItemDetails(int index) const
 {

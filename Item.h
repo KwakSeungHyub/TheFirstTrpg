@@ -10,11 +10,10 @@ public:
     int Price;
     int Amount;
 
-    Item() : Name(""), Price(0), Amount(0) {}
+    Item(): Name(""),Price(0),Amount(0) {}
 
-    Item(const std::string& name, int price, int amount = 1)
-        : Name(name), Price(price), Amount(amount) {
-    }
+    Item(const std::string& name,int price,int amount = 1)
+        : Name(name),Price(price),Amount(amount) {}
 
     virtual ~Item() = default;
 
@@ -22,10 +21,12 @@ public:
     {
         return Name;
     }
+
     virtual int GetPrice() const
     {
         return Price;
     }
+
     virtual int GetAmount() const
     {
         return Amount;
@@ -35,6 +36,7 @@ public:
     {
         Amount += amount;
     }
+
     void DecreaseAmount(int amount)
     {
         Amount = (Amount - amount >= 0) ? Amount - amount : 0;
@@ -46,10 +48,11 @@ public:
     {
         return 0;
     }
+
     virtual bool IsEquipable() const
     {
         return false;
     }
 
-    virtual Equipment* GetType() const = 0;  // Equipment* 반환
+    virtual class Equipment* GetType() const = 0;  // Equipment* 반환
 };

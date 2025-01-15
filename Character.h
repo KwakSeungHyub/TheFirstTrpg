@@ -57,14 +57,11 @@ public:
     // 공격력 초기화 메소드 (버프 제거 시)
     void ResetAttackBoost();
 
-    // 장비 아이템 자동 장착 메소드
-    void AutoEquipItems();
-
     // 무기 장착 메소드
-    void EquipWeapon(Equipment* newWeapon);
+    bool EquipWeapon(Equipment* newWeapon);
 
     // 방어구 장착 메소드
-    void EquipArmor(Equipment* newArmor);
+    bool EquipArmor(Equipment* newArmor);
 
 
 

@@ -8,7 +8,11 @@ using namespace std;
 
 
 Character::Character(const std::string& name)
+<<<<<<< Updated upstream
     : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(100), AttackBoostAmount(0), Defense(0), MaxExperience(100) {
+=======
+    : Name(name), Level(1), Health(100), MaxHealth(100), Attack(10), Experience(0), Gold(9000), AttackBoostAmount(0), Defense(0), MaxExperience(100), minimum(10), maximum(20) {
+>>>>>>> Stashed changes
 }
 
 // 레벨업 기능
@@ -211,11 +215,6 @@ void Character::AutoUseItems()
             std::cout << "공격력 포션이 없습니다!\n";  // 포션이 수량이 0일 때 메시지 출력
         }
     } 
-
-
-
-    // 자동으로 최적의 무기와 방어구 장착
-    AutoEquipItems();
 }
 
 
@@ -234,7 +233,7 @@ void Character::ResetAttackBoost()
 }
 
 // 무기 장착
-void Character::EquipWeapon(Equipment* weapon)
+bool Character::EquipWeapon(Equipment* weapon)
 {
     // 무기가 유효한지, Equipment 타입인지 체크
     if(weapon && weapon->GetEquimentType() == Equipment::EquipmentType::Weapon)
@@ -242,22 +241,39 @@ void Character::EquipWeapon(Equipment* weapon)
         // 기존 무기 해제 처리
         if(EquippedWeapon != nullptr)
         {
-            // 기존 무기가 있는 경우에만 보너스를 빼기
-            Attack -= EquippedWeapon->GetBonusStat();  // 기존 무기 효과를 빼는 부분
-            std::cout << "기존 무기 " << EquippedWeapon->GetName() << "의 효과가 제거되었습니다.\n";
+            // 기존 무기와 새 무기의 보너스 스탯을 비교하여, 새로운 무기가 더 나은 경우에만 교체
+            if(weapon->GetBonusStat() > EquippedWeapon->GetBonusStat())
+            {
+                Attack -= EquippedWeapon->GetBonusStat();  // 기존 무기 효과 제거
+                std::cout << "기존 무기 " << EquippedWeapon->GetName() << "의 효과가 제거되었습니다.\n";
+
+                // 기존 무기를 인벤토리에 다시 추가
+                auto it = Inventory.find(EquippedWeapon->GetName());
+                if(it == Inventory.end()) {
+                    Inventory[EquippedWeapon->GetName()] = std::make_unique<Equipment>(*EquippedWeapon);
+                }
+            } else
+            {
+                std::cout << "현재 무기가 더 좋습니다. 장비를 교체하지 않습니다.\n";
+                return false;  // 새 무기가 기존 무기보다 나쁘므로 장착하지 않음
+            }
         }
 
         // 새로운 무기 장착
         EquippedWeapon = weapon;
-        Attack += weapon->GetBonusStat();  // 새 무기 추가 효과
-        std::cout << weapon->GetName() << " 무기가 장착되었습니다.\n";
+        Attack += weapon->GetBonusStat();  // 새 무기 보너스 추가
+        std::cout << weapon->GetName() << " 무기가 장착되었습니다. 현재 공격력: " << Attack << "\n";
+
+        return true;  // 장착 성공
     } else
     {
         std::cout << "장착할 수 있는 무기가 아닙니다.\n";
+        return false;  // 장착 실패
     }
 }
 
-void Character::EquipArmor(Equipment* armor)
+// 방어구 장착
+bool Character::EquipArmor(Equipment* armor)
 {
     // 방어구가 유효한지, Equipment 타입인지 체크
     if(armor && armor->GetEquimentType() == Equipment::EquipmentType::Armor)
@@ -265,59 +281,37 @@ void Character::EquipArmor(Equipment* armor)
         // 기존 방어구 해제 처리
         if(EquippedArmor != nullptr)
         {
-            // 기존 방어구가 있을 경우 방어력 보너스를 빼기
-            Defense -= EquippedArmor->GetBonusStat();  // 기존 방어구 효과를 빼는 부분
-            std::cout << "기존 방어구 " << EquippedArmor->GetName() << "의 효과가 제거되었습니다.\n";
+            // 기존 방어구와 새 방어구의 보너스 스탯을 비교하여, 새로운 방어구가 더 나은 경우에만 교체
+            if(armor->GetBonusStat() > EquippedArmor->GetBonusStat())
+            {
+                Defense -= EquippedArmor->GetBonusStat();  // 기존 방어구 효과 제거
+                std::cout << "기존 방어구 " << EquippedArmor->GetName() << "의 효과가 제거되었습니다.\n";
+
+                // 기존 방어구를 인벤토리에 다시 추가
+                auto it = Inventory.find(EquippedArmor->GetName());
+                if(it == Inventory.end())
+                {
+                    Inventory[EquippedArmor->GetName()] = std::make_unique<Equipment>(*EquippedArmor);
+                }
+            } else
+            {
+                std::cout << "현재 방어구가 더 좋습니다. 장비를 교체하지 않습니다.\n";
+                return false;  // 새 방어구가 기존 방어구보다 나쁘므로 장착하지 않음
+            }
         }
 
         // 새로운 방어구 장착
         EquippedArmor = armor;
-        Defense += armor->GetBonusStat();  // 방어구의 방어력 추가
-        std::cout << armor->GetName() << " 방어구가 장착되었습니다.\n";
-    } else {
+        Defense += armor->GetBonusStat();  // 새 방어구 보너스 추가
+        std::cout << armor->GetName() << " 방어구가 장착되었습니다. 현재 방어력: " << Defense << "\n";
+
+        return true;  // 장착 성공
+    } else
+    {
         std::cout << "장착할 수 있는 방어구가 아닙니다.\n";
+        return false;  // 장착 실패
     }
 }
 
 
-void Character::AutoEquipItems()
-{
-    Equipment* bestWeapon = nullptr;
-    Equipment* bestArmor = nullptr;
-
-    // 인벤토리에서 가장 좋은 무기와 방어구를 찾음
-    for(const auto& item : Inventory) {
-        const auto& itemPtr = item.second;
-
-        // 아이템이 Equipment 타입일 경우만 처리
-        Equipment* equipmentItem = dynamic_cast<Equipment*>(itemPtr.get());
-        if(!equipmentItem) {
-            continue;  // Equipment가 아니면 건너뛰기
-        }
-
-        // 무기 비교 (현재 장착된 무기가 없다면)
-        if(!EquippedWeapon && equipmentItem->GetEquimentType() == Equipment::EquipmentType::Weapon) {
-            bestWeapon = equipmentItem;
-        }
-
-        // 방어구 비교 (현재 장착된 방어구가 없다면)
-        if(!EquippedArmor && equipmentItem->GetEquimentType() == Equipment::EquipmentType::Armor) {
-            bestArmor = equipmentItem;
-        }
-    }
-
-    // 최적의 무기 장착
-    if(bestWeapon) {
-        EquipWeapon(bestWeapon);  // 새 무기 장착
-        std::cout << bestWeapon->GetName() << "을(를) 무기로 장착합니다.\n";
-        Inventory.erase(bestWeapon->GetName());  // 인벤토리에서 제거
-    }
-
-    // 최적의 방어구 장착
-    if(bestArmor) {
-        EquipArmor(bestArmor);  // 새 방어구 장착
-        std::cout << bestArmor->GetName() << "을(를) 방어구로 장착합니다.\n";
-        Inventory.erase(bestArmor->GetName());  // 인벤토리에서 제거
-    }
-}
 
