@@ -40,6 +40,10 @@ public:
 
     Equipment* GetType() const override;  // 반환 형식을 Equipment*로 유지
 
+    std::string GetTypeText() const;
+
+
+
 private:
     int BonusStat;
     EquipmentType Type;
