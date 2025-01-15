@@ -4,6 +4,8 @@
 #include <iostream>
 #include <random>
 
+
+//의현: 나는 개트롤이다
 class TrollClaw : public Item
 {
 public:
