@@ -16,7 +16,7 @@ void Character::LevelUp()
 {
     Level++;
     MaxHealth += 20;
-    MaxExperience += 30;
+    MaxExperience += 15;
     Attack += 5;
     Health = MaxHealth;
     Experience;

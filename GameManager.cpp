@@ -1,7 +1,6 @@
 
 #include "GameManager.h"
 #include <iostream>
-#include <cstdlib>  // rand() 함수 사용
 #include "HealthPotion.h"
 #include "AttackBoost.h"
 #include "RevivePotion.h"
@@ -11,7 +10,11 @@ using namespace std;
 
 std::unique_ptr<Monster> GameManager::GenerateRandomMonster(int level)
 {
-    int randomMonster = rand() % 4;  // 0부터 3까지 랜덤 숫자 생성
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> rand_seed(0, 3);
+    
+    int randomMonster = rand_seed(gen);  // 0부터 3까지 랜덤 숫자 생성
 
     std::unique_ptr<Monster> monster;
 
@@ -103,6 +106,14 @@ std::unique_ptr<BossMonster> GameManager::GenerateBossMonster(int level)
 
 void GameManager::Battle(Character* player)
 {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dist(10,20);
+    int rand_gold = dist(gen);
+
+
+
+
     // 랜덤 몬스터 생성
     std::unique_ptr<Monster> monster = GenerateRandomMonster(player->Level);
 
@@ -152,6 +163,7 @@ void GameManager::Battle(Character* player)
         {
             std::cout << monster->Name << "을 처치했습니다!\n";
             player->GainExperience(100);  // 경험치 획득
+            player->Gold += rand_gold; //골드 획득
             // 전리품 드롭
             std::unique_ptr<Item> loot = monster->DropItem();
             if (loot != nullptr) {
