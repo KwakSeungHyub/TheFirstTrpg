@@ -38,9 +38,10 @@ BossMonster::BossMonster(int level)
     : Monster(level)
 {
     Name = "마왕";
-    Health = 500 + (level * 50);
-    Attack = 50 + (level * 10);
-    Defense = 40 + (level * 5);
+    Health = 500;
+    MaxHealth = Health;
+    Attack = 50;
+    Defense = 40;
     InitializeLootTable();
 }
 
@@ -63,6 +64,6 @@ std::unique_ptr<Item> BossMonster::DropItem()
     std::uniform_int_distribution<> dist(0, LootTable.size() - 1);
 
     int index = dist(gen);
-    std::cout << Name << "이(가) " << LootTable[index]->GetName() << "(을)를 떨어트렸습니다!\n";
+    std::cout << Name << "가 " << LootTable[index]->GetName() << "를 떨어트렸습니다!\n";
     return std::move(LootTable[index]);
 }
