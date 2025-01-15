@@ -2,7 +2,9 @@
 #include "Character.h"
 #include <iostream>
 
-
+// 생성자
+AttackBoost::AttackBoost(const std::string& name,int price,int amount)
+    : Item(name,price,amount) {}
 // Use 함수 구현 (공격력 증가 효과)
 void AttackBoost::Use(Character* character)
 {
